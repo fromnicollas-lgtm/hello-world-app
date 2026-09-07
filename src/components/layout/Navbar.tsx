@@ -33,11 +33,12 @@ export const Navbar: React.FC = () => {
   };
 
   const navLinks = [
-    { label: "Concursos", href: "/#concursos" },
-    { label: "Cursos", href: "/#plataforma" },
-    { label: "Questões", href: "/#questoes-demo" },
-    { label: "Simulados", href: "/#desempenho" },
-    { label: "Mentorias", href: "/#mentoria" },
+    { label: "CONCURSOS", href: "/#concursos" },
+    { label: "PLATAFORMA", href: "/#plataforma" },
+    { label: "QUESTÕES", href: "/#questoes" },
+    { label: "DESEMPENHO", href: "/#desempenho" },
+    { label: "CRONOGRAMA", href: "/#planejamento" },
+    { label: "PLANOS", href: "/#planos" },
   ];
 
   const initials = profile?.full_name
@@ -53,139 +54,136 @@ export const Navbar: React.FC = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
         isScrolled
-          ? "bg-neutral-950/85 backdrop-blur-md border-b border-neutral-800/80 shadow-lg shadow-black/20"
+          ? "bg-neutral-950/90 backdrop-blur-md border-b border-neutral-850 shadow-xl"
           : "bg-transparent border-b border-white/5"
       }`}
     >
       <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Logo Oficial à Esquerda */}
-        <Link to="/" className="flex items-center gap-2 group">
+        {/* Logo Oficial à Esquerda com marcação técnica */}
+        <Link to="/" className="flex items-center gap-3 group">
           <img
             src="/logo-dark.png"
             alt="Minerva Educação"
-            className="h-8 sm:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-[1.02]"
+            className="h-8 w-auto object-contain transition-opacity group-hover:opacity-90"
           />
         </Link>
 
-        {/* Links no Centro (Desktop) */}
-        <nav className="hidden lg:flex items-center gap-8 text-[13px] font-medium tracking-wide text-neutral-300">
+        {/* Links no Centro (Desktop) - Estilo Editorial Técnico */}
+        <nav className="hidden lg:flex items-center gap-7 text-[11px] font-mono tracking-widest text-neutral-300 uppercase">
           {navLinks.map((link) => (
             <a
               key={link.label}
               href={link.href}
-              className="transition-colors hover:text-white relative py-1"
+              className="relative py-1 transition-colors hover:text-white group"
             >
-              {link.label}
+              <span>{link.label}</span>
+              <span className="absolute bottom-0 left-0 w-0 h-px bg-white transition-all duration-300 group-hover:w-full" />
             </a>
           ))}
           {user && (
             <Link
               to="/app"
-              className="flex items-center gap-1.5 text-white font-semibold hover:text-white/80 transition-colors"
+              className="flex items-center gap-1.5 text-white font-bold hover:text-neutral-300 transition-colors"
             >
-              <BookOpen className="h-3.5 w-3.5" />
-              Área do Aluno
+              <BookOpen className="h-3 w-3" />
+              ÁREA DO ALUNO
             </Link>
           )}
           {isAdmin() && (
             <Link
               to="/admin"
-              className="flex items-center gap-1.5 text-white font-semibold hover:text-white/80 transition-colors"
+              className="flex items-center gap-1.5 text-white font-bold hover:text-neutral-300 transition-colors"
             >
-              <ShieldCheck className="h-3.5 w-3.5" />
-              Admin
+              <ShieldCheck className="h-3 w-3" />
+              ADMIN
             </Link>
           )}
         </nav>
 
         {/* Ações à Direita (Desktop) */}
-        <div className="hidden lg:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-4 font-mono text-xs">
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="relative h-10 w-10 rounded-full ring-1 ring-neutral-700 hover:ring-neutral-500 p-0 cursor-pointer"
-                >
-                  <Avatar className="h-9 w-9">
+                <button className="flex items-center gap-2 border border-neutral-800 bg-neutral-900/80 px-3 py-1.5 rounded-xs hover:border-neutral-600 transition-colors cursor-pointer">
+                  <Avatar className="h-6 w-6 rounded-none">
                     <AvatarImage
                       src={profile?.avatar_url || ""}
                       alt={profile?.full_name || "Usuário"}
                     />
-                    <AvatarFallback className="bg-neutral-800 text-white font-semibold text-xs">
+                    <AvatarFallback className="bg-neutral-800 text-white font-semibold text-[10px] rounded-none">
                       {initials}
                     </AvatarFallback>
                   </Avatar>
-                </Button>
+                  <span className="text-white text-[11px] font-medium tracking-wide">
+                    {profile?.full_name?.split(" ")[0] || "ALUNO"}
+                  </span>
+                </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-56 bg-neutral-900 border-neutral-800 text-white"
+                className="w-56 bg-neutral-900 border-neutral-800 text-white rounded-none"
                 align="end"
-                forceMount
               >
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-semibold leading-none text-white">
+                    <p className="text-xs font-bold text-white uppercase font-mono">
                       {profile?.full_name || "Aluno Minerva"}
                     </p>
-                    <p className="text-xs leading-none text-neutral-400 truncate">{user.email}</p>
-                    <div className="mt-1 flex flex-wrap gap-1">
-                      {roles.map((r) => (
-                        <span
-                          key={r}
-                          className="inline-flex items-center rounded-full bg-neutral-800 px-2 py-0.5 text-[10px] font-medium text-neutral-300 uppercase tracking-wide"
-                        >
-                          {r}
-                        </span>
-                      ))}
-                    </div>
+                    <p className="text-[10px] text-neutral-400 truncate font-mono">{user.email}</p>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator className="bg-neutral-800" />
-                <DropdownMenuItem asChild className="focus:bg-neutral-800 focus:text-white">
-                  <Link to="/app" className="cursor-pointer flex items-center gap-2">
-                    <LayoutDashboard className="h-4 w-4" />
-                    <span>Área do Aluno</span>
+                <DropdownMenuItem
+                  asChild
+                  className="focus:bg-neutral-800 focus:text-white rounded-none"
+                >
+                  <Link
+                    to="/app"
+                    className="cursor-pointer flex items-center gap-2 text-xs font-mono"
+                  >
+                    <LayoutDashboard className="h-3.5 w-3.5" />
+                    <span>ÁREA DO ALUNO</span>
                   </Link>
                 </DropdownMenuItem>
                 {isAdmin() && (
-                  <DropdownMenuItem asChild className="focus:bg-neutral-800 focus:text-white">
-                    <Link to="/admin" className="cursor-pointer flex items-center gap-2">
-                      <ShieldCheck className="h-4 w-4" />
-                      <span>Painel Administrativo</span>
+                  <DropdownMenuItem
+                    asChild
+                    className="focus:bg-neutral-800 focus:text-white rounded-none"
+                  >
+                    <Link
+                      to="/admin"
+                      className="cursor-pointer flex items-center gap-2 text-xs font-mono"
+                    >
+                      <ShieldCheck className="h-3.5 w-3.5" />
+                      <span>PAINEL ADMIN</span>
                     </Link>
                   </DropdownMenuItem>
                 )}
                 <DropdownMenuSeparator className="bg-neutral-800" />
                 <DropdownMenuItem
                   onClick={handleSignOut}
-                  className="cursor-pointer text-red-400 focus:text-red-300 focus:bg-neutral-800 flex items-center gap-2"
+                  className="cursor-pointer text-red-400 focus:text-red-300 focus:bg-neutral-800 flex items-center gap-2 text-xs font-mono rounded-none"
                 >
-                  <LogOut className="h-4 w-4" />
-                  <span>Sair da Plataforma</span>
+                  <LogOut className="h-3.5 w-3.5" />
+                  <span>ENCERRAR SESSÃO</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
             <div className="flex items-center gap-3">
-              <Button
-                variant="ghost"
-                size="sm"
-                asChild
-                className="text-[13px] font-medium text-neutral-300 hover:text-white hover:bg-white/5 h-9 px-4 cursor-pointer"
+              <Link
+                to="/login"
+                className="text-neutral-400 hover:text-white transition-colors tracking-widest text-[11px] px-2 py-1 font-mono uppercase"
               >
-                <Link to="/login">Entrar</Link>
-              </Button>
-              <Button
-                size="sm"
-                asChild
-                className="bg-white text-neutral-950 hover:bg-neutral-200 font-semibold text-[13px] h-9 px-4.5 rounded-lg shadow-sm transition-all cursor-pointer"
+                ENTRAR
+              </Link>
+              <Link
+                to="/register"
+                className="group relative inline-flex items-center gap-2 bg-white text-neutral-950 hover:bg-neutral-200 font-mono font-bold text-[11px] tracking-wider uppercase px-4 py-2 transition-all"
               >
-                <Link to="/register">
-                  Começar agora
-                  <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
-                </Link>
-              </Button>
+                <span>COMEÇAR AGORA</span>
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+              </Link>
             </div>
           )}
         </div>
@@ -194,24 +192,24 @@ export const Navbar: React.FC = () => {
         <div className="flex lg:hidden items-center gap-2">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg text-white hover:bg-neutral-800 transition-colors focus:outline-none cursor-pointer"
-            aria-label="Abrir menu de navegação"
+            className="p-2 text-white hover:text-neutral-300 transition-colors focus:outline-none cursor-pointer"
+            aria-label="Abrir menu"
           >
-            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
 
-      {/* Menu Mobile Retrátil */}
+      {/* Menu Mobile */}
       {mobileMenuOpen && (
-        <div className="lg:hidden border-b border-neutral-800 bg-neutral-950 px-4 pt-3 pb-6 space-y-4 animate-in slide-in-from-top-2 duration-200 text-white">
-          <div className="flex flex-col space-y-3 pt-2">
+        <div className="lg:hidden border-b border-neutral-850 bg-neutral-950 px-6 pt-4 pb-8 space-y-5 text-white font-mono text-xs">
+          <div className="flex flex-col space-y-3">
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-sm font-medium text-neutral-300 hover:text-white py-2 border-b border-neutral-900"
+                className="text-neutral-300 hover:text-white py-2 border-b border-neutral-900 tracking-wider"
               >
                 {link.label}
               </a>
@@ -220,15 +218,15 @@ export const Navbar: React.FC = () => {
               <Link
                 to="/app"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-sm font-semibold text-white py-2 border-b border-neutral-900 flex items-center justify-between"
+                className="text-white py-2 border-b border-neutral-900 flex items-center justify-between"
               >
-                <span>Área do Aluno</span>
-                <ArrowRight className="h-4 w-4" />
+                <span>ÁREA DO ALUNO</span>
+                <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             )}
           </div>
 
-          <div className="pt-2 flex flex-col gap-2.5">
+          <div className="pt-2 flex flex-col gap-3">
             {user ? (
               <Button
                 variant="outline"
@@ -236,28 +234,26 @@ export const Navbar: React.FC = () => {
                   handleSignOut();
                   setMobileMenuOpen(false);
                 }}
-                className="w-full text-xs font-semibold justify-center text-red-400 border-red-500/30 bg-neutral-900 hover:bg-neutral-850"
+                className="w-full text-xs font-mono font-bold justify-center text-red-400 border-red-500/30 bg-neutral-900 rounded-none"
               >
-                <LogOut className="mr-2 h-4 w-4" />
-                Sair da Conta
+                ENCERRAR SESSÃO
               </Button>
             ) : (
               <>
-                <Button
-                  variant="outline"
-                  asChild
-                  className="w-full text-xs font-semibold justify-center h-10 border-neutral-800 bg-neutral-900 text-white hover:bg-neutral-850"
+                <Link
+                  to="/login"
                   onClick={() => setMobileMenuOpen(false)}
+                  className="w-full py-2.5 text-center border border-neutral-800 text-white font-mono uppercase text-xs hover:bg-neutral-900"
                 >
-                  <Link to="/login">Entrar</Link>
-                </Button>
-                <Button
-                  asChild
-                  className="w-full text-xs font-semibold justify-center bg-white text-neutral-950 hover:bg-neutral-200 h-10"
+                  ENTRAR
+                </Link>
+                <Link
+                  to="/register"
                   onClick={() => setMobileMenuOpen(false)}
+                  className="w-full py-2.5 text-center bg-white text-neutral-950 font-mono uppercase font-bold text-xs hover:bg-neutral-200"
                 >
-                  <Link to="/register">Começar agora</Link>
-                </Button>
+                  COMEÇAR AGORA →
+                </Link>
               </>
             )}
           </div>
