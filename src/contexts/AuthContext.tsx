@@ -123,6 +123,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setIsLoading(false);
         }
       }
+      return undefined;
     }
 
     const cleanupPromise = initAuth();
