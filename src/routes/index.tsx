@@ -1,8 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Navbar } from "../components/layout/Navbar";
 import { Footer } from "../components/layout/Footer";
-import { useAuth } from "../hooks/useAuth";
 import { Button } from "../components/ui/button";
 import {
   Accordion,
@@ -12,795 +11,892 @@ import {
 } from "../components/ui/accordion";
 import {
   ArrowRight,
-  Check,
+  CheckCircle2,
+  Database,
+  BarChart3,
+  Calendar,
+  Layers,
+  BookOpen,
+  Award,
+  Users,
+  Compass,
+  Repeat,
   Play,
-  Clock,
+  Check,
+  ChevronRight,
   Flame,
+  Target,
+  Zap,
   CheckCircle,
   XCircle,
-  TrendingUp,
-  SlidersHorizontal,
-  ChevronDown,
+  BrainCircuit,
+  Clock,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
 });
 
-// 8 Concursos Militares - Lista Editorial
-const CONCURSOS_EDITORIAL = [
+// 8 Concursos Militares
+const CONCURSOS = [
   {
-    num: "01",
-    sigla: "AFA",
-    nome: "Academia da Força Aérea",
-    esfera: "Força Aérea Brasileira",
-    foco: "Aviação, Intendência e Infantaria",
-    grau: "Ensino Superior Militar",
-    detalhe:
-      "Formação de Oficiais Aviadores. Prova de alta exigência em Física, Matemática, Português e Inglês.",
+    id: "afa",
+    name: "AFA",
+    title: "Academia da Força Aérea",
+    description:
+      "Preparação para Oficiais Aviadores, Intendentes e de Infantaria da Força Aérea Brasileira.",
+    badge: "Aeronáutica",
+    vagas: "Ensino Superior Militar",
   },
   {
-    num: "02",
-    sigla: "EFOMM",
-    nome: "Escola de Formação de Oficiais da Marinha Mercante",
-    esfera: "Marinha Mercante",
-    foco: "Náutica e Máquinas",
-    grau: "Ensino Superior",
-    detalhe:
-      "Centros de instrução CIAGA (Rio de Janeiro) e CIABA (Belém). Carreira internacional e remuneração expressiva.",
+    id: "efomm",
+    name: "EFOMM",
+    title: "Oficiais da Marinha Mercante",
+    description:
+      "Carreira internacional de Oficiais de Náutica e Máquinas no CIAGA (RJ) e CIABA (PA).",
+    badge: "Marinha Mercante",
+    vagas: "Ensino Superior",
   },
   {
-    num: "03",
-    sigla: "EsPCEx",
-    nome: "Escola Preparatória de Cadetes do Exército",
-    esfera: "Exército Brasileiro",
-    foco: "Linha de Ensino Bélico (AMAN)",
-    grau: "Ensino Superior",
-    detalhe:
-      "Porta de entrada para a AMAN. Rigor disciplinar e amplo conteúdo programático de exatas e humanas.",
+    id: "espcex",
+    name: "EsPCEx",
+    title: "Cadetes do Exército",
+    description:
+      "A preparação completa para ingresso na Academia Militar das Agulhas Negras (AMAN).",
+    badge: "Exército",
+    vagas: "Ensino Superior AMAN",
   },
   {
-    num: "04",
-    sigla: "ESCOLA NAVAL",
-    nome: "Escola Naval",
-    esfera: "Marinha do Brasil",
-    foco: "Corpo da Armada, Fuzileiros e Intendência",
-    grau: "Ensino Superior",
-    detalhe:
-      "A mais antiga instituição de ensino superior do país. Ênfase profunda em Cálculo, Física e Mecânica.",
+    id: "escola-naval",
+    name: "Escola Naval",
+    title: "Oficiais da Marinha do Brasil",
+    description:
+      "Corpo da Armada, Fuzileiros Navais e Intendentes da mais antiga academia militar do país.",
+    badge: "Marinha",
+    vagas: "Oficiais da Armada",
   },
   {
-    num: "05",
-    sigla: "ESA",
-    nome: "Escola de Sargentos das Armas",
-    esfera: "Exército Brasileiro",
-    foco: "Sargentos Combatentes de Carreira",
-    grau: "Nível Médio Técnico",
-    detalhe:
-      "Formação operacional em Três Corações (MG). Alta concorrência nacional e plano de carreira estruturado.",
+    id: "esa",
+    name: "ESA",
+    title: "Sargentos das Armas",
+    description:
+      "Preparação de alta densidade para Sargentos Combatentes do Exército Brasileiro.",
+    badge: "Exército",
+    vagas: "Nível Médio Técnico",
   },
   {
-    num: "06",
-    sigla: "EEAR",
-    nome: "Escola de Especialistas de Aeronáutica",
-    esfera: "Força Aérea Brasileira",
-    foco: "Especialidades Técnicas e Operacionais",
-    grau: "Nível Médio Técnico",
-    detalhe:
-      "O berço dos especialistas da FAB em Guaratinguetá (SP). Controle de tráfego aéreo, mecânica e eletrônica.",
+    id: "eear",
+    name: "EEAR",
+    title: "Especialistas de Aeronáutica",
+    description:
+      "Formação técnica e operacional de Sargentos da FAB em diversas especialidades.",
+    badge: "Aeronáutica",
+    vagas: "Nível Médio Técnico",
   },
   {
-    num: "07",
-    sigla: "EPCAR",
-    nome: "Escola Preparatória de Cadetes do Ar",
-    esfera: "Força Aérea Brasileira",
-    foco: "Ensino Médio Preparatório para a AFA",
-    grau: "Ensino Médio",
-    detalhe:
-      "Sediada em Barbacena (MG). Uma das instituições de ensino médio mais exigentes e prestigiadas do Brasil.",
+    id: "epcar",
+    name: "EPCAR",
+    title: "Cadetes do Ar",
+    description:
+      "Ensino Médio de elite preparatório em Barbacena com acesso preferencial à AFA.",
+    badge: "Aeronáutica",
+    vagas: "Ensino Médio FAB",
   },
   {
-    num: "08",
-    sigla: "COLÉGIO NAVAL",
-    nome: "Colégio Naval",
-    esfera: "Marinha do Brasil",
-    foco: "Ensino Médio Preparatório para a EN",
-    grau: "Ensino Médio",
-    detalhe:
-      "Localizado em Angra dos Reis (RJ). Formação de excelência matemática e preparatória para a Escola Naval.",
+    id: "colegio-naval",
+    name: "Colégio Naval",
+    title: "Ensino Médio Preparatório",
+    description:
+      "Tradicional instituição preparatória da Marinha em Angra dos Reis para ingresso na EN.",
+    badge: "Marinha",
+    vagas: "Ensino Médio Marinha",
   },
 ];
 
-// Dias para o Cronograma Tático
-const CRONOGRAMA_DIAS = [
+// Cronograma Semanal Inteligente
+const DIAS_CRONOGRAMA = [
   {
     dia: "SEGUNDA",
-    sigla: "SEG",
-    materia: "MATEMÁTICA PURA",
-    topico: "Geometria Analítica: Cônicas e Vetores",
-    horas: "3h00",
-    meta: "45 Questões Resolvidas",
-    status: "CONCLUÍDO",
+    materia: "MATEMÁTICA",
+    topico: "Geometria Analítica & Funções Modulares",
+    carga: "2h30min",
+    tipo: "Teoria + 40 Questões AFA / EsPCEx",
+    meta: "Cálculo de retas tangentes, cônicas e propriedades modulares",
   },
   {
     dia: "TERÇA",
-    sigla: "TER",
     materia: "PORTUGUÊS & REDAÇÃO",
-    topico: "Sintaxe Oracional & Estrutura Dissertativa",
-    horas: "2h30",
-    meta: "1 Redação Corrigida",
-    status: "EM ANDAMENTO",
+    topico: "Sintaxe do Período Composto & Proposta Dissertativa",
+    carga: "2h00min",
+    tipo: "Aulas + 1 Redação Corrigida com Critérios de Banca",
+    meta: "Conectivos argumentativos, paralelismo e orações reduzidas",
   },
   {
     dia: "QUARTA",
-    sigla: "QUA",
-    materia: "FÍSICA CLÁSSICA",
-    topico: "Dinâmica Newtoniana e Conservação de Energia",
-    horas: "3h15",
-    meta: "50 Questões AFA / EsPCEx",
-    status: "PROGRAMADO",
+    materia: "FÍSICA",
+    topico: "Mecânica Clássica: Dinâmica e Conservação de Energia",
+    carga: "2h45min",
+    tipo: "Resoluções Passo a Passo + Exercícios de Fixação",
+    meta: "Atrito estático e cinético em planos inclinados com tração",
   },
   {
     dia: "QUINTA",
-    sigla: "QUI",
-    materia: "INGLÊS INSTRUMENTAL",
-    topico: "Compreensão Textual & Gramática Avançada",
-    horas: "2h00",
-    meta: "30 Questões Comentadas",
-    status: "PROGRAMADO",
+    materia: "INGLÊS",
+    topico: "Leitura Instrumental & Phrasal Verbs de Prova",
+    carga: "1h45min",
+    tipo: "Textos de Exames Anteriores + Gramática Aplicada",
+    meta: "Vocabulário contextualizado e tempos verbais compostos",
   },
   {
     dia: "SEXTA",
-    sigla: "SEX",
     materia: "QUÍMICA / HISTÓRIA",
-    topico: "Estequiometria & Formação do Brasil",
-    horas: "2h30",
-    meta: "Revisão Cumulativa",
-    status: "PROGRAMADO",
+    topico: "Estequiometria Avançada & Brasil República",
+    carga: "2h15min",
+    tipo: "Questões Comentadas EsPCEx & EFOMM",
+    meta: "Rendimento de reações com pureza e cálculo volumétrico",
   },
   {
     dia: "SÁBADO",
-    sigla: "SÁB",
-    materia: "SIMULADO GERAL",
-    topico: "Simulado Inédito sob Condições Reais de Tempo",
-    horas: "4h30",
-    meta: "Rankings e Diagnóstico",
-    status: "PROGRAMADO",
+    materia: "REVISÃO & SIMULADO",
+    topico: "Simulado Geral Cronometrado Inédito",
+    carga: "4h00min",
+    tipo: "Execução sob Condições Reais de Prova",
+    meta: "Controle de tempo, ritmo de resolução e mapeamento de lacunas",
   },
 ];
 
-// FAQ
+// Perguntas Frequentes (FAQ)
 const FAQS = [
   {
-    p: "Qual é o diferencial pedagógico da Minerva Educação?",
-    r: "A Minerva abandona o modelo de aulas genéricas e apostilas inchadas. Trabalhamos com engenharia reversa dos editais militares, aliando teoria densa e concisa, banco de questões rigorosamente classificado por padrão de banca e inteligência analítica para direcionar seu tempo exatamente onde ele gera pontos.",
+    pergunta: "Como funciona a metodologia da Minerva Educação?",
+    resposta:
+      "A Minerva reúne em um ecossistema único todo o ciclo de preparação para carreiras militares: diagnóstico inicial de nivelamento, trilhas curriculares organizadas por matéria, banco de questões com resoluções comentadas, simulados periódicos com cronometragem oficial e acompanhamento analítico para que você estude com estratégia e consistência.",
   },
   {
-    p: "Para quais carreiras militares a preparação é recomendada?",
-    r: "Nossa estrutura cobre de forma dedicada os editais de AFA, EFOMM, EsPCEx, Escola Naval, ESA, EEAR, EPCAR e Colégio Naval. Cada concurso possui trilhas específicas que respeitam o peso e a particularidade de cada matéria.",
+    pergunta: "Para quais concursos a plataforma oferece preparação?",
+    resposta:
+      "Atendemos inicialmente os 8 principais concursos militares do Brasil: AFA, EFOMM, EsPCEx, Escola Naval, ESA, EEAR, EPCAR e Colégio Naval. A arquitetura modular do sistema foi desenhada para permitir a inclusão de novas carreiras com o mesmo rigor de qualidade.",
   },
   {
-    p: "Como funciona o banco de questões na prática?",
-    r: "Você filtra exercícios por concurso, disciplina, tópico específico do edital, ano e nível de dificuldade. Todas as questões contam com resolução técnica completa passo a passo, ensinando o método de resolução exigido pelas bancas.",
+    pergunta: "Como funciona o banco de questões?",
+    resposta:
+      "Nosso banco de questões é calibrado por concurso, disciplina, tópico do edital, ano e nível de dificuldade. Cada item possui gabarito e resolução pedagógica estruturada, permitindo que o aluno aprenda a linha de raciocínio exigida pelas bancas examinadoras militares.",
   },
   {
-    p: "Como funcionam os simulados cronometrados?",
-    r: "Os simulados reproduzem com exatidão as regras, a quantidade de questões, a ponderação de peso e o tempo limite de cada prova. Ao finalizar, você recebe um diagnóstico de rendimento comparativo e relatório de lacunas.",
+    pergunta: "Como funcionam os simulados cronometrados?",
+    resposta:
+      "Os simulados reproduzem as condições oficiais de cada prova: número de questões idêntico ao edital, divisão por disciplinas, tempo de prova rigoroso com cronômetro regressivo e geração de relatório de acertos com ranking entre os estudantes.",
   },
   {
-    p: "Posso acessar a plataforma de múltiplos dispositivos?",
-    r: "Sim. A plataforma é 100% responsiva e acessível em computadores, notebooks, tablets e smartphones com sincronização em tempo real de seu progresso e anotações.",
+    pergunta: "Posso acessar os materiais pelo celular ou tablet?",
+    resposta:
+      "Sim. A Minerva foi desenvolvida com arquitetura mobile-first, garantindo navegação rápida, fluida e confortável em qualquer dispositivo, seja para assistir videoaulas, resolver listas de exercícios ou revisar cronogramas.",
   },
   {
-    p: "Como funciona a política de cancelamento?",
-    r: "Você possui garantia incondicional de 7 dias após a contratação com reembolso integral caso decida não continuar. As assinaturas mensais podem ser encerradas a qualquer momento diretamente no seu painel sem nenhuma multa.",
+    pergunta: "Como funciona o acompanhamento e mentoria?",
+    resposta:
+      "O programa de mentoria orienta os estudantes na organização do plano de estudos, identifica os pontos de menor rendimento através de relatórios analíticos e estabelece metas semanais para maximizar a retenção dos tópicos de maior peso na prova.",
+  },
+  {
+    pergunta: "Existe período de garantia ou cancelamento?",
+    resposta:
+      "Sim. Oferecemos garantia incondicional de 7 dias com reembolso integral caso você decida não prosseguir. As assinaturas mensais não possuem fidelidade contratual e podem ser encerradas a qualquer momento diretamente nas configurações de sua conta.",
+  },
+  {
+    pergunta: "Como posso iniciar minha preparação hoje?",
+    resposta:
+      "Basta clicar em 'Começar agora', preencher seu cadastro gratuitamente e acessar seu painel de estudos para conhecer a estrutura acadêmica e escolher seu concurso-alvo.",
   },
 ];
 
 function LandingPage() {
-  const { user } = useAuth();
-
-  // Mouse Parallax sutil no Hero
-  const [mouseCoord, setMouseCoord] = useState({ x: 0, y: 0 });
-  const heroSectionRef = useRef<HTMLDivElement>(null);
+  // Efeito Parallax suave no Hero Desktop via coordenadas do mouse
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const heroRef = useRef<HTMLDivElement>(null);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (typeof window !== "undefined" && window.innerWidth < 1024) return;
-    const rect = heroSectionRef.current?.getBoundingClientRect();
+    const rect = heroRef.current?.getBoundingClientRect();
     if (!rect) return;
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setMouseCoord({ x, y });
+    setMousePos({ x, y });
   };
 
-  // Concurso Ativo na Lista Editorial
-  const [activeConcurso, setActiveConcurso] = useState<number>(0);
+  const handleMouseLeave = () => {
+    setMousePos({ x: 0, y: 0 });
+  };
 
-  // Módulo Ativo no "Sistema Operacional da Preparação"
-  const [activeOSModule, setActiveOSModule] = useState<
-    "cursos" | "questoes" | "simulados" | "planejamento" | "desempenho"
-  >("cursos");
+  // Estado da Questão Interativa do Banco de Questões
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [questionSubmitted, setQuestionSubmitted] = useState<boolean>(false);
 
-  // Estado da Questão Interativa (Simulador Blueprint)
-  const [selectedAlt, setSelectedAlt] = useState<string | null>(null);
-  const [showAnswer, setShowAnswer] = useState(false);
-
-  // Dia Ativo no Cronograma Tático
-  const [activeDay, setActiveDay] = useState(0);
+  // Estado do Dia Ativo no Cronograma Tático
+  const [selectedDayIndex, setSelectedDayIndex] = useState<number>(0);
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#070709] text-white selection:bg-white selection:text-black font-sans antialiased">
+    <div className="flex min-h-screen flex-col bg-neutral-950 text-white selection:bg-white selection:text-neutral-950 font-sans antialiased overflow-x-clip">
       <Navbar />
 
       <main className="flex-1">
         {/* ==================================================================== */}
-        {/* ATO I: HERO — A GEOMETRIA DA VISÃO E ESTRATÉGIA (PRETO PROFUNDO)     */}
+        {/* SEÇÃO 1: HERO CINEMATOGRÁFICO & MOCKUP MODERNO (ESCURO)              */}
         {/* ==================================================================== */}
         <section
-          ref={heroSectionRef}
+          ref={heroRef}
           onMouseMove={handleMouseMove}
-          className="relative min-h-[95vh] flex flex-col justify-between pt-32 pb-16 px-4 sm:px-6 lg:px-8 bg-[#070709] overflow-hidden border-b border-neutral-900"
+          onMouseLeave={handleMouseLeave}
+          className="relative min-h-[92vh] flex items-center pt-24 pb-16 sm:pt-32 sm:pb-24 lg:pt-36 lg:pb-28 overflow-hidden bg-neutral-950 border-b border-neutral-850"
         >
-          {/* Grid de Linhas Finas Técnicas e Marcadores + */}
+          {/* Fundo Tecnológico Abstrato (Iluminação Ambiental + Grid de Linhas Finas) */}
           <div className="absolute inset-0 pointer-events-none">
-            {/* Grid Arquitetônico 60px */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff04_1px,transparent_1px),linear-gradient(to_bottom,#ffffff04_1px,transparent_1px)] bg-[size:60px_60px]" />
-            {/* Marcadores de Coordenadas Técnicas */}
-            <span className="absolute top-24 left-8 text-[9px] font-mono text-neutral-600 hidden md:inline-block">
-              + [SYS.COORD: 22°54'S / 43°12'W]
-            </span>
-            <span className="absolute top-24 right-8 text-[9px] font-mono text-neutral-600 hidden md:inline-block">
-              + [TACTICAL_ENGINE: ACTIVE]
-            </span>
-            {/* Feixe de luz vertical ultra-sutil */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-full bg-gradient-to-b from-white/15 via-white/5 to-transparent" />
+            {/* Iluminação suave no centro-topo */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] sm:w-[900px] h-[350px] sm:h-[500px] bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_70%)] blur-2xl" />
+            {/* Grid geométrico discreto de 40px */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff04_1px,transparent_1px),linear-gradient(to_bottom,#ffffff04_1px,transparent_1px)] bg-[size:40px_40px]" />
+            {/* Vinheta lateral sutil */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_50%,#070709_100%)]" />
           </div>
 
-          {/* Área Central: Tipografia Monumental e Geometria do Lince */}
-          <div className="relative mx-auto max-w-7xl w-full z-10 my-auto py-12">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-              {/* Bloco de Texto Editorial */}
-              <div className="lg:col-span-7 space-y-8 text-left">
-                {/* Metadado de Cabeçalho */}
-                <div className="flex items-center gap-3 text-[10px] font-mono tracking-widest text-neutral-400 uppercase">
-                  <span className="h-1.5 w-1.5 bg-white shrink-0" />
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+              {/* Coluna de Texto Principal */}
+              <div className="lg:col-span-6 space-y-6 text-left">
+                {/* Badge de Destaque Tecnológico */}
+                <div className="inline-flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900/90 px-3.5 py-1 text-[11px] font-semibold tracking-wider uppercase text-neutral-300 backdrop-blur-sm">
+                  <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
                   <span>PREPARAÇÃO DE ALTO DESEMPENHO</span>
-                  <span className="text-neutral-700">|</span>
-                  <span className="text-neutral-500">ED. 2026</span>
                 </div>
 
-                {/* Título Monumental com Ritmo Tipográfico Contrastante */}
-                <div className="space-y-1">
-                  <h1 className="text-4xl sm:text-6xl xl:text-7xl font-display font-extrabold tracking-tight uppercase leading-[0.98] text-white">
-                    Sua aprovação
-                  </h1>
-                  <h2 className="text-4xl sm:text-6xl xl:text-7xl font-display font-light tracking-tight uppercase leading-[0.98] text-neutral-400">
-                    começa com
-                  </h2>
-                  <h2 className="text-4xl sm:text-6xl xl:text-7xl font-display font-black tracking-tight uppercase leading-[0.98] text-white underline decoration-1 underline-offset-8 decoration-neutral-700">
-                    estratégia.
-                  </h2>
-                </div>
+                {/* Headline Principal */}
+                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.12]">
+                  Sua aprovação começa com uma estratégia melhor.
+                </h1>
 
-                {/* Subtítulo Limpo */}
-                <p className="text-sm sm:text-base text-neutral-400 font-normal leading-relaxed max-w-xl">
+                {/* Subheadline */}
+                <p className="text-sm sm:text-base lg:text-lg text-neutral-400 font-normal leading-relaxed max-w-xl">
                   Cursos, questões, simulados, planejamento e acompanhamento para transformar sua
-                  preparação em uma estratégia de alta performance.
+                  rotina em uma preparação tática de alta performance.
                 </p>
 
-                {/* Ações Editoriais */}
-                <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-                  <Link
-                    to="/register"
-                    className="group inline-flex items-center justify-between sm:justify-center gap-3 bg-white text-black hover:bg-neutral-200 font-mono font-bold text-xs uppercase tracking-wider px-7 py-4 transition-all"
+                {/* CTAs */}
+                <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
+                  <Button
+                    size="lg"
+                    asChild
+                    className="h-12 px-7 bg-white text-neutral-950 hover:bg-neutral-200 font-semibold text-sm rounded-xl shadow-lg shadow-white/5 transition-all cursor-pointer min-h-[48px]"
                   >
-                    <span>COMEÇAR AGORA</span>
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1.5" />
-                  </Link>
-                  <a
-                    href="#concursos"
-                    className="inline-flex items-center justify-center border border-neutral-800 hover:border-neutral-500 text-neutral-300 hover:text-white font-mono text-xs uppercase tracking-wider px-7 py-4 transition-colors"
+                    <Link to="/register">
+                      <span>Começar agora</span>
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    asChild
+                    className="h-12 px-7 border-neutral-800 bg-neutral-900/60 text-white hover:bg-neutral-800 hover:text-white font-medium text-sm rounded-xl transition-all cursor-pointer min-h-[48px]"
                   >
-                    CONHECER A PLATAFORMA
-                  </a>
+                    <a href="#concursos">Conhecer a plataforma</a>
+                  </Button>
+                </div>
+
+                {/* Texto de Confiança */}
+                <div className="pt-4 border-t border-neutral-900/80 flex items-center gap-2.5 text-xs text-neutral-400 font-medium">
+                  <CheckCircle2 className="h-4 w-4 text-white shrink-0" />
+                  <span>
+                    Preparação para AFA, EFOMM, EsPCEx, Escola Naval, ESA, EEAR, EPCAR e Colégio
+                    Naval.
+                  </span>
                 </div>
               </div>
 
-              {/* Lado Direito: Composição Vetorial Abstrata do Lince (Visão / Foco) */}
-              <div className="lg:col-span-5 relative flex items-center justify-center">
+              {/* Coluna Visual: Mockup da Plataforma (Responsivo & Dedicado no Mobile) */}
+              <div className="lg:col-span-6 relative">
+                {/* VERSÃO DESKTOP (Com Parallax 3D suave no mouse) */}
                 <div
-                  className="relative w-full max-w-md aspect-square flex items-center justify-center transition-transform duration-500 ease-out"
+                  className="hidden sm:block relative transition-transform duration-300 ease-out will-change-transform"
                   style={{
                     transform:
                       typeof window !== "undefined" && window.innerWidth >= 1024
-                        ? `rotateY(${mouseCoord.x * 12}deg) rotateX(${-mouseCoord.y * 12}deg)`
+                        ? `perspective(1000px) rotateY(${mousePos.x * 6}deg) rotateX(${-mousePos.y * 6}deg)`
                         : "none",
                   }}
                 >
-                  {/* Círculos e Linhas Concêntricas de Calibração */}
-                  <div className="absolute inset-0 border border-neutral-800/80 rounded-full" />
-                  <div className="absolute inset-8 border border-neutral-900 rounded-full" />
-                  <div
-                    className="absolute inset-20 border border-dashed border-neutral-850 rounded-full animate-spin"
-                    style={{ animationDuration: "60s" }}
-                  />
+                  {/* Moldura da Interface Principal */}
+                  <div className="rounded-2xl border border-neutral-800 bg-neutral-900/90 p-4 sm:p-5 shadow-2xl shadow-black/80 backdrop-blur-xl">
+                    {/* Barra Superior do Sistema */}
+                    <div className="flex items-center justify-between border-b border-neutral-800/80 pb-3 px-2">
+                      <div className="flex items-center gap-2">
+                        <div className="h-2.5 w-2.5 rounded-full bg-neutral-700" />
+                        <div className="h-2.5 w-2.5 rounded-full bg-neutral-700" />
+                        <div className="h-2.5 w-2.5 rounded-full bg-neutral-700" />
+                        <span className="ml-2 text-[11px] font-mono text-neutral-400">
+                          minerva.app/aluno/dashboard
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-[11px] font-medium text-neutral-300">
+                        <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                        <span>EsPCEx & AFA • 2026</span>
+                      </div>
+                    </div>
 
-                  {/* Eixos de Mira Tática */}
-                  <div className="absolute top-0 bottom-0 left-1/2 w-px bg-neutral-850" />
-                  <div className="absolute left-0 right-0 top-1/2 h-px bg-neutral-850" />
+                    {/* Miolo do Mockup */}
+                    <div className="p-3 sm:p-4 space-y-3.5 text-white">
+                      {/* Banner de Boas-vindas com Streak de Estudos */}
+                      <div className="flex items-center justify-between gap-3 p-3.5 rounded-xl border border-neutral-800 bg-neutral-950/60">
+                        <div className="space-y-0.5">
+                          <p className="text-[11px] font-mono text-neutral-400 uppercase">
+                            Sequência Ativa
+                          </p>
+                          <p className="text-sm font-bold text-white flex items-center gap-1.5">
+                            <Flame className="h-4 w-4 text-amber-400 fill-amber-400" />
+                            14 dias consecutivos de estudo
+                          </p>
+                        </div>
+                        {/* 7 pips da semana */}
+                        <div className="flex items-center gap-1.5">
+                          {["S", "T", "Q", "Q", "S", "S", "D"].map((dia, idx) => (
+                            <div key={idx} className="flex flex-col items-center gap-1">
+                              <span className="text-[9px] font-mono text-neutral-400">{dia}</span>
+                              <div
+                                className={`h-5 w-5 rounded-md flex items-center justify-center text-[10px] font-bold ${
+                                  idx < 5
+                                    ? "bg-white text-neutral-950"
+                                    : idx === 5
+                                      ? "bg-neutral-800 text-white border border-neutral-700"
+                                      : "bg-neutral-900 text-neutral-500"
+                                }`}
+                              >
+                                {idx < 5 ? "✓" : ""}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
 
-                  {/* Silhueta Geométrica Vetorial do Lince da Minerva (Olhar + Orelhas Angulares) */}
-                  <div className="relative z-10 w-4/5 h-4/5 flex flex-col items-center justify-center p-8 bg-neutral-950/90 border border-neutral-800 shadow-2xl">
-                    <img
-                      src="/mascot.png"
-                      alt="Lince Minerva - Visão e Foco"
-                      className="w-36 h-auto object-contain filter contrast-125 opacity-90 transition-transform duration-300 hover:scale-105"
-                    />
-                    <div className="mt-6 flex items-center gap-3 text-[10px] font-mono text-neutral-400">
-                      <span className="h-1.5 w-1.5 bg-emerald-400 animate-ping" />
-                      <span className="uppercase tracking-widest text-neutral-300">
-                        VIGILÂNCIA & FOCO TÁTICO
-                      </span>
+                      {/* Cards de Métricas e Banco de Questões */}
+                      <div className="grid grid-cols-2 gap-3">
+                        {/* Bloco 1: Meta de Estudo Diária */}
+                        <div className="p-3.5 rounded-xl border border-neutral-800 bg-neutral-950/40 space-y-2">
+                          <div className="flex items-center justify-between text-[11px]">
+                            <span className="text-neutral-400 font-medium">Meta Diária</span>
+                            <span className="font-mono text-white font-bold">85 / 120 min</span>
+                          </div>
+                          <div className="h-2 w-full rounded-full bg-neutral-800 overflow-hidden">
+                            <div
+                              className="h-full bg-white rounded-full transition-all duration-1000"
+                              style={{ width: "71%" }}
+                            />
+                          </div>
+                          <p className="text-[10px] text-neutral-400">
+                            Faltam 35 min para cumprir o ciclo de Física.
+                          </p>
+                        </div>
+
+                        {/* Bloco 2: Banco de Questões */}
+                        <div className="p-3.5 rounded-xl border border-neutral-800 bg-neutral-950/40 space-y-2">
+                          <div className="flex items-center justify-between text-[11px]">
+                            <span className="text-neutral-400 font-medium">Questões na Semana</span>
+                            <span className="font-mono text-emerald-400 font-bold">
+                              86.2% acertos
+                            </span>
+                          </div>
+                          <div className="flex items-baseline gap-2">
+                            <span className="text-xl font-bold font-mono text-white">248</span>
+                            <span className="text-[11px] text-neutral-400">itens resolvidos</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-[10px] text-neutral-300">
+                            <span className="rounded bg-neutral-800 px-1.5 py-0.5 text-neutral-300 font-mono">
+                              AFA 2024
+                            </span>
+                            <span>Geometria Analítica</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Módulo em Andamento */}
+                      <div className="p-3.5 rounded-xl border border-neutral-800 bg-neutral-950/40 flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-neutral-800 text-neutral-300">
+                              Aula 04
+                            </span>
+                            <span className="text-xs font-bold text-white">
+                              Dinâmica dos Corpos e Força de Atrito
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-neutral-400">
+                            Física I • Módulo 03 • Prof. Minerva
+                          </p>
+                        </div>
+                        <div className="h-8 w-8 rounded-lg bg-white text-neutral-950 flex items-center justify-center shrink-0">
+                          <Play className="h-3.5 w-3.5 fill-current ml-0.5" />
+                        </div>
+                      </div>
+
+                      {/* Notificação Demonstrativa */}
+                      <div className="pt-1 flex items-center justify-between text-[10px] text-neutral-400 border-t border-neutral-800">
+                        <span className="flex items-center gap-1.5">
+                          <Check className="h-3 w-3 text-emerald-400" />
+                          Simulado Geral #03 Agendado para Sábado às 08h00
+                        </span>
+                        <span className="font-mono text-neutral-500 uppercase">
+                          Painel do Aluno
+                        </span>
+                      </div>
                     </div>
                   </div>
+                </div>
 
-                  {/* Tag Flutuante com Metadado */}
-                  <div className="absolute -bottom-3 -right-2 bg-black border border-neutral-800 px-3 py-1.5 text-[10px] font-mono text-neutral-300">
-                    STATUS: READY // 2026
+                {/* VERSÃO MOBILE DEDICADA (Clara, nativa, proporcional para telas verticais 360px-430px) */}
+                <div className="block sm:hidden w-full">
+                  <div className="rounded-2xl border border-neutral-800 bg-neutral-900/95 p-4 shadow-xl space-y-3">
+                    {/* Header Mobile do App */}
+                    <div className="flex items-center justify-between border-b border-neutral-800 pb-2.5">
+                      <div className="flex items-center gap-2">
+                        <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+                        <span className="text-xs font-bold text-white">EsPCEx & AFA 2026</span>
+                      </div>
+                      <span className="text-[10px] font-mono bg-neutral-800 text-neutral-300 px-2 py-0.5 rounded">
+                        MINERVA OS
+                      </span>
+                    </div>
+
+                    {/* Streak Compacto */}
+                    <div className="p-3 rounded-xl border border-neutral-800 bg-neutral-950/70 flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Flame className="h-5 w-5 text-amber-400 fill-amber-400 shrink-0" />
+                        <div>
+                          <p className="text-xs font-bold text-white">14 dias seguidos</p>
+                          <p className="text-[10px] text-neutral-400">Sequência ativa</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        {["S", "T", "Q", "Q", "S"].map((d, i) => (
+                          <span
+                            key={i}
+                            className="h-5 w-5 rounded bg-white text-neutral-950 text-[10px] font-bold flex items-center justify-center"
+                          >
+                            ✓
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Meta Diária */}
+                    <div className="p-3 rounded-xl border border-neutral-800 bg-neutral-950/50 space-y-1.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-neutral-400">Meta de hoje: Física</span>
+                        <span className="font-mono text-white font-bold">85 / 120 min</span>
+                      </div>
+                      <div className="h-2 w-full rounded-full bg-neutral-800 overflow-hidden">
+                        <div className="h-full bg-white rounded-full w-[71%]" />
+                      </div>
+                    </div>
+
+                    {/* Resumo de Questões */}
+                    <div className="p-3 rounded-xl border border-neutral-800 bg-neutral-950/50 flex items-center justify-between">
+                      <div>
+                        <p className="text-[10px] text-neutral-400">Semana de exercícios</p>
+                        <p className="text-base font-bold font-mono text-white">
+                          248 <span className="text-xs font-normal text-neutral-400">questões</span>
+                        </p>
+                      </div>
+                      <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-2.5 py-1 rounded-md">
+                        86.2% acertos
+                      </span>
+                    </div>
+
+                    {/* Aula Atual com Botão Play */}
+                    <div className="p-3 rounded-xl border border-neutral-800 bg-neutral-950/60 flex items-center justify-between">
+                      <div className="space-y-0.5 pr-2">
+                        <span className="text-[9px] font-mono uppercase text-neutral-400">
+                          Aula 04 • Dinâmica
+                        </span>
+                        <p className="text-xs font-bold text-white truncate max-w-[200px]">
+                          Força de Atrito & Planos
+                        </p>
+                      </div>
+                      <div className="h-8 w-8 rounded-lg bg-white text-neutral-950 flex items-center justify-center shrink-0">
+                        <Play className="h-3.5 w-3.5 fill-current ml-0.5" />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* Faixa Ticker Contínua com Movimento Horizontal Suave */}
-          <div className="relative z-10 w-full overflow-hidden border-t border-b border-neutral-900 py-3 bg-neutral-950">
-            <div className="animate-marquee whitespace-nowrap text-[11px] font-mono tracking-widest text-neutral-400 uppercase">
-              <span className="mx-6">ESTRATÉGIA</span>
-              <span className="text-neutral-700">•</span>
-              <span className="mx-6">DISCIPLINA</span>
-              <span className="text-neutral-700">•</span>
-              <span className="mx-6">PRECISÃO</span>
-              <span className="text-neutral-700">•</span>
-              <span className="mx-6">VISÃO DE LONGO ALCANCE</span>
-              <span className="text-neutral-700">•</span>
-              <span className="mx-6">ALTO DESEMPENHO MILITAR</span>
-              <span className="text-neutral-700">•</span>
-              <span className="mx-6">METODOLOGIA MINERVA</span>
-              <span className="text-neutral-700">•</span>
-              <span className="mx-6">ESTRATÉGIA</span>
-              <span className="text-neutral-700">•</span>
-              <span className="mx-6">DISCIPLINA</span>
-              <span className="text-neutral-700">•</span>
-              <span className="mx-6">PRECISÃO</span>
-              <span className="text-neutral-700">•</span>
-              <span className="mx-6">VISÃO DE LONGO ALCANCE</span>
-              <span className="text-neutral-700">•</span>
-              <span className="mx-6">ALTO DESEMPENHO MILITAR</span>
-              <span className="text-neutral-700">•</span>
-            </div>
-          </div>
         </section>
 
         {/* ==================================================================== */}
-        {/* ATO II: TRANSIÇÃO NARRATIVA & CONCURSOS EM LISTA EDITORIAL (BRANCO)  */}
+        {/* TRANSIÇÃO ELEGANTE PARA SEÇÃO CLARA                                  */}
+        {/* ==================================================================== */}
+        <div className="h-8 sm:h-12 bg-gradient-to-b from-neutral-950 to-[#fbfbfb]" />
+
+        {/* ==================================================================== */}
+        {/* SEÇÃO 2: PREPARE-SE PARA OS PRINCIPAIS CONCURSOS (CLARA)             */}
         {/* ==================================================================== */}
         <section
           id="concursos"
-          className="py-24 sm:py-32 bg-[#fafafa] text-neutral-950 border-b border-neutral-200"
+          className="py-16 sm:py-24 bg-[#fbfbfb] text-neutral-950 border-b border-neutral-200"
         >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            {/* Cabeçalho Editorial */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-neutral-300 pb-8 mb-12 gap-6">
-              <div className="space-y-2">
-                <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-600">
-                  [ 01 // ESCOPO DE PREPARAÇÃO ]
-                </p>
-                <h2 className="text-3xl sm:text-5xl font-display font-extrabold tracking-tight uppercase leading-tight">
-                  Prepare-se para os desafios
-                  <br />
-                  que realmente importam.
-                </h2>
+            <div className="max-w-3xl mb-12 sm:mb-14 space-y-2 text-left">
+              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-300 bg-white px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-neutral-700">
+                <span>CONCURSOS EM FOCO</span>
               </div>
-              <p className="text-xs sm:text-sm text-neutral-600 font-normal max-w-md leading-relaxed">
-                Cada concurso possui uma linguagem própria. Nós organizamos o edital por relevância
-                e profundidade de prova.
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950">
+                Prepare-se para os desafios que realmente importam.
+              </h2>
+              <p className="text-xs sm:text-base text-neutral-600 font-normal leading-relaxed">
+                Trilhas especializadas desenhadas especificamente para os editais militares mais
+                concorridos do Brasil.
               </p>
             </div>
 
-            {/* LISTA EDITORIAL DE CONCURSOS (Ruptura total com a grade de cards) */}
-            <div className="border-t border-neutral-300 divide-y divide-neutral-200">
-              {CONCURSOS_EDITORIAL.map((item, index) => {
-                const isHovered = activeConcurso === index;
-                return (
-                  <div
-                    key={item.sigla}
-                    onMouseEnter={() => setActiveConcurso(index)}
-                    className={`group py-6 sm:py-7 transition-all duration-200 cursor-pointer ${
-                      isHovered ? "bg-white px-4 sm:px-6 shadow-xs" : "hover:bg-neutral-100/60"
-                    }`}
-                  >
-                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                      {/* Número e Sigla Monumental */}
-                      <div className="flex items-baseline gap-6 sm:gap-10">
-                        <span className="font-mono text-xs text-neutral-500 font-bold">
-                          {item.num}
-                        </span>
-                        <h3 className="text-2xl sm:text-4xl font-display font-black tracking-tight uppercase text-neutral-950 group-hover:translate-x-1 transition-transform">
-                          {item.sigla}
-                        </h3>
-                        <span className="hidden md:inline-block text-xs font-mono text-neutral-600 uppercase">
-                          {item.nome}
-                        </span>
-                      </div>
-
-                      {/* Metadados e Detalhe */}
-                      <div className="flex flex-wrap items-center gap-4 sm:gap-8 text-xs font-mono">
-                        <span className="px-2 py-0.5 border border-neutral-300 bg-neutral-100 text-neutral-800 uppercase font-bold text-[10px]">
-                          {item.esfera}
-                        </span>
-                        <span className="text-neutral-600 text-[11px] hidden sm:inline-block">
-                          {item.grau}
-                        </span>
-                        <div className="flex items-center gap-1.5 font-bold text-neutral-950 group-hover:text-black">
-                          <span>VER TRILHA</span>
-                          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-                        </div>
-                      </div>
+            {/* Grid dos 8 Concursos (2 colunas no Mobile, 4 no Desktop) */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
+              {CONCURSOS.map((contest) => (
+                <div
+                  key={contest.id}
+                  className="group relative rounded-xl border border-neutral-200 bg-white p-4 sm:p-6 shadow-xs hover:shadow-lg hover:-translate-y-1 hover:border-neutral-900 transition-all duration-200 flex flex-col justify-between"
+                >
+                  <div className="space-y-2 sm:space-y-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                      <span className="text-xl sm:text-2xl font-black tracking-tight text-neutral-950 font-mono">
+                        {contest.name}
+                      </span>
+                      <span className="self-start sm:self-auto text-[9px] sm:text-[10px] font-semibold text-neutral-600 uppercase bg-neutral-100 px-2 py-0.5 rounded">
+                        {contest.badge}
+                      </span>
                     </div>
 
-                    {/* Descrição Didática que abre no item ativo */}
-                    {isHovered && (
-                      <div className="mt-4 pt-3 border-t border-neutral-100 text-xs text-neutral-600 max-w-3xl animate-in fade-in duration-150">
-                        <p className="leading-relaxed">
-                          <strong>Foco do Edital:</strong> {item.foco}. {item.detalhe}
-                        </p>
-                      </div>
-                    )}
+                    <h3 className="text-xs sm:text-sm font-bold text-neutral-900 leading-snug">
+                      {contest.title}
+                    </h3>
+
+                    <p className="hidden sm:block text-xs text-neutral-500 leading-relaxed font-normal">
+                      {contest.description}
+                    </p>
                   </div>
-                );
-              })}
+
+                  <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-neutral-100 flex items-center justify-between text-xs font-semibold text-neutral-950">
+                    <span className="text-[10px] sm:text-[11px] text-neutral-600 truncate mr-1">
+                      {contest.vagas}
+                    </span>
+                    <span className="flex items-center gap-0.5 shrink-0 group-hover:translate-x-0.5 transition-transform text-neutral-950">
+                      <span className="hidden sm:inline">Explorar</span>
+                      <ChevronRight className="h-3.5 w-3.5" />
+                    </span>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
         {/* ==================================================================== */}
-        {/* ATO III: O SISTEMA OPERACIONAL DA PREPARAÇÃO (PRETO PROFUNDO)        */}
+        {/* SEÇÃO 3: UMA PLATAFORMA. TODA A SUA PREPARAÇÃO. (ESCURA)             */}
         {/* ==================================================================== */}
         <section
           id="plataforma"
-          className="py-24 sm:py-36 bg-[#08080a] text-white border-b border-neutral-850"
+          className="py-20 sm:py-28 bg-neutral-950 text-white border-b border-neutral-850"
         >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-neutral-850 pb-8 mb-12 gap-6">
-              <div className="space-y-2">
-                <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-400">
-                  [ 02 // SISTEMA OPERACIONAL ]
-                </p>
-                <h2 className="text-3xl sm:text-5xl font-display font-extrabold tracking-tight uppercase leading-tight">
-                  Uma plataforma.
-                  <br />
-                  Toda a sua preparação.
-                </h2>
+            <div className="max-w-3xl mb-12 sm:mb-16 space-y-3 text-left">
+              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900 px-3.5 py-1 text-[10px] font-bold uppercase tracking-widest text-neutral-300">
+                <Layers className="h-3.5 w-3.5" />
+                <span>ECOSSISTEMA INTEGRADO</span>
               </div>
-              <p className="text-xs sm:text-sm text-neutral-400 font-normal max-w-md leading-relaxed">
-                Projetada não como um repositório passivo de arquivos, mas como uma central
-                estratégica de execução de estudos.
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">
+                Uma plataforma. Toda a sua preparação.
+              </h2>
+              <p className="text-xs sm:text-base text-neutral-400 font-normal leading-relaxed">
+                Chega de assinar diferentes sites para teoria, questões e simulados. A Minerva
+                unifica todas as ferramentas que você precisa em uma interface única e veloz.
               </p>
             </div>
 
-            {/* Seletor Espacial dos Módulos */}
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 border-b border-neutral-850 pb-4 mb-8 font-mono text-[11px] tracking-wider uppercase">
-              {(
-                [
-                  { id: "cursos", label: "01. CURSOS" },
-                  { id: "questoes", label: "02. BANCO DE QUESTÕES" },
-                  { id: "simulados", label: "03. SIMULADOS" },
-                  { id: "planejamento", label: "04. PLANEJAMENTO" },
-                  { id: "desempenho", label: "05. MÉTRICAS" },
-                ] as const
-              ).map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveOSModule(tab.id)}
-                  className={`py-2 px-3 text-left transition-all border-b-2 cursor-pointer ${
-                    activeOSModule === tab.id
-                      ? "border-white text-white font-bold bg-neutral-900/60"
-                      : "border-transparent text-neutral-400 hover:text-white"
-                  }`}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Interface Central Dominante */}
-            <div className="border border-neutral-800 bg-[#0c0c0f] p-4 sm:p-8 shadow-2xl">
-              {activeOSModule === "cursos" && (
-                <div className="space-y-6">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-neutral-850 pb-4 gap-2 font-mono text-xs">
-                    <span className="text-neutral-400">
-                      TRILHA: FÍSICA AFA / EsPCEx • MÓDULO MECÂNICA
-                    </span>
-                    <span className="text-white font-bold">PROGRESSO: 64%</span>
+            {/* Bento Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+              {/* Card 1 (Span 2 colunas): Cursos Estruturados */}
+              <div className="md:col-span-2 rounded-2xl border border-neutral-800 bg-neutral-900/70 p-5 sm:p-7 space-y-4 hover:border-neutral-700 transition-colors">
+                <div className="h-10 w-10 rounded-xl bg-white text-neutral-950 flex items-center justify-center">
+                  <BookOpen className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-lg sm:text-xl font-bold text-white">
+                    Cursos por Trilha Acadêmica
+                  </h3>
+                  <p className="text-xs sm:text-sm text-neutral-400 mt-1 leading-relaxed">
+                    Conteúdo organizado em uma jornada lógica: módulos sequenciais, videoaulas
+                    gravadas em alta resolução e apostilas em PDF com a teoria exata do edital.
+                  </p>
+                </div>
+                <div className="pt-2 grid grid-cols-2 gap-2 text-xs font-mono text-neutral-300">
+                  <div className="p-2.5 rounded-lg bg-neutral-950 border border-neutral-800">
+                    <p className="text-[10px] text-neutral-400 uppercase">Organização</p>
+                    <p className="font-bold text-white mt-0.5">Por Tópico do Edital</p>
                   </div>
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    <div className="lg:col-span-8 aspect-video bg-neutral-950 border border-neutral-800 flex flex-col items-center justify-center text-center p-6 relative">
-                      <div className="h-12 w-12 bg-white text-black flex items-center justify-center mb-3">
-                        <Play className="h-5 w-5 fill-current ml-0.5" />
-                      </div>
-                      <p className="text-sm font-bold font-mono text-white">
-                        AULA 03: DINÂMICA DO MOVIMENTO CIRCULAR
-                      </p>
-                      <p className="text-xs text-neutral-400 mt-1">
-                        Duração: 42min • Material de Apoio PDF Anexo
-                      </p>
-                    </div>
-                    <div className="lg:col-span-4 border border-neutral-850 p-4 space-y-3 font-mono text-xs">
-                      <p className="font-bold text-white border-b border-neutral-800 pb-2">
-                        GRADE DO MÓDULO
-                      </p>
-                      <div className="space-y-2 text-[11px] text-neutral-400">
-                        <p className="text-neutral-300">✓ 01. Cinemática Vetorial e Aceleração</p>
-                        <p className="text-neutral-300">✓ 02. Leis de Newton e Força de Atrito</p>
-                        <p className="text-white font-bold bg-neutral-900 p-1">
-                          ► 03. Movimento Circular (Atual)
-                        </p>
-                        <p className="opacity-60">○ 04. Trabalho, Energia e Potência</p>
-                        <p className="opacity-60">○ 05. Lista de Fixação: 50 Questões AFA</p>
-                      </div>
-                    </div>
+                  <div className="p-2.5 rounded-lg bg-neutral-950 border border-neutral-800">
+                    <p className="text-[10px] text-neutral-400 uppercase">Material</p>
+                    <p className="font-bold text-white mt-0.5">Apostilas em PDF</p>
                   </div>
                 </div>
-              )}
+              </div>
 
-              {activeOSModule === "questoes" && (
-                <div className="space-y-6 font-mono">
-                  <div className="flex items-center justify-between border-b border-neutral-850 pb-4 text-xs">
-                    <span className="text-neutral-400">
-                      FILTROS: EFOMM / AFA • MATEMÁTICA • 2020-2024
-                    </span>
-                    <span className="text-emerald-400 font-bold">GABARITOS COMENTADOS: 100%</span>
+              {/* Card 2: Banco de Questões */}
+              <div className="rounded-2xl border border-neutral-800 bg-neutral-900/70 p-5 sm:p-7 space-y-4 hover:border-neutral-700 transition-colors flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="h-10 w-10 rounded-xl bg-white text-neutral-950 flex items-center justify-center">
+                    <Database className="h-5 w-5" />
                   </div>
-                  <div className="p-6 bg-neutral-950 border border-neutral-850 space-y-4 text-xs">
-                    <div className="flex items-center justify-between text-neutral-400">
-                      <span>QUESTÃO #3189 • EFOMM</span>
-                      <span>DIFICULDADE: EXPERT</span>
-                    </div>
-                    <p className="text-sm text-neutral-200 leading-relaxed font-sans">
-                      Sejam A e B matrizes quadradas de ordem 3 tais que det(A) = 4 e det(B) = -2. O
-                      determinante da matriz M = 2·(A⁻¹)·(Bᵀ) é igual a:
+                  <div>
+                    <h3 className="text-base sm:text-lg font-bold text-white">Banco de Questões</h3>
+                    <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
+                      Filtros por concurso, matéria, assunto e banca com resoluções comentadas.
                     </p>
-                    <div className="grid grid-cols-2 gap-2 text-xs">
-                      <div className="p-2 border border-neutral-800 bg-neutral-900">A) -4</div>
-                      <div className="p-2 border border-white bg-white text-black font-bold">
-                        B) -4 (Gabarito Oficial)
-                      </div>
-                      <div className="p-2 border border-neutral-800 bg-neutral-900">C) 8</div>
-                      <div className="p-2 border border-neutral-800 bg-neutral-900">D) -16</div>
-                    </div>
                   </div>
                 </div>
-              )}
+                <span className="text-[11px] font-mono text-neutral-400">
+                  Milhares de itens catalogados
+                </span>
+              </div>
 
-              {activeOSModule === "simulados" && (
-                <div className="space-y-6 font-mono text-xs">
-                  <div className="flex items-center justify-between border-b border-neutral-850 pb-4">
-                    <span className="text-neutral-400">SIMULADO INÉDITO GERAL • EsPCEx #04</span>
-                    <span className="text-amber-400 font-bold">CRONÔMETRO ATIVO: 03:45:12</span>
+              {/* Card 3: Simulados Cronometrados */}
+              <div className="rounded-2xl border border-neutral-800 bg-neutral-900/70 p-5 sm:p-7 space-y-4 hover:border-neutral-700 transition-colors flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="h-10 w-10 rounded-xl bg-white text-neutral-950 flex items-center justify-center">
+                    <Award className="h-5 w-5" />
                   </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="p-4 bg-neutral-950 border border-neutral-850">
-                      <p className="text-neutral-400 text-[10px]">TOTAL DE ITENS</p>
-                      <p className="text-2xl font-bold text-white mt-1">100</p>
-                    </div>
-                    <div className="p-4 bg-neutral-950 border border-neutral-850">
-                      <p className="text-neutral-400 text-[10px]">PESOS E CRITÉRIOS</p>
-                      <p className="text-2xl font-bold text-white mt-1">OFICIAIS</p>
-                    </div>
-                    <div className="p-4 bg-neutral-950 border border-neutral-850">
-                      <p className="text-neutral-400 text-[10px]">RANKING COMPARATIVO</p>
-                      <p className="text-2xl font-bold text-white mt-1">TEMPO REAL</p>
-                    </div>
+                  <div>
+                    <h3 className="text-base sm:text-lg font-bold text-white">Simulados Inéditos</h3>
+                    <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
+                      Provas com tempo real, distribuição de peso oficial e ranking de desempenho.
+                    </p>
                   </div>
                 </div>
-              )}
+                <span className="text-[11px] font-mono text-neutral-400">
+                  Condições reais de prova
+                </span>
+              </div>
 
-              {activeOSModule === "planejamento" && (
-                <div className="space-y-6 font-mono text-xs">
-                  <div className="flex items-center justify-between border-b border-neutral-850 pb-4">
-                    <span className="text-neutral-400">
-                      CICLO SEMANAL PERSONALIZADO • CARGA TOTAL: 28H
-                    </span>
-                    <span className="text-white font-bold">EXECUÇÃO: 78%</span>
-                  </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-6 gap-2 text-center text-[10px]">
-                    <div className="p-3 bg-white text-black font-bold">
-                      SEG
-                      <br />
-                      MATEMÁTICA
-                    </div>
-                    <div className="p-3 bg-white text-black font-bold">
-                      TER
-                      <br />
-                      PORTUGUÊS
-                    </div>
-                    <div className="p-3 bg-neutral-900 text-white">
-                      QUA
-                      <br />
-                      FÍSICA
-                    </div>
-                    <div className="p-3 bg-neutral-900 text-white">
-                      QUI
-                      <br />
-                      INGLÊS
-                    </div>
-                    <div className="p-3 bg-neutral-900 text-white">
-                      SEX
-                      <br />
-                      QUÍMICA
-                    </div>
-                    <div className="p-3 bg-neutral-900 text-neutral-400">
-                      SÁB
-                      <br />
-                      SIMULADO
-                    </div>
-                  </div>
+              {/* Card 4 (Span 2 colunas): Planejamento e Metas */}
+              <div className="md:col-span-2 rounded-2xl border border-neutral-800 bg-neutral-900/70 p-5 sm:p-7 space-y-4 hover:border-neutral-700 transition-colors">
+                <div className="h-10 w-10 rounded-xl bg-white text-neutral-950 flex items-center justify-center">
+                  <Calendar className="h-5 w-5" />
                 </div>
-              )}
+                <div>
+                  <h3 className="text-lg sm:text-xl font-bold text-white">
+                    Planejamento & Metas Inteligentes
+                  </h3>
+                  <p className="text-xs sm:text-sm text-neutral-400 mt-1 leading-relaxed">
+                    Defina suas horas disponíveis e receba um cronograma balanceado para cobrir
+                    todas as matérias com revisões periódicas programadas.
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-3 text-xs text-neutral-300">
+                  <span className="flex items-center gap-1.5">
+                    <Check className="h-3.5 w-3.5 text-white" /> Ciclos semanais
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Check className="h-3.5 w-3.5 text-white" /> Metas de minutos
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Check className="h-3.5 w-3.5 text-white" /> Revisão espaçada
+                  </span>
+                </div>
+              </div>
 
-              {activeOSModule === "desempenho" && (
-                <div className="space-y-6 font-mono text-xs">
-                  <div className="flex items-center justify-between border-b border-neutral-850 pb-4">
-                    <span className="text-neutral-400">RELATÓRIO MATEMÁTICO DE ACERTOS</span>
-                    <span className="text-emerald-400 font-bold">TAXA GLOBAL: 84.6%</span>
+              {/* Card 5: Desempenho Analítico */}
+              <div className="rounded-2xl border border-neutral-800 bg-neutral-900/70 p-5 sm:p-7 space-y-4 hover:border-neutral-700 transition-colors flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="h-10 w-10 rounded-xl bg-white text-neutral-950 flex items-center justify-center">
+                    <BarChart3 className="h-5 w-5" />
                   </div>
-                  <div className="space-y-3">
-                    <div className="flex justify-between text-[11px]">
-                      <span>FÍSICA (MECÂNICA + TERMODINÂMICA)</span>
-                      <span className="font-bold text-white">82%</span>
-                    </div>
-                    <div className="h-1.5 w-full bg-neutral-900 overflow-hidden">
-                      <div className="h-full bg-white" style={{ width: "82%" }} />
-                    </div>
-                    <div className="flex justify-between text-[11px] pt-2">
-                      <span>MATEMÁTICA (ÁLGEBRA + GEOMETRIA)</span>
-                      <span className="font-bold text-white">89%</span>
-                    </div>
-                    <div className="h-1.5 w-full bg-neutral-900 overflow-hidden">
-                      <div className="h-full bg-white" style={{ width: "89%" }} />
-                    </div>
+                  <div>
+                    <h3 className="text-base sm:text-lg font-bold text-white">Métricas Precisas</h3>
+                    <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
+                      Entenda exatamente onde precisa evoluir por disciplina e assunto.
+                    </p>
                   </div>
                 </div>
-              )}
+                <span className="text-[11px] font-mono text-neutral-400">Diagnóstico contínuo</span>
+              </div>
+
+              {/* Card 6: Revisões Espaçadas */}
+              <div className="rounded-2xl border border-neutral-800 bg-neutral-900/70 p-5 sm:p-7 space-y-4 hover:border-neutral-700 transition-colors flex flex-col justify-between">
+                <div className="space-y-3">
+                  <div className="h-10 w-10 rounded-xl bg-white text-neutral-950 flex items-center justify-center">
+                    <Repeat className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-base sm:text-lg font-bold text-white">Revisões Ativas</h3>
+                    <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
+                      Não deixe o conteúdo desaparecer da memória após ser estudado.
+                    </p>
+                  </div>
+                </div>
+                <span className="text-[11px] font-mono text-neutral-400">
+                  Retenção de longo prazo
+                </span>
+              </div>
             </div>
           </div>
         </section>
 
         {/* ==================================================================== */}
-        {/* ATO IV: SEÇÃO DE QUESTÕES — PRATIQUE. ANALISE. EVOLUA. (BRANCO)      */}
+        {/* SEÇÃO 4: BANCADA DE TESTES INTERATIVA — BANCO DE QUESTÕES (CLARA)    */}
         {/* ==================================================================== */}
         <section
-          id="questoes"
-          className="py-24 sm:py-32 bg-white text-neutral-950 border-b border-neutral-200"
+          id="questoes-demo"
+          className="py-16 sm:py-24 bg-white text-neutral-950 border-b border-neutral-200"
         >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-              {/* Coluna Editorial Typográfica */}
-              <div className="lg:col-span-5 space-y-6 text-left">
-                <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-500">
-                  [ 03 // RESOLUÇÃO DE ALTO NÍVEL ]
-                </p>
-
-                <div className="space-y-1">
-                  <h2 className="text-4xl sm:text-6xl font-display font-black tracking-tight uppercase leading-[0.95]">
-                    PRATIQUE.
-                  </h2>
-                  <h3 className="text-4xl sm:text-6xl font-display font-light tracking-tight uppercase leading-[0.95] text-neutral-400">
-                    ANALISE.
-                  </h3>
-                  <h3 className="text-4xl sm:text-6xl font-display font-black tracking-tight uppercase leading-[0.95] text-neutral-950">
-                    EVOLUA.
-                  </h3>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+              {/* Coluna Esquerda: Texto de Chamada */}
+              <div className="lg:col-span-5 space-y-4 text-left">
+                <div className="inline-flex items-center gap-2 rounded-full border border-neutral-300 bg-neutral-100 px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-neutral-800">
+                  <Zap className="h-3 w-3" />
+                  <span>EXPERIMENTE NA PRÁTICA</span>
                 </div>
-
-                <p className="text-xs sm:text-sm text-neutral-600 font-normal leading-relaxed max-w-md">
-                  A retenção de conteúdo não ocorre assistindo horas passivas de aula. Ela é
-                  construída na trincheira da resolução de questões com correção imediata.
+                <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950 leading-tight">
+                  Pratique. Analise. Evolua.
+                </h2>
+                <p className="text-xs sm:text-sm text-neutral-600 font-normal leading-relaxed">
+                  Experimente como funciona o Banco de Questões da Minerva. Selecione uma
+                  alternativa ao lado para testar a validação imediata e ver a resolução comentada
+                  passo a passo.
                 </p>
-
-                <div className="pt-2 font-mono text-xs text-neutral-700 space-y-2">
-                  <p>+ Filtros rápidos por provas oficiais</p>
-                  <p>+ Passo a passo algébrico e analítico</p>
-                  <p>+ Mapeamento automático de pontos cegos</p>
+                <div className="space-y-2 pt-2 text-xs text-neutral-700">
+                  <p className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                    <span>Filtros instantâneos por carreira (AFA, EsPCEx, EFOMM, ESA)</span>
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                    <span>Resoluções didáticas passo a passo</span>
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                    <span>Histórico de erros e acertos salvo automaticamente</span>
+                  </p>
                 </div>
               </div>
 
-              {/* Coluna Blueprint: Questão Técnica Interativa */}
+              {/* Coluna Direita: Simulador Interativo da Questão */}
               <div className="lg:col-span-7">
-                <div className="border-2 border-neutral-950 bg-[#fafafa] p-6 sm:p-8 space-y-5 font-mono text-xs">
-                  <div className="flex items-center justify-between border-b border-neutral-300 pb-3 text-[11px]">
-                    <span className="font-bold text-neutral-950">[ QUESTÃO #4012 • AFA 2024 ]</span>
-                    <span className="text-neutral-600">GEOMETRIA ANALÍTICA</span>
+                <div className="rounded-2xl border border-neutral-300 bg-neutral-50/70 p-4 sm:p-7 shadow-sm space-y-4 sm:space-y-5">
+                  {/* Cabeçalho da Questão */}
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-200 pb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="rounded bg-neutral-950 text-white px-2 py-0.5 text-[10px] font-bold font-mono">
+                        AFA • 2024
+                      </span>
+                      <span className="text-xs font-bold text-neutral-800">Matemática</span>
+                      <span className="text-[11px] text-neutral-500">• Geometria Analítica</span>
+                    </div>
+                    <span className="text-[10px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">
+                      Dificuldade: Alta
+                    </span>
                   </div>
 
-                  <p className="text-sm font-sans font-medium text-neutral-900 leading-relaxed">
-                    Considere no plano cartesiano a circunferência de equação{" "}
-                    <strong>x² + y² - 4x + 6y - 12 = 0</strong>. A reta tangente à circunferência no
-                    ponto <strong>P(5, 1)</strong> possui equação geral dada por:
-                  </p>
+                  {/* Enunciado */}
+                  <div className="space-y-2 text-xs sm:text-sm text-neutral-900 leading-relaxed font-medium">
+                    <p>
+                      Considere no plano cartesiano a circunferência de equação{" "}
+                      <strong>x² + y² - 4x + 6y - 12 = 0</strong>. A reta <em>r</em> tangencia essa
+                      circunferência exatamente no ponto <strong>P(5, 1)</strong>.
+                    </p>
+                    <p className="text-neutral-700">
+                      A equação geral da reta <em>r</em> é expressa por:
+                    </p>
+                  </div>
 
-                  <div className="space-y-2 pt-2">
+                  {/* Alternativas Interativas */}
+                  <div className="space-y-2 text-xs font-mono">
                     {[
-                      { l: "A", text: "3x + 4y - 19 = 0", ok: true },
-                      { l: "B", text: "4x - 3y - 17 = 0", ok: false },
-                      { l: "C", text: "3x - 4y - 11 = 0", ok: false },
-                      { l: "D", text: "2x + 5y - 15 = 0", ok: false },
+                      { letra: "A", texto: "3x + 4y - 19 = 0", correta: true },
+                      { letra: "B", texto: "4x - 3y - 17 = 0", correta: false },
+                      { letra: "C", texto: "3x - 4y - 11 = 0", correta: false },
+                      { letra: "D", texto: "2x + 5y - 15 = 0", correta: false },
                     ].map((alt) => {
-                      const isSel = selectedAlt === alt.l;
+                      const isSelected = selectedOption === alt.letra;
+                      let optionClasses =
+                        "border-neutral-200 bg-white hover:border-neutral-400 text-neutral-900";
+
+                      if (questionSubmitted) {
+                        if (alt.correta) {
+                          optionClasses =
+                            "border-emerald-500 bg-emerald-50 text-emerald-900 font-bold";
+                        } else if (isSelected && !alt.correta) {
+                          optionClasses = "border-red-400 bg-red-50 text-red-900";
+                        }
+                      } else if (isSelected) {
+                        optionClasses =
+                          "border-neutral-950 bg-neutral-100 font-bold text-neutral-950";
+                      }
+
                       return (
                         <button
-                          key={alt.l}
+                          key={alt.letra}
                           onClick={() => {
-                            setSelectedAlt(alt.l);
-                            setShowAnswer(false);
+                            setSelectedOption(alt.letra);
+                            setQuestionSubmitted(false);
                           }}
-                          className={`w-full text-left p-3 border transition-all flex items-center justify-between cursor-pointer ${
-                            showAnswer
-                              ? alt.ok
-                                ? "bg-neutral-950 text-white border-neutral-950 font-bold"
-                                : isSel
-                                  ? "bg-red-50 border-red-400 text-red-900"
-                                  : "bg-white border-neutral-200 text-neutral-700"
-                              : isSel
-                                ? "bg-neutral-950 text-white border-neutral-950 font-bold"
-                                : "bg-white border-neutral-200 text-neutral-800 hover:border-neutral-500"
-                          }`}
+                          className={`w-full text-left p-3 rounded-xl border transition-all flex items-center justify-between cursor-pointer ${optionClasses} min-h-[44px]`}
                         >
-                          <span>
-                            {alt.l}) {alt.text}
-                          </span>
-                          {showAnswer && alt.ok && (
-                            <span className="text-[10px] uppercase font-bold text-white">
-                              [ CORRETA ]
+                          <div className="flex items-center gap-3">
+                            <span className="h-6 w-6 rounded-md bg-neutral-100 text-neutral-900 flex items-center justify-center font-bold text-xs shrink-0">
+                              {alt.letra}
                             </span>
+                            <span className="break-all sm:break-normal">{alt.texto}</span>
+                          </div>
+                          {questionSubmitted && alt.correta && (
+                            <CheckCircle className="h-4 w-4 text-emerald-600 shrink-0" />
+                          )}
+                          {questionSubmitted && isSelected && !alt.correta && (
+                            <XCircle className="h-4 w-4 text-red-500 shrink-0" />
                           )}
                         </button>
                       );
                     })}
                   </div>
 
-                  <div className="pt-3 border-t border-neutral-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+                  {/* Botão de Responder e Feedback */}
+                  <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
                     <Button
-                      onClick={() => setShowAnswer(true)}
-                      disabled={!selectedAlt}
-                      className="w-full sm:w-auto bg-neutral-950 text-white hover:bg-neutral-800 font-mono text-xs uppercase px-6 py-2.5 rounded-none cursor-pointer"
+                      size="sm"
+                      onClick={() => setQuestionSubmitted(true)}
+                      disabled={!selectedOption}
+                      className="bg-neutral-950 text-white hover:bg-neutral-800 text-xs font-bold px-5 h-10 rounded-xl cursor-pointer"
                     >
-                      VERIFICAR GABARITO
+                      Verificar Resposta
                     </Button>
-                    <span className="text-[10px] text-neutral-500">
-                      {showAnswer
-                        ? selectedAlt === "A"
-                          ? "✓ Correto! Resolução disponível."
-                          : "✕ Incorreto. Analise a fundamentação."
-                        : "Selecione uma alternativa."}
+                    <span className="text-[11px] text-neutral-500 font-mono text-center sm:text-right">
+                      {questionSubmitted
+                        ? selectedOption === "A"
+                          ? "✓ Parabéns! Resposta exata."
+                          : "✕ Incorreto. Analise a resolução abaixo."
+                        : "Selecione uma alternativa e clique para verificar."}
                     </span>
                   </div>
 
-                  {showAnswer && (
-                    <div className="p-4 bg-neutral-100 border border-neutral-300 text-[11px] leading-relaxed text-neutral-800 space-y-1">
-                      <p className="font-bold text-neutral-950">RESOLUÇÃO DIDÁTICA:</p>
-                      <p>
-                        1. Completando os quadrados: (x-2)² + (y+3)² = 25. Centro C(2, -3) e Raio R
-                        = 5.
-                      </p>
-                      <p>2. O vetor CP = P(5,1) - C(2,-3) = (3, 4) é normal à reta tangente.</p>
-                      <p>
-                        3. Equação da reta: 3x + 4y + c = 0. Substituindo P(5,1): 3(5) + 4(1) + c =
-                        0 ⇒ c = -19.
-                      </p>
-                      <p className="font-bold text-neutral-950 mt-1">
-                        Resposta: 3x + 4y - 19 = 0 (Opção A).
+                  {/* Resolução Comentada que surge ao responder */}
+                  {questionSubmitted && (
+                    <div className="mt-3 p-3.5 rounded-xl bg-neutral-100 border border-neutral-200 text-xs space-y-1.5 animate-in fade-in duration-200">
+                      <p className="font-bold text-neutral-950">Resolução Passo a Passo:</p>
+                      <p className="text-neutral-700 leading-relaxed">
+                        1. Completando quadrados, temos o centro C(2, -3) e raio R = 5.
+                        <br />
+                        2. O vetor normal da reta tangente coincide com o vetor CP = P(5,1) - C(2,-3)
+                        = (3, 4).
+                        <br />
+                        3. Logo, a equação da reta é da forma 3x + 4y + k = 0. Substituindo P(5, 1):
+                        3(5) + 4(1) + k = 0 ⇒ k = -19.
+                        <br />
+                        Portanto: <strong>3x + 4y - 19 = 0 (Alternativa A)</strong>.
                       </p>
                     </div>
                   )}
@@ -811,176 +907,224 @@ function LandingPage() {
         </section>
 
         {/* ==================================================================== */}
-        {/* ATO V: DESEMPENHO EM ESCALA MONUMENTAL (BRANCO & ALTO CONTRASTE)     */}
+        {/* SEÇÃO 5: DESEMPENHO — "ESTUDAR MELHOR" (ESCURA)                      */}
         {/* ==================================================================== */}
         <section
           id="desempenho"
-          className="py-24 sm:py-36 bg-[#f7f7f9] text-neutral-950 border-b border-neutral-200"
+          className="py-20 sm:py-28 bg-[#09090c] text-white border-b border-neutral-850"
         >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl space-y-3 mb-16 text-left">
-              <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-500">
-                [ 04 // INTELIGÊNCIA DE DADOS ]
-              </p>
-              <h2 className="text-3xl sm:text-5xl font-display font-black tracking-tight uppercase leading-tight">
-                Você não precisa estudar mais.
-                <br />
-                Precisa estudar melhor.
+            <div className="max-w-3xl mb-12 sm:mb-16 space-y-3 text-left">
+              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900 px-3.5 py-1 text-[10px] font-bold uppercase tracking-widest text-neutral-300">
+                <BarChart3 className="h-3.5 w-3.5" />
+                <span>INTELIGÊNCIA DE DADOS</span>
+              </div>
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                Você não precisa estudar mais. Precisa estudar melhor.
               </h2>
-              <p className="text-sm text-neutral-600 font-normal max-w-xl leading-relaxed">
-                Estudar sem métricas é apenas esforço cego. A Minerva quantifica cada hora de
-                dedicação para maximizar a conversão de tempo em acertos.
+              <p className="text-xs sm:text-base text-neutral-400 font-normal leading-relaxed">
+                Acompanhe gráficos analíticos de evolução real e descubra com exatidão matemática
+                quais matérias exigem reforço antes da prova.
               </p>
             </div>
 
-            {/* NÚMEROS COMO ELEMENTOS DE COMPOSIÇÃO (SEM CARDS ARREDONDADOS) */}
-            <div className="grid grid-cols-1 md:grid-cols-3 border-t border-b border-neutral-300 divide-y md:divide-y-0 md:divide-x divide-neutral-300 py-12">
-              <div className="py-6 md:py-0 md:px-8 space-y-2">
-                <p className="text-6xl sm:text-7xl font-mono font-black tracking-tighter text-neutral-950">
-                  87<span className="text-neutral-400 font-light">%</span>
-                </p>
-                <p className="text-xs font-mono uppercase tracking-wider font-bold text-neutral-800">
-                  APROVEITAMENTO MÉDIO
-                </p>
-                <p className="text-xs text-neutral-500 leading-relaxed font-normal">
-                  Mapeamento de questões resolvidas e simulados com identificação de erros
-                  reincidentes.
-                </p>
+            {/* Mockup do Painel de Desempenho Analítico */}
+            <div className="rounded-2xl border border-neutral-800 bg-neutral-900/80 p-4 sm:p-7 shadow-2xl backdrop-blur-md space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-neutral-800 pb-4">
+                <div>
+                  <h3 className="text-sm sm:text-base font-bold text-white">
+                    Diagnóstico Geral por Disciplina
+                  </h3>
+                  <p className="text-[11px] text-neutral-400">
+                    Baseado nas últimas 420 questões resolvidas e simulados
+                  </p>
+                </div>
+                <span className="self-start sm:self-auto text-xs font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-3 py-1 rounded-full font-bold">
+                  Aproveitamento Global: 81.4%
+                </span>
               </div>
 
-              <div className="py-6 md:py-0 md:px-8 space-y-2">
-                <p className="text-6xl sm:text-7xl font-mono font-black tracking-tighter text-neutral-950">
-                  42<span className="text-neutral-400 font-light">h</span>
-                </p>
-                <p className="text-xs font-mono uppercase tracking-wider font-bold text-neutral-800">
-                  HORAS ESTUDADAS NO CICLO
-                </p>
-                <p className="text-xs text-neutral-500 leading-relaxed font-normal">
-                  Cronometragem ativa de estudo real em blocos de alta concentração, sem distrações.
-                </p>
+              {/* Barras Analíticas de Matérias */}
+              <div className="space-y-3.5">
+                {[
+                  { disciplina: "Matemática", acertos: "88%", bar: "88%", status: "Ponto Forte" },
+                  { disciplina: "Física", acertos: "78%", bar: "78%", status: "Evoluindo" },
+                  { disciplina: "Português", acertos: "92%", bar: "92%", status: "Excelente" },
+                  { disciplina: "Inglês", acertos: "84%", bar: "84%", status: "Consistente" },
+                  {
+                    disciplina: "Química / Redação",
+                    acertos: "70%",
+                    bar: "70%",
+                    status: "Atenção Necessária",
+                  },
+                ].map((item) => (
+                  <div key={item.disciplina} className="space-y-1.5">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-bold text-white">{item.disciplina}</span>
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <span className="font-mono text-neutral-300 font-bold">{item.acertos}</span>
+                        <span className="text-[9px] sm:text-[10px] text-neutral-400 font-mono uppercase bg-neutral-950 border border-neutral-800 px-2 py-0.5 rounded">
+                          {item.status}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="h-2 w-full rounded-full bg-neutral-950 overflow-hidden border border-neutral-800/80">
+                      <div
+                        className="h-full bg-white rounded-full transition-all duration-700"
+                        style={{ width: item.bar }}
+                      />
+                    </div>
+                  </div>
+                ))}
               </div>
 
-              <div className="py-6 md:py-0 md:px-8 space-y-2">
-                <p className="text-6xl sm:text-7xl font-mono font-black tracking-tighter text-neutral-950">
-                  1.420
-                </p>
-                <p className="text-xs font-mono uppercase tracking-wider font-bold text-neutral-800">
-                  QUESTÕES CONCLUÍDAS
-                </p>
-                <p className="text-xs text-neutral-500 leading-relaxed font-normal">
-                  Resolução estruturada cobrindo todo o histórico de bancas examinadoras militares.
-                </p>
+              <div className="pt-3 border-t border-neutral-800/85 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-neutral-400">
+                <span>Relatórios com histórico diário, semanal e mensal de estudo.</span>
+                <span className="font-mono text-neutral-500 text-[10px] uppercase tracking-wider">
+                  * Interface demonstrativa de acompanhamento
+                </span>
               </div>
             </div>
-
-            <p className="pt-6 text-[10px] font-mono text-neutral-400 uppercase tracking-widest text-right">
-              * Indicadores e métricas analíticas geradas pelo sistema do aluno
-            </p>
           </div>
         </section>
 
         {/* ==================================================================== */}
-        {/* ATO VI: PLANEJAMENTO SEMANAL TÁTICO (CLARA)                          */}
+        {/* SEÇÃO 6: PLANEJAMENTO E CRONOGRAMA TÁTICO (CLARA)                    */}
         {/* ==================================================================== */}
         <section
-          id="planejamento"
-          className="py-24 sm:py-32 bg-white text-neutral-950 border-b border-neutral-200"
+          id="cronograma"
+          className="py-16 sm:py-24 bg-[#f8f8fa] text-neutral-950 border-b border-neutral-200"
         >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row md:items-end justify-between border-b border-neutral-300 pb-8 mb-12 gap-6">
-              <div className="space-y-2">
-                <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-500">
-                  [ 05 // CRONOGRAMA TÁTICO ]
-                </p>
-                <h2 className="text-3xl sm:text-5xl font-display font-extrabold tracking-tight uppercase leading-tight">
-                  Seu estudo deixa de ser improviso
-                  <br />e passa a ter estratégia.
-                </h2>
+            <div className="max-w-3xl mb-12 sm:mb-14 space-y-2 text-left">
+              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-300 bg-white px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-neutral-700">
+                <Calendar className="h-3 w-3" />
+                <span>PLANEJAMENTO SEMANAL</span>
               </div>
-              <p className="text-xs sm:text-sm text-neutral-600 font-normal max-w-md leading-relaxed">
-                Distribuição equilibrada por ciclo de disciplinas para evitar o esquecimento e
-                garantir cobertura completa do edital.
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950">
+                Seu estudo deixa de ser improviso e passa a ter estratégia.
+              </h2>
+              <p className="text-xs sm:text-sm text-neutral-600 font-normal leading-relaxed">
+                Clique nos dias da semana para visualizar a distribuição inteligente de blocos de
+                estudo.
               </p>
             </div>
 
-            {/* Linha da Semana em Tabela Arquitetônica */}
-            <div className="border border-neutral-300 divide-y divide-neutral-200 font-mono text-xs">
-              {CRONOGRAMA_DIAS.map((item, idx) => (
-                <div
+            {/* Seletor de Dias (Scroll horizontal no mobile ou grid de 3) */}
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-6">
+              {DIAS_CRONOGRAMA.map((item, idx) => (
+                <button
                   key={item.dia}
-                  onClick={() => setActiveDay(idx)}
-                  className={`p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer transition-colors ${
-                    activeDay === idx ? "bg-neutral-100 font-bold" : "hover:bg-neutral-50"
+                  onClick={() => setSelectedDayIndex(idx)}
+                  className={`p-2.5 sm:p-3 rounded-xl border text-center transition-all cursor-pointer min-h-[44px] ${
+                    selectedDayIndex === idx
+                      ? "bg-neutral-950 text-white border-neutral-950 shadow-md"
+                      : "bg-white text-neutral-700 border-neutral-200 hover:border-neutral-400"
                   }`}
                 >
-                  <div className="flex items-center gap-6 sm:gap-10">
-                    <span className="w-16 font-bold text-neutral-950">{item.dia}</span>
-                    <span className="text-sm font-sans font-bold text-neutral-900">
-                      {item.materia}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between sm:justify-end gap-6 text-neutral-600 text-[11px]">
-                    <span className="hidden md:inline-block">{item.topico}</span>
-                    <span className="font-bold text-neutral-950">{item.horas}</span>
-                    <span className="px-2 py-0.5 border border-neutral-300 bg-white text-[10px]">
-                      {item.status}
-                    </span>
-                  </div>
-                </div>
+                  <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider font-semibold opacity-70">
+                    {item.dia}
+                  </p>
+                  <p className="text-xs font-bold mt-0.5 truncate">{item.materia.split(" ")[0]}</p>
+                </button>
               ))}
+            </div>
+
+            {/* Detalhe do Dia Selecionado */}
+            <div className="rounded-2xl border border-neutral-200 bg-white p-5 sm:p-7 shadow-xs space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-neutral-100 pb-3.5">
+                <div>
+                  <span className="text-[10px] font-mono uppercase font-bold text-neutral-500">
+                    {DIAS_CRONOGRAMA[selectedDayIndex].dia} • PLANO DIÁRIO
+                  </span>
+                  <h3 className="text-lg sm:text-xl font-bold text-neutral-950 mt-0.5">
+                    {DIAS_CRONOGRAMA[selectedDayIndex].materia}
+                  </h3>
+                </div>
+                <span className="self-start sm:self-auto rounded-full bg-neutral-100 text-neutral-900 border border-neutral-200 px-3 py-1 text-xs font-bold font-mono">
+                  Tempo Estimado: {DIAS_CRONOGRAMA[selectedDayIndex].carga}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
+                <div className="p-3.5 sm:p-4 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1">
+                  <p className="font-bold text-neutral-900">Tópico do Edital</p>
+                  <p className="text-neutral-600 leading-relaxed">
+                    {DIAS_CRONOGRAMA[selectedDayIndex].topico}
+                  </p>
+                </div>
+                <div className="p-3.5 sm:p-4 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1">
+                  <p className="font-bold text-neutral-900">Atividade Programada</p>
+                  <p className="text-neutral-600 leading-relaxed">
+                    {DIAS_CRONOGRAMA[selectedDayIndex].tipo}
+                  </p>
+                </div>
+              </div>
+
+              <p className="text-xs text-neutral-500 font-medium">
+                <strong>Meta de aprendizado:</strong> {DIAS_CRONOGRAMA[selectedDayIndex].meta}
+              </p>
             </div>
           </div>
         </section>
 
         {/* ==================================================================== */}
-        {/* ATO VII: MENTORIA — NÃO ESTUDE SOZINHO (PRETO)                       */}
+        {/* SEÇÃO 7: MENTORIA — "NÃO ESTUDE SOZINHO" (ESCURA)                    */}
         {/* ==================================================================== */}
         <section
           id="mentoria"
-          className="py-24 sm:py-36 bg-[#070709] text-white border-b border-neutral-850"
+          className="py-20 sm:py-28 bg-neutral-950 text-white border-b border-neutral-850"
         >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="max-w-3xl space-y-3 mb-16 text-left">
-              <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-400">
-                [ 06 // ORIENTAÇÃO TÁTICA ]
-              </p>
-              <h2 className="text-3xl sm:text-5xl font-display font-black tracking-tight uppercase leading-tight">
+            <div className="max-w-3xl mb-12 sm:mb-16 space-y-3 text-left">
+              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900 px-3.5 py-1 text-[10px] font-bold uppercase tracking-widest text-neutral-300">
+                <Compass className="h-3.5 w-3.5" />
+                <span>ORIENTAÇÃO TÁTICA</span>
+              </div>
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
                 Não estude sozinho.
               </h2>
-              <p className="text-sm sm:text-base text-neutral-400 font-normal leading-relaxed">
-                Acompanhamento e suporte tático de quem conhece de ponta a ponta as peculiaridades
-                das bancas examinadoras militares.
+              <p className="text-xs sm:text-base text-neutral-400 font-normal leading-relaxed">
+                Acompanhamento e suporte de quem conhece de ponta a ponta as peculiaridades das
+                bancas e os caminhos de aprovação.
               </p>
             </div>
 
-            {/* 3 Colunas Separadas por Linhas Finas */}
-            <div className="grid grid-cols-1 md:grid-cols-3 border-t border-b border-neutral-800 divide-y md:divide-y-0 md:divide-x divide-neutral-800 py-10 font-mono">
-              <div className="py-6 md:py-0 md:px-8 space-y-3">
-                <p className="text-xs font-bold text-neutral-400">01 // METAS TÁTICAS</p>
-                <h3 className="text-xl font-bold font-sans text-white">Planejamento Individual</h3>
-                <p className="text-xs text-neutral-400 leading-relaxed font-sans font-normal">
-                  Metas semanais ajustadas à sua rotina real para manter consistência sem
-                  esgotamento mental.
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
+              <div className="p-6 sm:p-7 rounded-2xl border border-neutral-800 bg-neutral-900/70 space-y-3 hover:border-neutral-700 transition-colors">
+                <div className="h-10 w-10 rounded-xl bg-white text-neutral-950 flex items-center justify-center">
+                  <Target className="h-5 w-5" />
+                </div>
+                <h3 className="text-base sm:text-lg font-bold text-white">Metas & Diagnósticos</h3>
+                <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
+                  Definição de metas de estudo semanais personalizadas com base na carreira militar
+                  escolhida e na sua rotina disponível.
                 </p>
               </div>
 
-              <div className="py-6 md:py-0 md:px-8 space-y-3">
-                <p className="text-xs font-bold text-neutral-400">02 // DIAGNÓSTICO CONTÍNUO</p>
-                <h3 className="text-xl font-bold font-sans text-white">
-                  Blindagem de Pontos Cegos
+              <div className="p-6 sm:p-7 rounded-2xl border border-neutral-800 bg-neutral-900/70 space-y-3 hover:border-neutral-700 transition-colors">
+                <div className="h-10 w-10 rounded-xl bg-white text-neutral-950 flex items-center justify-center">
+                  <BrainCircuit className="h-5 w-5" />
+                </div>
+                <h3 className="text-base sm:text-lg font-bold text-white">
+                  Acompanhamento de Rendimento
                 </h3>
-                <p className="text-xs text-neutral-400 leading-relaxed font-sans font-normal">
-                  Análise matemática dos assuntos em que você mais perde pontos para orientar
-                  revisões de choque.
+                <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
+                  Orientação periódica sobre quando acelerar o conteúdo teórico e quando priorizar
+                  resolução maciça de provas antigas.
                 </p>
               </div>
 
-              <div className="py-6 md:py-0 md:px-8 space-y-3">
-                <p className="text-xs font-bold text-neutral-400">03 // COMUNIDADE DE ELITE</p>
-                <h3 className="text-xl font-bold font-sans text-white">Ambiente Focado</h3>
-                <p className="text-xs text-neutral-400 leading-relaxed font-sans font-normal">
-                  Espaço exclusivo para discussão de resolução de questões difíceis com outros
-                  estudantes dedicados.
+              <div className="p-6 sm:p-7 rounded-2xl border border-neutral-800 bg-neutral-900/70 space-y-3 hover:border-neutral-700 transition-colors">
+                <div className="h-10 w-10 rounded-xl bg-white text-neutral-950 flex items-center justify-center">
+                  <Users className="h-5 w-5" />
+                </div>
+                <h3 className="text-base sm:text-lg font-bold text-white">
+                  Comunidade & Ambiente Focado
+                </h3>
+                <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
+                  Espaço exclusivo para troca de dúvidas de exercícios difíceis com outros
+                  estudantes com a mesma meta de aprovação.
                 </p>
               </div>
             </div>
@@ -988,48 +1132,54 @@ function LandingPage() {
         </section>
 
         {/* ==================================================================== */}
-        {/* ATO VIII: METODOLOGIA EM 4 ETAPAS (LINHA CONECTADA)                  */}
+        {/* SEÇÃO 8: COMO FUNCIONA (CLARA COM 4 PASSOS)                          */}
         {/* ==================================================================== */}
-        <section className="py-24 sm:py-32 bg-[#fafafa] text-neutral-950 border-b border-neutral-200">
+        <section className="py-16 sm:py-24 bg-white text-neutral-950 border-b border-neutral-200">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="max-w-2xl mb-16 space-y-2 text-left">
-              <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-500">
-                [ 07 // MÉTODO LINEAR ]
-              </p>
-              <h2 className="text-3xl sm:text-4xl font-display font-extrabold tracking-tight uppercase">
-                Como funciona a sua jornada
+            <div className="max-w-3xl mb-12 sm:mb-16 space-y-2 text-left">
+              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-300 bg-neutral-100 px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-neutral-700">
+                <span>PASSO A PASSO</span>
+              </div>
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950">
+                Como funciona a sua preparação
               </h2>
+              <p className="text-xs sm:text-sm text-neutral-600 font-normal leading-relaxed">
+                Quatro passos bem definidos para sair da inércia e alcançar o topo da classificação.
+              </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
               {[
                 {
-                  n: "01",
-                  t: "ESCOLHA SEU OBJETIVO",
-                  d: "Defina o concurso militar almejado e acesse a grade de peso oficial do edital.",
+                  step: "01",
+                  titulo: "Escolha seu objetivo",
+                  desc: "Selecione o concurso militar que deseja alcançar e tenha acesso imediato à grade do respectivo edital.",
                 },
                 {
-                  n: "02",
-                  t: "MONTE SUA ESTRATÉGIA",
-                  d: "Estruture suas horas de estudo em ciclos balanceados de teoria e resolução.",
+                  step: "02",
+                  titulo: "Monte sua estratégia",
+                  desc: "Organize sua rotina com o módulo de cronogramas para distribuir as horas de estudo por matéria.",
                 },
                 {
-                  n: "03",
-                  t: "EXECUTE SEU PLANO",
-                  d: "Resolva milhares de itens comentados e consolide matérias com videoaulas HD.",
+                  step: "03",
+                  titulo: "Execute seu plano",
+                  desc: "Combine videoaulas didáticas, apostilas teóricas e resolução de milhares de questões comentadas.",
                 },
                 {
-                  n: "04",
-                  t: "ACOMPANHE SUA EVOLUÇÃO",
-                  d: "Realize simulados sob tempo real e aperfeiçoe sua velocidade de prova.",
+                  step: "04",
+                  titulo: "Acompanhe sua evolução",
+                  desc: "Realize simulados cronometrados e use as métricas analíticas para blindar seus pontos fracos.",
                 },
-              ].map((step) => (
-                <div key={step.n} className="border-t-2 border-neutral-950 pt-4 space-y-2">
-                  <span className="font-mono text-4xl font-black text-neutral-950">{step.n}</span>
-                  <h3 className="font-mono font-bold text-xs uppercase tracking-wider text-neutral-950">
-                    {step.t}
-                  </h3>
-                  <p className="text-xs text-neutral-600 leading-relaxed font-normal">{step.d}</p>
+              ].map((etapa) => (
+                <div key={etapa.step} className="space-y-2.5">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl sm:text-3xl font-black font-mono text-neutral-950">
+                      {etapa.step}
+                    </span>
+                    <div className="h-px flex-1 bg-neutral-200" />
+                  </div>
+                  <h3 className="text-sm sm:text-base font-bold text-neutral-950">{etapa.titulo}</h3>
+                  <p className="text-xs text-neutral-600 leading-relaxed">{etapa.desc}</p>
                 </div>
               ))}
             </div>
@@ -1037,159 +1187,236 @@ function LandingPage() {
         </section>
 
         {/* ==================================================================== */}
-        {/* ATO IX: MOMENTO DE SILÊNCIO VISUAL (BRANCO PURO)                     */}
+        {/* SEÇÃO 9: FRASE DE IMPACTO (ESCURA - MINIMALISTA)                     */}
         {/* ==================================================================== */}
-        <section className="py-32 sm:py-44 bg-white text-neutral-950 border-b border-neutral-200 flex items-center justify-center">
-          <div className="mx-auto max-w-4xl px-4 text-center space-y-6">
-            <p className="text-[10px] font-mono uppercase tracking-widest text-neutral-400">
-              MANIFESTO // MINERVA EDUCAÇÃO
+        <section className="py-20 sm:py-28 bg-neutral-950 text-white border-b border-neutral-850 flex items-center justify-center">
+          <div className="mx-auto max-w-4xl px-4 text-center space-y-4">
+            <p className="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-neutral-400">
+              MINERVA EDUCAÇÃO • ALTO DESEMPENHO
             </p>
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-display font-extrabold tracking-tight uppercase leading-[1.05] text-neutral-950">
-              "Grandes aprovações não acontecem por acaso.
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
+              &quot;Grandes aprovações não acontecem por acaso.&quot;
             </h2>
-            <p className="text-2xl sm:text-4xl font-display font-light uppercase tracking-tight text-neutral-500">
-              Elas são construídas todos os dias."
+            <p className="text-base sm:text-xl text-neutral-400 font-light tracking-wide">
+              Elas são construídas todos os dias.
             </p>
           </div>
         </section>
 
         {/* ==================================================================== */}
-        {/* ATO X: PLANOS COMERCIAIS (PRETO)                                     */}
+        {/* SEÇÃO 10: PLANOS (CLARA)                                             */}
         {/* ==================================================================== */}
         <section
           id="planos"
-          className="py-24 sm:py-36 bg-[#070709] text-white border-b border-neutral-850"
+          className="py-16 sm:py-24 bg-[#fbfbfb] text-neutral-950 border-b border-neutral-200"
         >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-              <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-400">
-                [ 08 // PLANOS & ADESÃO ]
-              </p>
-              <h2 className="text-3xl sm:text-5xl font-display font-extrabold tracking-tight uppercase">
-                Escolha seu plano de estudos
+            <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 space-y-2">
+              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-300 bg-white px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-neutral-700">
+                <span>INVESTIMENTO TRANSPARENTE</span>
+              </div>
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950">
+                Escolha a melhor forma de estudar.
               </h2>
-              <p className="text-xs sm:text-sm text-neutral-400 font-normal">
-                Flexibilidade absoluta. Cancele quando quiser com garantia incondicional de 7 dias.
+              <p className="text-xs sm:text-sm text-neutral-600">
+                Planos modulares para cada fase de sua preparação. Cancele quando quiser sem multas.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto font-mono">
-              {/* Essencial */}
-              <div className="border border-neutral-800 bg-neutral-950 p-7 sm:p-8 flex flex-col justify-between space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
+              {/* Plano 1: Essencial */}
+              <div className="rounded-2xl border border-neutral-200 bg-white p-6 sm:p-7 flex flex-col justify-between hover:border-neutral-400 transition-all shadow-xs">
                 <div className="space-y-4">
-                  <p className="text-xs font-bold uppercase text-neutral-400">ESSENCIAL</p>
-                  <p className="text-4xl font-black text-white font-mono">
-                    R$ 59<span className="text-xs text-neutral-500 font-normal">/mês*</span>
-                  </p>
-                  <p className="text-xs text-neutral-400 font-sans leading-relaxed">
-                    A base sólida de questões e simulados para consolidar sua preparação.
-                  </p>
-                  <ul className="pt-4 border-t border-neutral-900 space-y-2 text-xs text-neutral-300">
-                    <li>+ Banco de Questões Militares Completo</li>
-                    <li>+ Filtros por Concurso e Dificuldade</li>
-                    <li>+ Gabaritos e Resoluções Didáticas</li>
-                    <li>+ Simulados Inéditos Cronometrados</li>
+                  <div>
+                    <h3 className="text-base sm:text-lg font-bold text-neutral-950 uppercase tracking-wide">
+                      ESSENCIAL
+                    </h3>
+                    <p className="text-xs text-neutral-500 mt-1">
+                      A base de questões e simulados para consolidar sua preparação.
+                    </p>
+                  </div>
+
+                  <div className="flex items-baseline gap-1 pt-2 border-t border-neutral-100">
+                    <span className="text-3xl font-extrabold text-neutral-950 font-mono">R$ 59</span>
+                    <span className="text-xs text-neutral-500">/mês (placeholder)</span>
+                  </div>
+
+                  <ul className="space-y-2.5 pt-4 text-xs text-neutral-700 border-t border-neutral-100">
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Acesso integral ao Banco de Questões</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Filtros por concurso, ano e dificuldade</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Gabaritos com resoluções comentadas</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Simulados inéditos com cronômetro</span>
+                    </li>
                   </ul>
                 </div>
-                <Link
-                  to="/register"
-                  className="w-full py-3 text-center border border-neutral-700 text-white font-mono text-xs uppercase hover:bg-white hover:text-black transition-colors"
-                >
-                  SELECIONAR ESSENCIAL
-                </Link>
+
+                <div className="pt-6 sm:pt-8">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full h-11 text-xs font-bold border-neutral-300 hover:bg-neutral-100 text-neutral-950 rounded-xl cursor-pointer"
+                  >
+                    <Link to="/register">Começar com Essencial</Link>
+                  </Button>
+                </div>
               </div>
 
-              {/* Completo (Mais Escolhido) */}
-              <div className="relative border-2 border-white bg-[#0e0e12] p-7 sm:p-8 flex flex-col justify-between space-y-6 shadow-2xl">
-                <div className="absolute -top-3 left-6 bg-white text-black px-3 py-0.5 text-[9px] font-bold uppercase tracking-widest">
-                  MAIS ESCOLHIDO
+              {/* Plano 2: Completo (Mais Escolhido) */}
+              <div className="relative rounded-2xl border-2 border-neutral-950 bg-white p-6 sm:p-7 flex flex-col justify-between shadow-xl ring-1 ring-neutral-950/10">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-neutral-950 px-3.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                  Mais escolhido
                 </div>
+
                 <div className="space-y-4">
-                  <p className="text-xs font-bold uppercase text-white">COMPLETO</p>
-                  <p className="text-4xl font-black text-white font-mono">
-                    R$ 97<span className="text-xs text-neutral-500 font-normal">/mês*</span>
-                  </p>
-                  <p className="text-xs text-neutral-300 font-sans leading-relaxed">
-                    O ecossistema integral de teoria, videoaulas, questões e planejamento.
-                  </p>
-                  <ul className="pt-4 border-t border-neutral-800 space-y-2 text-xs text-white">
-                    <li>+ Tudo incluso no plano Essencial</li>
-                    <li>+ Cursos completos em videoaulas HD</li>
-                    <li>+ Apostilas teóricas em PDF para download</li>
-                    <li>+ Módulo de Planejamento e Cronogramas</li>
-                    <li>+ Painel analítico de desempenho por matéria</li>
+                  <div>
+                    <h3 className="text-base sm:text-lg font-bold text-neutral-950 uppercase tracking-wide">
+                      COMPLETO
+                    </h3>
+                    <p className="text-xs text-neutral-500 mt-1">
+                      O ecossistema completo de cursos, videoaulas, questões e planejamento.
+                    </p>
+                  </div>
+
+                  <div className="flex items-baseline gap-1 pt-2 border-t border-neutral-100">
+                    <span className="text-3xl font-extrabold text-neutral-950 font-mono">R$ 97</span>
+                    <span className="text-xs text-neutral-500">/mês (placeholder)</span>
+                  </div>
+
+                  <ul className="space-y-2.5 pt-4 text-xs text-neutral-900 border-t border-neutral-100 font-medium">
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Tudo incluso no plano Essencial</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Cursos completos em videoaulas HD</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Apostilas e materiais teóricos em PDF</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Módulo de Planejamento e Cronogramas</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Painel analítico avançado de desempenho</span>
+                    </li>
                   </ul>
                 </div>
-                <Link
-                  to="/register"
-                  className="w-full py-3 text-center bg-white text-black font-mono font-bold text-xs uppercase hover:bg-neutral-200 transition-colors"
-                >
-                  SELECIONAR COMPLETO →
-                </Link>
+
+                <div className="pt-6 sm:pt-8">
+                  <Button
+                    asChild
+                    className="w-full h-11 text-xs font-bold bg-neutral-950 text-white hover:bg-neutral-800 rounded-xl shadow-md cursor-pointer"
+                  >
+                    <Link to="/register">Começar com Completo</Link>
+                  </Button>
+                </div>
               </div>
 
-              {/* Premium */}
-              <div className="border border-neutral-800 bg-neutral-950 p-7 sm:p-8 flex flex-col justify-between space-y-6">
+              {/* Plano 3: Premium */}
+              <div className="rounded-2xl border border-neutral-200 bg-white p-6 sm:p-7 flex flex-col justify-between hover:border-neutral-400 transition-all shadow-xs">
                 <div className="space-y-4">
-                  <p className="text-xs font-bold uppercase text-neutral-400">PREMIUM</p>
-                  <p className="text-4xl font-black text-white font-mono">
-                    R$ 189<span className="text-xs text-neutral-500 font-normal">/mês*</span>
-                  </p>
-                  <p className="text-xs text-neutral-400 font-sans leading-relaxed">
-                    Acompanhamento tático individual e correção prioritária de redações.
-                  </p>
-                  <ul className="pt-4 border-t border-neutral-900 space-y-2 text-xs text-neutral-300">
-                    <li>+ Tudo incluso no plano Completo</li>
-                    <li>+ Sessões periódicas de mentoria individual</li>
-                    <li>+ Diagnóstico tático contínuo de metas</li>
-                    <li>+ Correção detalhada de redações militares</li>
+                  <div>
+                    <h3 className="text-base sm:text-lg font-bold text-neutral-950 uppercase tracking-wide">
+                      PREMIUM
+                    </h3>
+                    <p className="text-xs text-neutral-500 mt-1">
+                      Acompanhamento tático individual de mentoria e aceleração máxima.
+                    </p>
+                  </div>
+
+                  <div className="flex items-baseline gap-1 pt-2 border-t border-neutral-100">
+                    <span className="text-3xl font-extrabold text-neutral-950 font-mono">
+                      R$ 189
+                    </span>
+                    <span className="text-xs text-neutral-500">/mês (placeholder)</span>
+                  </div>
+
+                  <ul className="space-y-2.5 pt-4 text-xs text-neutral-700 border-t border-neutral-100">
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Tudo incluso no plano Completo</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Sessões periódicas de mentoria</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Diagnóstico tático contínuo de metas</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Correção prioritária de redações</span>
+                    </li>
                   </ul>
                 </div>
-                <Link
-                  to="/register"
-                  className="w-full py-3 text-center border border-neutral-700 text-white font-mono text-xs uppercase hover:bg-white hover:text-black transition-colors"
-                >
-                  SELECIONAR PREMIUM
-                </Link>
+
+                <div className="pt-6 sm:pt-8">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full h-11 text-xs font-bold border-neutral-300 hover:bg-neutral-100 text-neutral-950 rounded-xl cursor-pointer"
+                  >
+                    <Link to="/register">Começar com Premium</Link>
+                  </Button>
+                </div>
               </div>
             </div>
 
-            <p className="text-center text-[10px] font-mono text-neutral-500 mt-8">
-              * Valores meramente demonstrativos para personalização administrativa.
+            <p className="text-center text-xs text-neutral-500 mt-8">
+              * Valores meramente demonstrativos para personalização administrativa. Garantia
+              incondicional de 7 dias.
             </p>
           </div>
         </section>
 
         {/* ==================================================================== */}
-        {/* ATO XI: FAQ EDITORIAL (PRETO)                                        */}
+        {/* SEÇÃO 11: FAQ INTERATIVO (ESCURA)                                    */}
         {/* ==================================================================== */}
         <section
           id="faq"
-          className="py-24 sm:py-32 bg-[#070709] text-white border-b border-neutral-850"
+          className="py-20 sm:py-28 bg-neutral-950 text-white border-b border-neutral-850"
         >
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-            <div className="text-left max-w-xl mb-12 space-y-2">
-              <p className="text-[10px] font-mono font-bold uppercase tracking-widest text-neutral-400">
-                [ 09 // DÚVIDAS FREQUENTES ]
-              </p>
-              <h2 className="text-3xl sm:text-4xl font-display font-extrabold tracking-tight uppercase">
+            <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-14 space-y-2">
+              <span className="text-xs font-bold tracking-wider text-neutral-400 uppercase">
+                Tire suas dúvidas
+              </span>
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
                 Perguntas Frequentes
               </h2>
+              <p className="text-xs sm:text-sm text-neutral-400">
+                Respostas diretas sobre como a Minerva Educação apoia sua preparação.
+              </p>
             </div>
 
-            {/* Accordion com Divisores de Linha Simples (Sem Cards) */}
-            <Accordion
-              type="single"
-              collapsible
-              className="w-full divide-y divide-neutral-850 border-t border-b border-neutral-850"
-            >
+            <Accordion type="single" collapsible className="w-full space-y-3">
               {FAQS.map((faq, index) => (
-                <AccordionItem key={index} value={`faq-${index}`} className="border-none py-2">
-                  <AccordionTrigger className="text-left text-sm font-mono uppercase font-bold text-white hover:no-underline py-4">
-                    {faq.p}
+                <AccordionItem
+                  key={index}
+                  value={`item-${index}`}
+                  className="rounded-xl border border-neutral-800 bg-neutral-900/60 px-4 sm:px-5 py-0.5 text-left"
+                >
+                  <AccordionTrigger className="text-left text-xs sm:text-sm font-bold text-white hover:no-underline py-4">
+                    {faq.pergunta}
                   </AccordionTrigger>
-                  <AccordionContent className="text-xs font-sans leading-relaxed text-neutral-400 pt-1 pb-4">
-                    {faq.r}
+                  <AccordionContent className="text-xs leading-relaxed text-neutral-400 pt-1 pb-4">
+                    {faq.resposta}
                   </AccordionContent>
                 </AccordionItem>
               ))}
@@ -1198,28 +1425,33 @@ function LandingPage() {
         </section>
 
         {/* ==================================================================== */}
-        {/* ATO XII: CTA FINAL (PRETO PROFUNDO & CONVERSÃO)                      */}
+        {/* SEÇÃO 12: CTA FINAL CINEMATOGRÁFICO (ESCURA)                         */}
         {/* ==================================================================== */}
-        <section className="py-28 sm:py-40 bg-[#070709] text-white relative overflow-hidden text-center">
-          <div className="relative mx-auto max-w-4xl px-4 space-y-6 z-10">
-            <p className="text-[10px] font-mono uppercase tracking-widest text-neutral-400">
-              CONCURSOS MILITARES // ALTO DESEMPENHO
-            </p>
-            <h2 className="text-4xl sm:text-6xl font-display font-black tracking-tight uppercase leading-[1.02]">
+        <section className="py-20 sm:py-32 bg-neutral-950 text-white relative overflow-hidden">
+          {/* Iluminação de Fundo */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] sm:w-[700px] h-[250px] sm:h-[350px] bg-[radial-gradient(circle_at_bottom,rgba(255,255,255,0.07),transparent_70%)] blur-2xl" />
+          </div>
+
+          <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8 space-y-6 z-10">
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
               Seu próximo nível começa agora.
             </h2>
-            <p className="text-xs sm:text-sm text-neutral-400 max-w-md mx-auto font-normal leading-relaxed">
+            <p className="text-xs sm:text-base text-neutral-400 max-w-xl mx-auto font-normal leading-relaxed">
               Transforme sua preparação em estratégia, consistência e evolução. Crie sua conta e
               ingresse na Minerva Educação.
             </p>
-            <div className="pt-4 flex justify-center">
-              <Link
-                to="/register"
-                className="group inline-flex items-center gap-3 bg-white text-black hover:bg-neutral-200 font-mono font-bold text-xs uppercase tracking-wider px-9 py-4 transition-all"
+            <div className="pt-2 flex justify-center">
+              <Button
+                size="lg"
+                className="h-12 px-8 sm:px-10 text-sm font-semibold bg-white text-neutral-950 hover:bg-neutral-200 rounded-xl shadow-xl shadow-white/5 transition-all cursor-pointer min-h-[48px]"
+                asChild
               >
-                <span>COMEÇAR AGORA</span>
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1.5" />
-              </Link>
+                <Link to="/register">
+                  <span>Começar agora</span>
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
             </div>
           </div>
         </section>
