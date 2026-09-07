@@ -3,148 +3,127 @@ import { Link } from "@tanstack/react-router";
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="border-t border-border/60 bg-background text-muted-foreground">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
-          {/* Coluna Marca */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-foreground text-background font-semibold text-xs">
-                M
-              </div>
-              <span className="text-sm font-bold tracking-tight text-foreground uppercase">
-                Minerva Educação
-              </span>
-            </div>
-            <p className="text-xs leading-relaxed text-muted-foreground">
-              Plataforma premium e tecnológica de preparação de alta performance para os
-              vestibulares militares mais concorridos do Brasil.
+    <footer className="border-t border-border/50 bg-white text-foreground">
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-5 lg:gap-12">
+          {/* Coluna Marca e Proposta */}
+          <div className="space-y-4 md:col-span-2">
+            <Link to="/" className="inline-block">
+              <img
+                src="/logo.png"
+                alt="Minerva Educação"
+                className="h-8 sm:h-9 w-auto object-contain"
+              />
+            </Link>
+            <p className="text-xs leading-relaxed text-muted-foreground max-w-sm">
+              Plataforma educacional premium de preparação de alto desempenho para concursos
+              militares e vestibulares de alta concorrência.
+            </p>
+            <p className="text-[11px] text-muted-foreground/80 tracking-wide">
+              AFA • EFOMM • EsPCEx • Escola Naval • ESA • EEAR • EPCAR • Colégio Naval
             </p>
           </div>
 
-          {/* Coluna Concursos Militares */}
-          <div>
-            <h3 className="text-xs font-semibold tracking-wider text-foreground uppercase mb-3">
-              Concursos
+          {/* Coluna Preparação */}
+          <div className="space-y-3">
+            <h3 className="text-xs font-bold tracking-wider text-foreground uppercase">
+              Preparação
             </h3>
-            <ul className="space-y-2 text-xs">
+            <ul className="space-y-2.5 text-xs text-muted-foreground">
               <li>
-                <span className="hover:text-foreground transition-colors cursor-default">
-                  AFA • Aeronáutica
-                </span>
+                <a href="/#concursos" className="hover:text-foreground transition-colors">
+                  Concursos
+                </a>
               </li>
               <li>
-                <span className="hover:text-foreground transition-colors cursor-default">
-                  EFOMM • Marinha Mercante
-                </span>
+                <a href="/#cursos" className="hover:text-foreground transition-colors">
+                  Cursos
+                </a>
               </li>
               <li>
-                <span className="hover:text-foreground transition-colors cursor-default">
-                  EsPCEx • Exército
-                </span>
+                <a href="/#questoes" className="hover:text-foreground transition-colors">
+                  Questões
+                </a>
               </li>
               <li>
-                <span className="hover:text-foreground transition-colors cursor-default">
-                  Escola Naval • Marinha
-                </span>
+                <a href="/#simulados" className="hover:text-foreground transition-colors">
+                  Simulados
+                </a>
               </li>
               <li>
-                <span className="hover:text-foreground transition-colors cursor-default">
-                  ESA • Sargentos do Exército
-                </span>
-              </li>
-              <li>
-                <span className="hover:text-foreground transition-colors cursor-default">
-                  EEAR • Sargentos da Aeronáutica
-                </span>
-              </li>
-              <li>
-                <span className="hover:text-foreground transition-colors cursor-default">
-                  EPCAR & Colégio Naval
-                </span>
+                <a href="/#mentorias" className="hover:text-foreground transition-colors">
+                  Mentorias
+                </a>
               </li>
             </ul>
           </div>
 
-          {/* Coluna Recursos do Ecossistema */}
-          <div>
-            <h3 className="text-xs font-semibold tracking-wider text-foreground uppercase mb-3">
-              Ecossistema
-            </h3>
-            <ul className="space-y-2 text-xs">
-              <li>
-                <Link to="/app" className="hover:text-foreground transition-colors">
-                  Banco de Questões
-                </Link>
-              </li>
-              <li>
-                <Link to="/app" className="hover:text-foreground transition-colors">
-                  Simulados Inéditos
-                </Link>
-              </li>
-              <li>
-                <Link to="/app" className="hover:text-foreground transition-colors">
-                  Planejamento e Cronogramas
-                </Link>
-              </li>
-              <li>
-                <Link to="/app" className="hover:text-foreground transition-colors">
-                  Comunidade de Estudos
-                </Link>
-              </li>
-              <li>
-                <Link to="/influencer" className="hover:text-foreground transition-colors">
-                  Programa de Afiliados
-                </Link>
-              </li>
-              <li>
-                <Link to="/clipper" className="hover:text-foreground transition-colors">
-                  Programa de Clipadores
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Coluna Plataforma & Institucional */}
-          <div>
-            <h3 className="text-xs font-semibold tracking-wider text-foreground uppercase mb-3">
-              Institucional
-            </h3>
-            <ul className="space-y-2 text-xs">
-              <li>
-                <Link to="/login" className="hover:text-foreground transition-colors">
-                  Portal do Aluno
-                </Link>
-              </li>
-              <li>
-                <Link to="/teacher" className="hover:text-foreground transition-colors">
-                  Área do Professor
-                </Link>
-              </li>
-              <li>
-                <Link to="/mentor" className="hover:text-foreground transition-colors">
-                  Área do Mentor
-                </Link>
-              </li>
+          {/* Coluna Suporte */}
+          <div className="space-y-3">
+            <h3 className="text-xs font-bold tracking-wider text-foreground uppercase">Suporte</h3>
+            <ul className="space-y-2.5 text-xs text-muted-foreground">
               <li>
                 <Link to="/support" className="hover:text-foreground transition-colors">
-                  Central de Suporte
+                  Central de ajuda
                 </Link>
               </li>
               <li>
-                <span className="text-muted-foreground">Termos de Uso e Privacidade</span>
+                <a href="/#faq" className="hover:text-foreground transition-colors">
+                  FAQ
+                </a>
+              </li>
+              <li>
+                <a
+                  href="mailto:contato@minervaeducacao.com.br"
+                  className="hover:text-foreground transition-colors"
+                >
+                  Contato
+                </a>
+              </li>
+              <li>
+                <Link to="/app" className="hover:text-foreground transition-colors">
+                  Área do Aluno
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Coluna Legal & Institucional */}
+          <div className="space-y-3">
+            <h3 className="text-xs font-bold tracking-wider text-foreground uppercase">Legal</h3>
+            <ul className="space-y-2.5 text-xs text-muted-foreground">
+              <li>
+                <span className="hover:text-foreground transition-colors cursor-pointer">
+                  Termos de Uso
+                </span>
+              </li>
+              <li>
+                <span className="hover:text-foreground transition-colors cursor-pointer">
+                  Privacidade
+                </span>
+              </li>
+              <li>
+                <span className="hover:text-foreground transition-colors cursor-pointer">
+                  Cookies
+                </span>
+              </li>
+              <li>
+                <span className="hover:text-foreground transition-colors cursor-pointer">
+                  Código de Conduta
+                </span>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-12 border-t border-border/40 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        {/* Linha Inferior com Copyright */}
+        <div className="mt-14 border-t border-border/40 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-[11px] text-muted-foreground">
             &copy; {new Date().getFullYear()} Minerva Educação. Todos os direitos reservados.
           </p>
-          <p className="text-[11px] text-muted-foreground tracking-wide">
-            Excelência • Rigor • Aprovação
-          </p>
+          <div className="flex items-center gap-4 text-[11px] text-muted-foreground">
+            <span>Tecnologia • Estratégia • Disciplina</span>
+          </div>
         </div>
       </div>
     </footer>

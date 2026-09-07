@@ -79,17 +79,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Minerva Educação - Alta Performance Militar" },
+      { title: "Minerva Educação | Preparação de Alto Desempenho" },
       {
         name: "description",
         content:
-          "Plataforma premium e tecnológica para preparação em concursos militares: AFA, EFOMM, EsPCEx, Escola Naval, ESA, EEAR, EPCAR e Colégio Naval.",
+          "Cursos, questões, simulados e ferramentas para uma preparação mais estratégica para concursos militares.",
       },
       { name: "author", content: "Minerva Educação" },
-      { property: "og:title", content: "Minerva Educação - Alta Performance Militar" },
+      { property: "og:title", content: "Minerva Educação | Preparação de Alto Desempenho" },
       {
         property: "og:description",
-        content: "Plataforma premium para concursos militares e vestibulares de alta performance.",
+        content:
+          "Cursos, questões, simulados e ferramentas para uma preparação mais estratégica para concursos militares.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -100,7 +101,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/mascot.png", type: "image/png" },
+      { rel: "shortcut icon", href: "/mascot.png" },
     ],
   }),
   shellComponent: RootShell,
