@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Navbar } from "../components/layout/Navbar";
 import { Footer } from "../components/layout/Footer";
 import { useAuth } from "../hooks/useAuth";
 import { Button } from "../components/ui/button";
-import { Card, CardContent } from "../components/ui/card";
 import { Badge } from "../components/ui/badge";
 import {
   Accordion,
@@ -31,15 +30,16 @@ import {
   Check,
   ChevronRight,
   ShieldCheck,
-  Target,
   Clock,
   Flame,
   HelpCircle,
   TrendingUp,
-  LayoutDashboard,
   BrainCircuit,
-  SlidersHorizontal,
   FolderTree,
+  Target,
+  Zap,
+  CheckCircle,
+  XCircle,
 } from "lucide-react";
 
 export const Route = createFileRoute("/")({
@@ -52,484 +52,405 @@ const CONCURSOS = [
     id: "afa",
     name: "AFA",
     title: "Academia da Força Aérea",
-    description: "Preparação para Oficiais Aviadores, Intendentes e de Infantaria da Aeronáutica.",
+    description:
+      "Preparação para Oficiais Aviadores, Intendentes e de Infantaria da Força Aérea Brasileira.",
     badge: "Aeronáutica",
+    vagas: "Ensino Superior Militar",
   },
   {
     id: "efomm",
     name: "EFOMM",
     title: "Oficiais da Marinha Mercante",
-    description: "Formação para Oficiais de Náutica e de Máquinas no CIAGA (RJ) e CIABA (PA).",
+    description:
+      "Carreira internacional de Oficiais de Náutica e Máquinas no CIAGA (RJ) e CIABA (PA).",
     badge: "Marinha Mercante",
+    vagas: "Ensino Superior",
   },
   {
     id: "espcex",
     name: "EsPCEx",
     title: "Cadetes do Exército",
     description:
-      "A preparação completa para o ingresso na AMAN e na carreira de Oficial do Exército.",
+      "A preparação completa para ingresso na Academia Militar das Agulhas Negras (AMAN).",
     badge: "Exército",
+    vagas: "Ensino Superior AMAN",
   },
   {
     id: "escola-naval",
     name: "Escola Naval",
     title: "Oficiais da Marinha do Brasil",
-    description: "Corpo da Armada, Fuzileiros Navais e Intendentes da Marinha.",
+    description:
+      "Corpo da Armada, Fuzileiros Navais e Intendentes da mais antiga academia militar do país.",
     badge: "Marinha",
+    vagas: "Oficiais da Armada",
   },
   {
     id: "esa",
     name: "ESA",
     title: "Sargentos das Armas",
-    description: "Preparação para as especialidades de combate do Exército Brasileiro.",
+    description: "Preparação de alta densidade para Sargentos Combatentes do Exército Brasileiro.",
     badge: "Exército",
+    vagas: "Nível Médio Técnico",
   },
   {
     id: "eear",
     name: "EEAR",
     title: "Especialistas de Aeronáutica",
-    description: "Formação técnica de Sargentos da FAB em diversas especialidades operacionais.",
+    description: "Formação técnica e operacional de Sargentos da FAB em diversas especialidades.",
     badge: "Aeronáutica",
+    vagas: "Nível Médio Técnico",
   },
   {
     id: "epcar",
     name: "EPCAR",
     title: "Cadetes do Ar",
-    description: "Ensino Médio de elite e acesso preferencial direto à Academia da Força Aérea.",
+    description: "Ensino Médio de elite preparatório em Barbacena com acesso preferencial à AFA.",
     badge: "Aeronáutica",
+    vagas: "Ensino Médio FAB",
   },
   {
     id: "colegio-naval",
     name: "Colégio Naval",
     title: "Ensino Médio Preparatório",
-    description: "Tradicional instituição preparatória de Ensino Médio da Marinha do Brasil.",
+    description:
+      "Tradicional instituição preparatória da Marinha em Angra dos Reis para ingresso na EN.",
     badge: "Marinha",
+    vagas: "Ensino Médio Marinha",
   },
 ];
 
-// 8 Recursos da Plataforma
-const RECURSOS = [
+// Dias da Semana para o Cronograma Tático
+const DIAS_CRONOGRAMA = [
   {
-    icon: BookOpen,
-    title: "Cursos",
-    description: "Conteúdo organizado em uma jornada de estudos.",
-    tag: "Teoria Estruturada",
+    dia: "SEGUNDA",
+    materia: "MATEMÁTICA",
+    topico: "Geometria Analítica & Funções Modulares",
+    carga: "2h30min",
+    tipo: "Teoria + 40 Questões AFA",
+    meta: "Foco no cálculo de coeficientes angulares e cônicas",
   },
   {
-    icon: Database,
-    title: "Banco de questões",
-    description: "Pratique por concurso, matéria e assunto.",
-    tag: "Filtros Dinâmicos",
+    dia: "TERÇA",
+    materia: "PORTUGUÊS & REDAÇÃO",
+    topico: "Sintaxe de Período Composto & Estrutura Dissertativa",
+    carga: "2h00min",
+    tipo: "Aulas + 1 Redação Corrigida",
+    meta: "Uso de conectivos argumentativos e orações reduzidas",
   },
   {
-    icon: Award,
-    title: "Simulados",
-    description: "Teste sua preparação em condições próximas da prova.",
-    tag: "TRI & Cronômetro",
+    dia: "QUARTA",
+    materia: "FÍSICA",
+    topico: "Mecânica Clássica: Dinâmica e Conservação de Energia",
+    carga: "2h45min",
+    tipo: "Resoluções Passo a Passo + Teoria",
+    meta: "Atrito cinético e estático em planos inclinados",
   },
   {
-    icon: Calendar,
-    title: "Planejamento",
-    description: "Organize sua rotina e suas metas.",
-    tag: "Ciclos Inteligentes",
+    dia: "QUINTA",
+    materia: "INGLÊS",
+    topico: "Leitura Instrumental & Phrasal Verbs de Prova",
+    carga: "1h45min",
+    tipo: "Textos de Exames Anteriores + Gramática",
+    meta: "Vocabulário contextualizado e tempos verbais perfeitos",
   },
   {
-    icon: BarChart3,
-    title: "Desempenho",
-    description: "Entenda exatamente onde precisa evoluir.",
-    tag: "Métricas Reais",
+    dia: "SEXTA",
+    materia: "QUÍMICA / HISTÓRIA",
+    topico: "Estequiometria Avançada & Brasil República",
+    carga: "2h15min",
+    tipo: "Questões EsPCEx / EFOMM",
+    meta: "Rendimento de reações com pureza e cálculo de massa",
   },
   {
-    icon: Repeat,
-    title: "Revisões",
-    description: "Não deixe o conteúdo desaparecer depois de estudado.",
-    tag: "Espaçamento Ativo",
-  },
-  {
-    icon: Compass,
-    title: "Mentorias",
-    description: "Acompanhamento e orientação para sua preparação.",
-    tag: "Estratégia Tática",
-  },
-  {
-    icon: Users,
-    title: "Comunidade",
-    description: "Aprenda, compartilhe e evolua com outros alunos.",
-    tag: "Ambiente Focado",
-  },
-];
-
-// 4 Etapas de Como Funciona
-const ETAPAS = [
-  {
-    numero: "01",
-    titulo: "Escolha seu objetivo",
-    descricao: "Defina o concurso que você deseja alcançar.",
-    detalhe: "Acesso imediato à trilha de matérias e pesos específicos do edital selecionado.",
-  },
-  {
-    numero: "02",
-    titulo: "Organize sua preparação",
-    descricao: "Tenha acesso a conteúdos e ferramentas estruturadas.",
-    detalhe:
-      "Cronogramas diários adaptáveis e ciclo de estudos dividido por blocos de concentração.",
-  },
-  {
-    numero: "03",
-    titulo: "Estude e pratique",
-    descricao: "Combine aulas, questões, revisões e simulados.",
-    detalhe: "Resoluções comentadas alternativa por alternativa e PDFs sintetizados.",
-  },
-  {
-    numero: "04",
-    titulo: "Acompanhe sua evolução",
-    descricao: "Use seus dados para melhorar sua estratégia.",
-    detalhe: "Identificação imediata de pontos fracos com diagnósticos de acertos por assunto.",
-  },
-];
-
-// Diferenciais
-const DIFERENCIAIS = [
-  {
-    titulo: "Conteúdo estruturado",
-    descricao: "Organização para você saber exatamente o que estudar.",
-    detalhe: "Fim do desperdício de tempo com apostilas dispersas ou materiais desatualizados.",
-    icone: FolderTree,
-  },
-  {
-    titulo: "Dados para decidir",
-    descricao: "Acompanhe seu desempenho e identifique oportunidades de melhoria.",
-    detalhe: "Estatísticas precisas sobre onde você precisa de mais repetição e reforço.",
-    icone: BrainCircuit,
-  },
-  {
-    titulo: "Tudo em um só lugar",
-    descricao: "Cursos, questões, simulados e planejamento integrados.",
-    detalhe: "Sem a necessidade de assinar múltiplas plataformas para cobrir teoria e prática.",
-    icone: Layers,
-  },
-  {
-    titulo: "Experiência premium",
-    descricao: "Uma plataforma criada para tornar sua preparação mais organizada.",
-    detalhe: "Design limpo, navegação fluida, sem ruídos e foco total no seu aprendizado.",
-    icone: ShieldCheck,
-  },
-];
-
-// Planos Comerciais
-const PLANOS = [
-  {
-    nome: "ESSENCIAL",
-    descricao: "A base sólida de questões e simulados para consolidar sua preparação.",
-    preco: "R$ 59",
-    periodo: "/mês",
-    destaque: false,
-    badge: null,
-    recursos: [
-      "Acesso ao Banco de Questões Militares",
-      "Filtros por concurso, banca e ano",
-      "Gabaritos e resoluções completas",
-      "Simulados inéditos periódicos",
-      "Acompanhamento básico de acertos",
-      "Suporte via central de ajuda",
-    ],
-    cta: "Começar com Essencial",
-  },
-  {
-    nome: "COMPLETO",
-    descricao: "O ecossistema completo de cursos, videoaulas, questões e planejamento.",
-    preco: "R$ 97",
-    periodo: "/mês",
-    destaque: true,
-    badge: "Mais escolhido",
-    recursos: [
-      "Tudo incluído no plano Essencial",
-      "Cursos completos de todas as matérias",
-      "Videoaulas de alta definição e apostilas PDF",
-      "Módulo de Planejamento e Cronogramas",
-      "Painel analítico avançado de desempenho",
-      "Acesso à Comunidade oficial de alunos",
-      "Revisões programadas e flashcards",
-    ],
-    cta: "Começar com Completo",
-  },
-  {
-    nome: "PREMIUM",
-    descricao: "Para quem busca mentoria estratégica individual e aceleração máxima.",
-    preco: "R$ 189",
-    periodo: "/mês",
-    destaque: false,
-    badge: "Máximo Desempenho",
-    recursos: [
-      "Tudo incluído no plano Completo",
-      "Sessões periódicas com mentores",
-      "Diagnóstico tático individual de rendimento",
-      "Correção prioritária de redações",
-      "Acesso antecipado a simulados de véspera",
-      "Canal de contato direto com a equipe pedagógica",
-    ],
-    cta: "Começar com Premium",
+    dia: "SÁBADO",
+    materia: "REVISÃO & SIMULADO",
+    topico: "Simulado Geral Cronometrado Inédito",
+    carga: "4h00min",
+    tipo: "Execução sob Condições Reais de Prova",
+    meta: "Controle de tempo, ritmo de resolução e disciplina mental",
   },
 ];
 
 // Perguntas Frequentes (FAQ)
 const FAQS = [
   {
-    pergunta: "Para quais concursos a Minerva Educação oferece preparação?",
+    pergunta: "Como funciona a metodologia da Minerva Educação?",
     resposta:
-      "A plataforma foca especificamente nos principais concursos militares brasileiros: AFA (Aeronáutica), EFOMM (Marinha Mercante), EsPCEx (Exército), Escola Naval (Marinha), ESA (Sargentos do Exército), EEAR (Sargentos da Aeronáutica), EPCAR e Colégio Naval. A arquitetura modular da Minerva foi construída para permitir a expansão para novos vestibulares futuramente.",
+      "A Minerva reúne em um ecossistema único todo o ciclo de preparação para carreiras militares: diagnóstico inicial de nivelamento, trilhas curriculares organizadas por matéria, banco de questões com resoluções comentadas, simulados periódicos com cronometragem oficial e acompanhamento de dados para que você estude com estratégia e consistência.",
   },
   {
-    pergunta: "Posso estudar pelo celular?",
+    pergunta: "Para quais concursos a plataforma oferece preparação?",
     resposta:
-      "Sim. A plataforma foi desenvolvida com arquitetura mobile-first, sendo 100% responsiva em smartphones, tablets, notebooks e desktops, permitindo assistir aulas, resolver questões e acompanhar seu cronograma de onde estiver com conforto e fluidez.",
+      "Atendemos inicialmente os 8 principais concursos militares do Brasil: AFA, EFOMM, EsPCEx, Escola Naval, ESA, EEAR, EPCAR e Colégio Naval. A arquitetura modular do sistema foi desenhada para permitir a inclusão de novas carreiras futuramente sem retrabalho de conteúdo.",
   },
   {
-    pergunta: "Como funcionam os cursos?",
+    pergunta: "Como funciona o banco de questões?",
     resposta:
-      "Cada curso é organizado em trilhas de aprendizagem estruturadas por módulos e lições progressivas. Cada aula conta com videoaulas objetivas, apostilas e materiais complementares em PDF, além de listas de fixação com questões de provas anteriores do respectivo concurso.",
+      "Nosso banco de questões é calibrado por concurso, disciplina, tópico do edital, ano e nível de dificuldade. Cada item possui gabarito e resolução pedagógica estruturada, permitindo que o aluno aprenda a linha de raciocínio exigida pelas bancas examinadoras militares.",
   },
   {
-    pergunta: "Existe banco de questões?",
+    pergunta: "Como funcionam os simulados cronometrados?",
     resposta:
-      "Sim. O Banco de Questões da Minerva permite filtrar por concurso militar, matéria, tópico do edital, dificuldade e ano. Cada questão conta com gabarito oficial e explicação detalhada da resposta correta.",
+      "Os simulados reproduzem as condições oficiais de cada prova: número de questões idêntico ao edital, divisão por disciplinas, tempo de prova rigoroso com cronômetro regressivo e geração de relatório de acertos com ranking entre os estudantes.",
   },
   {
-    pergunta: "Existem simulados?",
+    pergunta: "Posso acessar os materiais pelo celular ou tablet?",
     resposta:
-      "Sim. Oferecemos simulados com cronometragem em tempo real que reproduzem a estrutura, o número de itens e o tempo oficial das provas de cada carreira militar, gerando rankings e relatórios detalhados de acertos.",
+      "Sim. A Minerva foi desenvolvida com arquitetura mobile-first, garantindo navegação rápida, fluida e confortável em qualquer dispositivo, seja para assistir videoaulas, resolver listas de exercícios ou revisar cronogramas.",
   },
   {
-    pergunta: "Como funciona a mentoria?",
+    pergunta: "Como funciona o acompanhamento e mentoria?",
     resposta:
-      "O programa de mentoria conecta o estudante a mentores experientes que orientam o ciclo de estudos, analisam os dados de desempenho, definem metas de horas semanais e ajustam a estratégia de preparação para o edital almejado.",
+      "O programa de mentoria orienta os estudantes na organização do plano de estudos, identifica os pontos de menor rendimento através de relatórios analíticos e estabelece metas semanais para maximizar a retenção dos tópicos de maior peso na prova.",
   },
   {
-    pergunta: "Como funciona o período de teste?",
+    pergunta: "Existe período de garantia ou cancelamento?",
     resposta:
-      "Garantimos transparência absoluta: você pode se cadastrar gratuitamente para conhecer a interface e a estrutura da plataforma. Nas assinaturas pagas, você conta com garantia incondicional de 7 dias para cancelamento com reembolso integral caso decida não continuar.",
+      "Sim. Oferecemos garantia incondicional de 7 dias com reembolso integral caso você decida não prosseguir. As assinaturas mensais não possuem fidelidade contratual e podem ser encerradas a qualquer momento diretamente nas configurações de sua conta.",
   },
   {
-    pergunta: "Posso cancelar minha assinatura?",
+    pergunta: "Como posso iniciar minha preparação hoje?",
     resposta:
-      "Sim, a qualquer momento e com apenas um clique diretamente no painel da sua conta, sem multas, carências ou burocracia. O acesso continuará ativo até o encerramento do ciclo mensal já contratado.",
+      'Basta clicar em "Começar agora", preencher seu cadastro gratuitamente e acessar seu painel de estudos para conhecer a estrutura acadêmica e escolher seu concurso-alvo.',
   },
 ];
 
 function LandingPage() {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState<
-    "dashboard" | "curso" | "questoes" | "simulado" | "desempenho"
-  >("dashboard");
+
+  // Efeito Parallax suave no Hero Desktop via coordenadas do mouse
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const heroRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (typeof window !== "undefined" && window.innerWidth < 1024) return;
+    const rect = heroRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setMousePos({ x, y });
+  };
+
+  const handleMouseLeave = () => {
+    setMousePos({ x: 0, y: 0 });
+  };
+
+  // Estado da Questão Interativa do Banco de Questões
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [questionSubmitted, setQuestionSubmitted] = useState<boolean>(false);
+
+  // Estado do Dia Ativo no Cronograma Tático
+  const [selectedDayIndex, setSelectedDayIndex] = useState<number>(0);
 
   return (
-    <div className="flex min-h-screen flex-col bg-white text-foreground selection:bg-foreground selection:text-background font-sans antialiased">
+    <div className="flex min-h-screen flex-col bg-neutral-950 text-white selection:bg-white selection:text-neutral-950 font-sans antialiased overflow-x-hidden">
       <Navbar />
 
       <main className="flex-1">
         {/* ==================================================================== */}
-        {/* HERO SECTION                                                         */}
+        {/* SEÇÃO 1: HERO CINEMATOGRÁFICO & PARALLAX INTERATIVO (ESCURO)         */}
         {/* ==================================================================== */}
-        <section className="relative overflow-hidden pt-12 pb-20 sm:pt-20 sm:pb-28 border-b border-border/40">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-3xl text-center space-y-6">
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 rounded-full border border-border/80 bg-secondary/60 px-3.5 py-1 text-[11px] font-semibold tracking-wider uppercase text-foreground">
-                <Sparkles className="h-3 w-3" />
-                <span>PREPARAÇÃO DE ALTO DESEMPENHO</span>
-              </div>
+        <section
+          ref={heroRef}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          className="relative min-h-[92vh] flex items-center pt-28 pb-20 sm:pt-36 sm:pb-32 overflow-hidden bg-neutral-950 border-b border-neutral-850"
+        >
+          {/* Fundo Tecnológico Abstrato (Iluminação Ambiental + Grid de Linhas Finas) */}
+          <div className="absolute inset-0 pointer-events-none">
+            {/* Iluminação suave no centro-topo */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[450px] bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_70%)] blur-2xl" />
+            {/* Grid geométrico discreto com linhas de 40px */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px]" />
+            {/* Vinheta lateral sutil */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,#0a0a0c_100%)]" />
+          </div>
 
-              {/* Headline */}
-              <h1 className="text-4xl font-extrabold tracking-tight text-foreground sm:text-6xl sm:leading-[1.12]">
-                Sua aprovação começa com uma estratégia melhor.
-              </h1>
+          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+              {/* Coluna de Texto Principal */}
+              <div className="lg:col-span-6 space-y-6 text-left">
+                {/* Badge de Destaque Tecnológico */}
+                <div className="inline-flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900/90 px-3.5 py-1 text-[11px] font-semibold tracking-wider uppercase text-neutral-300 backdrop-blur-sm">
+                  <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
+                  <span>PREPARAÇÃO DE ALTO DESEMPENHO</span>
+                </div>
 
-              {/* Subheadline */}
-              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto font-normal">
-                Uma plataforma completa para quem leva a preparação a sério. Cursos, questões,
-                simulados, planejamento e acompanhamento em um só lugar.
-              </p>
+                {/* Headline Principal */}
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.08]">
+                  Sua aprovação começa com uma estratégia melhor.
+                </h1>
 
-              {/* CTAs */}
-              <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-3.5">
-                {user ? (
+                {/* Subheadline */}
+                <p className="text-base sm:text-lg text-neutral-400 font-normal leading-relaxed max-w-xl">
+                  Cursos, questões, simulados, planejamento e acompanhamento para transformar sua
+                  preparação em uma estratégia de alta performance.
+                </p>
+
+                {/* CTAs */}
+                <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
                   <Button
                     size="lg"
-                    className="w-full sm:w-auto font-semibold bg-foreground text-background hover:bg-foreground/90 h-12 px-7 text-sm shadow-sm"
                     asChild
+                    className="h-12 px-7 bg-white text-neutral-950 hover:bg-neutral-200 font-semibold text-sm rounded-lg shadow-lg shadow-white/5 transition-all cursor-pointer"
                   >
-                    <Link to="/app">
-                      Acessar Meu Painel
+                    <Link to="/register">
+                      Começar agora
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
-                ) : (
-                  <>
-                    <Button
-                      size="lg"
-                      className="w-full sm:w-auto font-semibold bg-foreground text-background hover:bg-foreground/90 h-12 px-7 text-sm shadow-sm"
-                      asChild
-                    >
-                      <Link to="/register">
-                        Começar agora
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Link>
-                    </Button>
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="w-full sm:w-auto font-medium h-12 px-7 text-sm border-border/80 hover:bg-secondary/40"
-                      asChild
-                    >
-                      <a href="#produto">Conhecer a plataforma</a>
-                    </Button>
-                  </>
-                )}
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    asChild
+                    className="h-12 px-7 border-neutral-800 bg-neutral-900/60 text-white hover:bg-neutral-800 hover:text-white font-medium text-sm rounded-lg transition-all cursor-pointer"
+                  >
+                    <a href="#concursos">Conhecer a plataforma</a>
+                  </Button>
+                </div>
+
+                {/* Texto de Confiança */}
+                <div className="pt-4 border-t border-neutral-900/80 flex items-center gap-2 text-xs text-neutral-400 font-medium">
+                  <CheckCircle2 className="h-4 w-4 text-white shrink-0" />
+                  <span>
+                    Preparação para AFA, EFOMM, EsPCEx, Escola Naval, ESA, EEAR e outros concursos.
+                  </span>
+                </div>
               </div>
 
-              {/* Trust Text */}
-              <p className="pt-2 text-xs font-medium text-muted-foreground/90">
-                Preparação para AFA, EFOMM, EsPCEx, Escola Naval, ESA, EEAR e outros concursos.
-              </p>
-            </div>
-
-            {/* ================================================================ */}
-            {/* HERO VISUAL (Mockup Realista da Área do Aluno)                   */}
-            {/* ================================================================ */}
-            <div className="mt-14 sm:mt-18 relative mx-auto max-w-5xl">
-              {/* Moldura da Interface */}
-              <div className="rounded-2xl border border-border/80 bg-white p-2 sm:p-3.5 shadow-xl shadow-foreground/5 ring-1 ring-border/50">
-                <div className="rounded-xl border border-border/60 bg-secondary/15 overflow-hidden">
-                  {/* Topo do navegador simulado */}
-                  <div className="flex items-center justify-between border-b border-border/60 bg-white px-4 py-2.5">
-                    <div className="flex items-center gap-2">
-                      <div className="h-2.5 w-2.5 rounded-full bg-border" />
-                      <div className="h-2.5 w-2.5 rounded-full bg-border" />
-                      <div className="h-2.5 w-2.5 rounded-full bg-border" />
-                      <div className="ml-2 text-[11px] font-mono text-muted-foreground hidden sm:inline-block">
-                        app.minervaeducacao.com.br
+              {/* Coluna Visual: Mockup 3D Interativo com Micro-animações */}
+              <div className="lg:col-span-6 relative">
+                <div
+                  className="relative transition-transform duration-300 ease-out will-change-transform"
+                  style={{
+                    transform:
+                      typeof window !== "undefined" && window.innerWidth >= 1024
+                        ? `perspective(1000px) rotateY(${mousePos.x * 6}deg) rotateX(${-mousePos.y * 6}deg)`
+                        : "none",
+                  }}
+                >
+                  {/* Moldura da Interface Principal */}
+                  <div className="rounded-2xl border border-neutral-800 bg-neutral-900/90 p-3 sm:p-4 shadow-2xl shadow-black/80 backdrop-blur-xl">
+                    {/* Barra Superior do Sistema */}
+                    <div className="flex items-center justify-between border-b border-neutral-800/80 pb-3 px-2">
+                      <div className="flex items-center gap-2">
+                        <div className="h-2.5 w-2.5 rounded-full bg-neutral-700" />
+                        <div className="h-2.5 w-2.5 rounded-full bg-neutral-700" />
+                        <div className="h-2.5 w-2.5 rounded-full bg-neutral-700" />
+                        <span className="ml-2 text-[11px] font-mono text-neutral-400">
+                          minerva.app/aluno/dashboard
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-[11px] font-medium text-neutral-300">
+                        <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                        <span>EsPCEx & AFA • 2026</span>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2 text-[10px] uppercase font-semibold text-muted-foreground">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                      <span>Interface do Aluno</span>
-                    </div>
-                  </div>
 
-                  {/* Conteúdo do Mockup Realista */}
-                  <div className="p-4 sm:p-6 space-y-5 bg-background">
-                    {/* Header do Aluno */}
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-border/50 pb-4">
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                            Plano de Estudos Ativo
-                          </span>
-                          <span className="rounded bg-secondary px-2 py-0.5 text-[10px] font-semibold text-foreground">
-                            EsPCEx 2026
-                          </span>
-                        </div>
-                        <h2 className="text-lg font-bold text-foreground mt-0.5">
-                          Painel de Preparação Integrada
-                        </h2>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <div className="text-right hidden sm:block">
-                          <p className="text-[11px] text-muted-foreground">
-                            Meta diária de estudos
+                    {/* Miolo do Mockup */}
+                    <div className="p-3 sm:p-5 space-y-4 text-white">
+                      {/* Banner de Boas-vindas com Streak de Estudos */}
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3.5 rounded-xl border border-neutral-800 bg-neutral-950/60">
+                        <div className="space-y-0.5">
+                          <p className="text-[11px] font-mono text-neutral-400 uppercase">
+                            Sequência Ativa
                           </p>
-                          <p className="text-xs font-bold text-foreground">85 / 120 min</p>
+                          <p className="text-sm font-bold text-white flex items-center gap-1.5">
+                            <Flame className="h-4 w-4 text-amber-400 fill-amber-400" />
+                            14 dias consecutivos de estudo
+                          </p>
                         </div>
-                        <div className="h-9 w-9 rounded-lg bg-foreground text-background flex items-center justify-center font-bold text-xs">
-                          M
+                        {/* 7 pips da semana */}
+                        <div className="flex items-center gap-1.5">
+                          {["S", "T", "Q", "Q", "S", "S", "D"].map((dia, idx) => (
+                            <div key={idx} className="flex flex-col items-center gap-1">
+                              <span className="text-[9px] font-mono text-neutral-400">{dia}</span>
+                              <div
+                                className={`h-5 w-5 rounded-md flex items-center justify-center text-[10px] font-bold ${
+                                  idx < 5
+                                    ? "bg-white text-neutral-950"
+                                    : idx === 5
+                                      ? "bg-neutral-800 text-white border border-neutral-700"
+                                      : "bg-neutral-900 text-neutral-400"
+                                }`}
+                              >
+                                {idx < 5 ? "✓" : ""}
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
-                    </div>
 
-                    {/* Grid de Cards da Interface */}
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      {/* Card 1: Curso em Andamento */}
-                      <div className="rounded-xl border border-border/70 bg-card p-4 space-y-2.5">
-                        <div className="flex items-center justify-between">
-                          <span className="text-[11px] font-medium text-muted-foreground">
-                            Curso Atual
-                          </span>
-                          <span className="text-[10px] font-semibold text-foreground bg-secondary px-1.5 py-0.5 rounded">
-                            Física
-                          </span>
-                        </div>
-                        <p className="text-sm font-bold text-foreground">
-                          Mecânica: Dinâmica Newtoniana
-                        </p>
-                        <div className="space-y-1">
-                          <div className="flex justify-between text-[11px] text-muted-foreground">
-                            <span>Progresso do Módulo</span>
-                            <span>68%</span>
+                      {/* Cards de Métricas e Curso Atual */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                        {/* Bloco 1: Meta de Estudo Diária */}
+                        <div className="p-3.5 rounded-xl border border-neutral-800 bg-neutral-950/40 space-y-2">
+                          <div className="flex items-center justify-between text-[11px]">
+                            <span className="text-neutral-400 font-medium">Meta Diária</span>
+                            <span className="font-mono text-white font-bold">85 / 120 min</span>
                           </div>
-                          <div className="h-1.5 w-full rounded-full bg-secondary overflow-hidden">
+                          <div className="h-2 w-full rounded-full bg-neutral-800 overflow-hidden">
                             <div
-                              className="h-full bg-foreground rounded-full"
-                              style={{ width: "68%" }}
+                              className="h-full bg-white rounded-full transition-all duration-1000"
+                              style={{ width: "71%" }}
                             />
                           </div>
+                          <p className="text-[10px] text-neutral-400">
+                            Faltam 35 minutos para cumprir o ciclo de Física.
+                          </p>
                         </div>
-                        <div className="pt-1 flex items-center gap-1 text-[11px] text-foreground font-medium">
-                          <Play className="h-3 w-3 fill-current" />
-                          <span>Continuar aula 04</span>
+
+                        {/* Bloco 2: Banco de Questões */}
+                        <div className="p-3.5 rounded-xl border border-neutral-800 bg-neutral-950/40 space-y-2">
+                          <div className="flex items-center justify-between text-[11px]">
+                            <span className="text-neutral-400 font-medium">Questões na Semana</span>
+                            <span className="font-mono text-emerald-400 font-bold">
+                              86.2% acertos
+                            </span>
+                          </div>
+                          <div className="flex items-baseline gap-2">
+                            <span className="text-xl font-bold font-mono text-white">248</span>
+                            <span className="text-[11px] text-neutral-400">itens resolvidos</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-[10px] text-neutral-300">
+                            <span className="rounded bg-neutral-800 px-1.5 py-0.5 text-neutral-300 font-mono">
+                              AFA 2024
+                            </span>
+                            <span>Geometria Analítica</span>
+                          </div>
                         </div>
                       </div>
 
-                      {/* Card 2: Prática & Questões */}
-                      <div className="rounded-xl border border-border/70 bg-card p-4 space-y-2.5">
-                        <div className="flex items-center justify-between">
-                          <span className="text-[11px] font-medium text-muted-foreground">
-                            Banco de Questões
-                          </span>
-                          <span className="text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">
-                            84% acertos
-                          </span>
+                      {/* Módulo em Andamento */}
+                      <div className="p-3.5 rounded-xl border border-neutral-800 bg-neutral-950/40 flex items-center justify-between">
+                        <div className="space-y-0.5">
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-neutral-800 text-neutral-300">
+                              Aula 04
+                            </span>
+                            <span className="text-xs font-bold text-white">
+                              Dinâmica dos Corpos e Força de Atrito
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-neutral-400">
+                            Física I • Módulo 03 • Prof. Minerva
+                          </p>
                         </div>
-                        <p className="text-sm font-bold text-foreground">
-                          1.420 questões resolvidas
-                        </p>
-                        <p className="text-[11px] text-muted-foreground">
-                          Última lista: Cinemática Escalar (AFA / EFOMM)
-                        </p>
-                        <div className="pt-1 flex items-center gap-2 text-[11px] text-muted-foreground">
-                          <CheckCircle2 className="h-3.5 w-3.5 text-foreground" />
-                          <span>Meta semanal atingida</span>
+                        <div className="h-8 w-8 rounded-lg bg-white text-neutral-950 flex items-center justify-center shrink-0">
+                          <Play className="h-3.5 w-3.5 fill-current ml-0.5" />
                         </div>
                       </div>
 
-                      {/* Card 3: Próximo Simulado */}
-                      <div className="rounded-xl border border-border/70 bg-card p-4 space-y-2.5">
-                        <div className="flex items-center justify-between">
-                          <span className="text-[11px] font-medium text-muted-foreground">
-                            Simulado Agendado
-                          </span>
-                          <span className="text-[10px] font-semibold text-foreground bg-secondary px-1.5 py-0.5 rounded">
-                            Domingo
-                          </span>
-                        </div>
-                        <p className="text-sm font-bold text-foreground">
-                          Simulado Geral EsPCEx #03
-                        </p>
-                        <p className="text-[11px] text-muted-foreground">
-                          100 questões inéditas • Cronômetro oficial
-                        </p>
-                        <div className="pt-1 flex items-center gap-1.5 text-[11px] text-foreground font-medium">
-                          <Clock className="h-3 w-3" />
-                          <span>Duração: 4h30min</span>
-                        </div>
+                      {/* Floating Notification Demonstração */}
+                      <div className="pt-1 flex items-center justify-between text-[10px] text-neutral-400 border-t border-neutral-850">
+                        <span className="flex items-center gap-1.5">
+                          <Check className="h-3 w-3 text-emerald-400" />
+                          Simulado Geral #03 Agendado para Sábado às 08h00
+                        </span>
+                        <span className="font-mono text-neutral-400 uppercase">
+                          Demonstração Visual
+                        </span>
                       </div>
-                    </div>
-
-                    {/* Disclaimer de Mockup Transparente */}
-                    <div className="pt-2 text-center">
-                      <span className="text-[10px] text-muted-foreground/70 tracking-wide uppercase">
-                        * Elementos visuais demonstrativos da experiência de estudos no Minerva
-                        Educação
-                      </span>
                     </div>
                   </div>
                 </div>
@@ -539,135 +460,62 @@ function LandingPage() {
         </section>
 
         {/* ==================================================================== */}
-        {/* SEÇÃO DE CONCURSOS                                                   */}
+        {/* SEÇÃO 2: TRANSIÇÃO ELEGANTE PARA A SEÇÃO CLARA                       */}
+        {/* ==================================================================== */}
+        <div className="relative h-12 sm:h-16 bg-gradient-to-b from-neutral-950 to-[#fbfbfb]" />
+
+        {/* ==================================================================== */}
+        {/* SEÇÃO 3: PREPARE-SE PARA OS PRINCIPAIS CONCURSOS (CLARA)             */}
         {/* ==================================================================== */}
         <section
           id="concursos"
-          className="py-20 sm:py-28 bg-secondary/25 border-b border-border/40"
+          className="py-20 sm:py-28 bg-[#fbfbfb] text-neutral-950 border-b border-neutral-200"
         >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="max-w-2xl mb-14">
-              <span className="text-xs font-bold tracking-wider text-foreground uppercase">
-                Concursos Contemplados
-              </span>
-              <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl mt-1.5">
-                Preparação para os grandes desafios
+            <div className="max-w-3xl mb-14 space-y-2 text-left">
+              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-300 bg-white px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-neutral-700">
+                <span>CONCURSOS EM FOCO</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-950">
+                Prepare-se para os desafios que realmente importam.
               </h2>
-              <p className="text-sm text-muted-foreground mt-2.5">
-                Escolha seu objetivo. A Minerva cuida do caminho.
+              <p className="text-sm sm:text-base text-neutral-600 font-normal leading-relaxed">
+                Trilhas especializadas desenhadas especificamente para os editais militares mais
+                concorridos do Brasil.
               </p>
             </div>
 
+            {/* Grid de Cards dos 8 Concursos com Micro-elevação */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {CONCURSOS.map((contest) => (
-                <Card
+                <div
                   key={contest.id}
-                  className="group relative border border-border/80 bg-white hover:border-foreground/50 transition-all duration-200 hover:shadow-xs flex flex-col justify-between"
+                  className="group relative rounded-xl border border-neutral-200 bg-white p-6 shadow-xs hover:shadow-lg hover:-translate-y-1 hover:border-neutral-900 transition-all duration-200 flex flex-col justify-between"
                 >
-                  <CardContent className="p-5 sm:p-6 space-y-3">
+                  <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-xl font-extrabold tracking-tight text-foreground">
+                      <span className="text-2xl font-black tracking-tight text-neutral-950 font-mono">
                         {contest.name}
                       </span>
-                      <Badge
-                        variant="outline"
-                        className="text-[10px] font-medium border-border/80 uppercase"
-                      >
+                      <span className="text-[10px] font-semibold text-neutral-600 uppercase bg-neutral-100 px-2 py-0.5 rounded">
                         {contest.badge}
-                      </Badge>
+                      </span>
                     </div>
 
-                    <h3 className="text-xs font-semibold text-foreground">{contest.title}</h3>
+                    <h3 className="text-xs font-bold text-neutral-900">{contest.title}</h3>
 
-                    <p className="text-xs text-muted-foreground leading-relaxed">
+                    <p className="text-xs text-neutral-500 leading-relaxed font-normal">
                       {contest.description}
                     </p>
-
-                    <div className="pt-3 border-t border-border/40 flex items-center justify-between text-xs font-semibold text-foreground group-hover:text-foreground/80">
-                      <span>Ver preparação</span>
-                      <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ==================================================================== */}
-        {/* SEÇÃO DE RECURSOS                                                    */}
-        {/* ==================================================================== */}
-        <section id="cursos" className="py-20 sm:py-28 border-b border-border/40">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="max-w-2xl mb-14">
-              <span className="text-xs font-bold tracking-wider text-foreground uppercase">
-                Ecossistema Acadêmico
-              </span>
-              <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl mt-1.5">
-                Tudo o que você precisa para evoluir.
-              </h2>
-              <p className="text-sm text-muted-foreground mt-2.5">
-                Ferramentas integradas para cobrir todas as etapas da sua jornada de preparação.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {RECURSOS.map((rec) => {
-                const IconComponent = rec.icon;
-                return (
-                  <div
-                    key={rec.title}
-                    id={rec.title.toLowerCase().replace(/\s+/g, "-")}
-                    className="p-6 rounded-xl border border-border/70 bg-white hover:border-foreground/40 transition-colors space-y-3"
-                  >
-                    <div className="h-10 w-10 rounded-lg bg-foreground text-background flex items-center justify-center">
-                      <IconComponent className="h-5 w-5" />
-                    </div>
-                    <div className="space-y-1">
-                      <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
-                        {rec.tag}
-                      </span>
-                      <h3 className="text-sm font-bold text-foreground">{rec.title}</h3>
-                    </div>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      {rec.description}
-                    </p>
                   </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
 
-        {/* ==================================================================== */}
-        {/* SEÇÃO "COMO FUNCIONA"                                               */}
-        {/* ==================================================================== */}
-        <section className="py-20 sm:py-28 bg-secondary/20 border-b border-border/40">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="max-w-2xl mb-16">
-              <span className="text-xs font-bold tracking-wider text-foreground uppercase">
-                Metodologia
-              </span>
-              <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl mt-1.5">
-                Como funciona a Minerva Educação
-              </h2>
-              <p className="text-sm text-muted-foreground mt-2.5">
-                Um fluxo linear e inteligente para transformar esforço em resultado prático.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
-              {ETAPAS.map((etapa, idx) => (
-                <div key={etapa.numero} className="relative space-y-3">
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl font-black text-foreground/40 font-mono">
-                      {etapa.numero}
+                  <div className="pt-4 mt-4 border-t border-neutral-100 flex items-center justify-between text-xs font-semibold text-neutral-950">
+                    <span className="text-[11px] text-neutral-600">{contest.vagas}</span>
+                    <span className="flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                      Explorar
+                      <ChevronRight className="h-3.5 w-3.5" />
                     </span>
-                    <div className="h-px flex-1 bg-border/80" />
                   </div>
-                  <h3 className="text-base font-bold text-foreground">{etapa.titulo}</h3>
-                  <p className="text-xs font-medium text-foreground/90">{etapa.descricao}</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{etapa.detalhe}</p>
                 </div>
               ))}
             </div>
@@ -675,399 +523,805 @@ function LandingPage() {
         </section>
 
         {/* ==================================================================== */}
-        {/* SEÇÃO DE PRODUTO (Apresentação SaaS com Mockups Detalhados)          */}
+        {/* SEÇÃO 4: UMA PLATAFORMA. TODA A SUA PREPARAÇÃO. (ESCURA - ASSIMÉTRICA)*/}
         {/* ==================================================================== */}
-        <section id="produto" className="py-20 sm:py-28 border-b border-border/40">
+        <section
+          id="plataforma"
+          className="py-24 sm:py-32 bg-neutral-950 text-white border-b border-neutral-850"
+        >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-12 space-y-2.5">
-              <span className="text-xs font-bold tracking-wider text-foreground uppercase">
-                Experiência de Produto
-              </span>
-              <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
-                Uma plataforma pensada para o seu estudo.
+            <div className="max-w-3xl mb-16 space-y-3 text-left">
+              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900 px-3.5 py-1 text-[10px] font-bold uppercase tracking-widest text-neutral-300">
+                <Layers className="h-3 w-3" />
+                <span>ECOSSISTEMA INTEGRADO</span>
+              </div>
+              <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+                Uma plataforma. Toda a sua preparação.
               </h2>
-              <p className="text-sm text-muted-foreground">
-                Navegue pelos módulos internos e conheça como cada detalhe foi projetado para alta
-                performance.
+              <p className="text-sm sm:text-base text-neutral-400 font-normal leading-relaxed">
+                Chega de assinar diferentes sites para teoria, questões e simulados. A Minerva
+                unifica todas as ferramentas que você precisa.
               </p>
             </div>
 
-            {/* Seletor de Módulos (Tabs) */}
-            <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
-              {[
-                { id: "dashboard", label: "Dashboard" },
-                { id: "curso", label: "Página de Curso" },
-                { id: "questoes", label: "Banco de Questões" },
-                { id: "simulado", label: "Simulado com Cronômetro" },
-                { id: "desempenho", label: "Métricas de Desempenho" },
-              ].map((tab) => (
+            {/* Composição Assimétrica Editorial (Bento Grid) */}
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5">
+              {/* Card 1 (Span 2 colunas): Cursos Estruturados */}
+              <div className="md:col-span-2 rounded-2xl border border-neutral-800 bg-neutral-900/70 p-6 sm:p-8 space-y-4 hover:border-neutral-700 transition-colors">
+                <div className="h-10 w-10 rounded-lg bg-white text-neutral-950 flex items-center justify-center">
+                  <BookOpen className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white">Cursos por Trilha Acadêmica</h3>
+                  <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
+                    Conteúdo organizado em uma jornada lógica: módulos sequenciais, videoaulas
+                    gravadas em alta resolução e apostilas em PDF com a teoria exata do edital.
+                  </p>
+                </div>
+                <div className="pt-2 grid grid-cols-2 gap-2 text-xs font-mono text-neutral-300">
+                  <div className="p-2.5 rounded-lg bg-neutral-950 border border-neutral-800">
+                    <p className="text-[10px] text-neutral-400 uppercase">Organização</p>
+                    <p className="font-bold text-white mt-0.5">Por Tópico do Edital</p>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-neutral-950 border border-neutral-800">
+                    <p className="text-[10px] text-neutral-400 uppercase">Material</p>
+                    <p className="font-bold text-white mt-0.5">Apostilas Didáticas</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Card 2: Banco de Questões */}
+              <div className="rounded-2xl border border-neutral-800 bg-neutral-900/70 p-6 sm:p-8 space-y-4 hover:border-neutral-700 transition-colors flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="h-10 w-10 rounded-lg bg-white text-neutral-950 flex items-center justify-center">
+                    <Database className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-white">Banco de Questões</h3>
+                    <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
+                      Filtros por concurso, matéria, assunto e banca, com resoluções comentadas.
+                    </p>
+                  </div>
+                </div>
+                <span className="text-[11px] font-mono text-neutral-400">
+                  Milhares de itens catalogados
+                </span>
+              </div>
+
+              {/* Card 3: Simulados Cronometrados */}
+              <div className="rounded-2xl border border-neutral-800 bg-neutral-900/70 p-6 sm:p-8 space-y-4 hover:border-neutral-700 transition-colors flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="h-10 w-10 rounded-lg bg-white text-neutral-950 flex items-center justify-center">
+                    <Award className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-white">Simulados Inéditos</h3>
+                    <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
+                      Provas com tempo real, distribuição de peso oficial e ranking de desempenho.
+                    </p>
+                  </div>
+                </div>
+                <span className="text-[11px] font-mono text-neutral-400">
+                  Condições reais de prova
+                </span>
+              </div>
+
+              {/* Card 4 (Span 2 colunas): Planejamento e Ciclos */}
+              <div className="md:col-span-2 rounded-2xl border border-neutral-800 bg-neutral-900/70 p-6 sm:p-8 space-y-4 hover:border-neutral-700 transition-colors">
+                <div className="h-10 w-10 rounded-lg bg-white text-neutral-950 flex items-center justify-center">
+                  <Calendar className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-white">
+                    Planejamento & Metas Inteligentes
+                  </h3>
+                  <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
+                    Defina suas horas disponíveis e receba um cronograma balanceado para cobrir
+                    todas as matérias com revisões periódicas programadas.
+                  </p>
+                </div>
+                <div className="flex items-center gap-3 text-xs text-neutral-300">
+                  <span className="flex items-center gap-1.5">
+                    <Check className="h-3.5 w-3.5 text-white" /> Ciclos semanais
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Check className="h-3.5 w-3.5 text-white" /> Metas de minutos
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Check className="h-3.5 w-3.5 text-white" /> Revisão espaçada
+                  </span>
+                </div>
+              </div>
+
+              {/* Card 5: Desempenho Analítico */}
+              <div className="rounded-2xl border border-neutral-800 bg-neutral-900/70 p-6 sm:p-8 space-y-4 hover:border-neutral-700 transition-colors flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="h-10 w-10 rounded-lg bg-white text-neutral-950 flex items-center justify-center">
+                    <BarChart3 className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-white">Métricas Precisas</h3>
+                    <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
+                      Entenda exatamente onde precisa evoluir por disciplina e assunto.
+                    </p>
+                  </div>
+                </div>
+                <span className="text-[11px] font-mono text-neutral-400">Diagnóstico contínuo</span>
+              </div>
+
+              {/* Card 6: Revisões Espaçadas */}
+              <div className="rounded-2xl border border-neutral-800 bg-neutral-900/70 p-6 sm:p-8 space-y-4 hover:border-neutral-700 transition-colors flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="h-10 w-10 rounded-lg bg-white text-neutral-950 flex items-center justify-center">
+                    <Repeat className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-white">Revisões Ativas</h3>
+                    <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
+                      Não deixe o conteúdo desaparecer da memória após ser estudado.
+                    </p>
+                  </div>
+                </div>
+                <span className="text-[11px] font-mono text-neutral-400">
+                  Retenção de longo prazo
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ==================================================================== */}
+        {/* SEÇÃO 5: SEÇÃO INTERATIVA — BANCO DE QUESTÕES (CLARA)                */}
+        {/* ==================================================================== */}
+        <section
+          id="questoes-demo"
+          className="py-20 sm:py-28 bg-white text-neutral-950 border-b border-neutral-200"
+        >
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+              {/* Coluna Esquerda: Texto de Chamada */}
+              <div className="lg:col-span-5 space-y-4 text-left">
+                <div className="inline-flex items-center gap-2 rounded-full border border-neutral-300 bg-neutral-100 px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-neutral-800">
+                  <Zap className="h-3 w-3" />
+                  <span>EXPERIMENTE NA PRÁTICA</span>
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-950 leading-tight">
+                  Pratique. Analise. Evolua.
+                </h2>
+                <p className="text-sm text-neutral-600 font-normal leading-relaxed">
+                  Experimente como funciona o Banco de Questões da Minerva. Selecione uma
+                  alternativa ao lado para testar a validação imediata e ver a resolução comentada.
+                </p>
+                <div className="space-y-2 pt-2 text-xs text-neutral-700">
+                  <p className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-neutral-950" />
+                    <span>Filtros instantâneos por carreira (AFA, EsPCEx, EFOMM)</span>
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-neutral-950" />
+                    <span>Resoluções didáticas passo a passo</span>
+                  </p>
+                  <p className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-neutral-950" />
+                    <span>Histórico de erros e acertos salvo automaticamente</span>
+                  </p>
+                </div>
+              </div>
+
+              {/* Coluna Direita: Simulador Interativo da Questão */}
+              <div className="lg:col-span-7">
+                <div className="rounded-2xl border border-neutral-300 bg-neutral-50/50 p-5 sm:p-7 shadow-md space-y-5">
+                  {/* Cabeçalho da Questão */}
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-200 pb-3">
+                    <div className="flex items-center gap-2">
+                      <span className="rounded bg-neutral-950 text-white px-2 py-0.5 text-[10px] font-bold font-mono">
+                        AFA • 2024
+                      </span>
+                      <span className="text-xs font-bold text-neutral-800">Matemática</span>
+                      <span className="text-[11px] text-neutral-500">• Geometria Analítica</span>
+                    </div>
+                    <span className="text-[10px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">
+                      Dificuldade: Alta
+                    </span>
+                  </div>
+
+                  {/* Enunciado */}
+                  <div className="space-y-2 text-xs sm:text-sm text-neutral-900 leading-relaxed font-medium">
+                    <p>
+                      Considere no plano cartesiano a circunferência de equação{" "}
+                      <strong>x² + y² - 4x + 6y - 12 = 0</strong>. A reta <em>r</em> tangencia essa
+                      circunferência exatamente no ponto <strong>P(5, 1)</strong>.
+                    </p>
+                    <p className="text-neutral-700">
+                      A equação geral da reta <em>r</em> é expressa por:
+                    </p>
+                  </div>
+
+                  {/* Alternativas Interativas */}
+                  <div className="space-y-2 text-xs font-mono">
+                    {[
+                      { letra: "A", texto: "3x + 4y - 19 = 0", correta: true },
+                      { letra: "B", texto: "4x - 3y - 17 = 0", correta: false },
+                      { letra: "C", texto: "3x - 4y - 11 = 0", correta: false },
+                      { letra: "D", texto: "2x + 5y - 15 = 0", correta: false },
+                    ].map((alt) => {
+                      const isSelected = selectedOption === alt.letra;
+                      let optionClasses =
+                        "border-neutral-200 bg-white hover:border-neutral-400 text-neutral-900";
+
+                      if (questionSubmitted) {
+                        if (alt.correta) {
+                          optionClasses =
+                            "border-emerald-500 bg-emerald-50 text-emerald-900 font-bold";
+                        } else if (isSelected && !alt.correta) {
+                          optionClasses = "border-red-400 bg-red-50 text-red-900";
+                        }
+                      } else if (isSelected) {
+                        optionClasses =
+                          "border-neutral-950 bg-neutral-100 font-bold text-neutral-950";
+                      }
+
+                      return (
+                        <button
+                          key={alt.letra}
+                          onClick={() => {
+                            setSelectedOption(alt.letra);
+                            setQuestionSubmitted(false);
+                          }}
+                          className={`w-full text-left p-3 rounded-lg border transition-all flex items-center justify-between cursor-pointer ${optionClasses}`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <span className="h-6 w-6 rounded-md bg-neutral-100 text-neutral-900 flex items-center justify-center font-bold text-xs shrink-0">
+                              {alt.letra}
+                            </span>
+                            <span>{alt.texto}</span>
+                          </div>
+                          {questionSubmitted && alt.correta && (
+                            <CheckCircle className="h-4 w-4 text-emerald-600 shrink-0" />
+                          )}
+                          {questionSubmitted && isSelected && !alt.correta && (
+                            <XCircle className="h-4 w-4 text-red-500 shrink-0" />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Botão de Responder e Feedback */}
+                  <div className="pt-2 flex items-center justify-between gap-3">
+                    <Button
+                      size="sm"
+                      onClick={() => setQuestionSubmitted(true)}
+                      disabled={!selectedOption}
+                      className="bg-neutral-950 text-white hover:bg-neutral-800 text-xs font-bold px-5 h-9 rounded-lg cursor-pointer"
+                    >
+                      Verificar Resposta
+                    </Button>
+                    <span className="text-[11px] text-neutral-500 font-mono">
+                      {questionSubmitted
+                        ? selectedOption === "A"
+                          ? "✓ Parabéns! Resposta exata."
+                          : "✕ Incorreto. Analise a resolução abaixo."
+                        : "Selecione uma alternativa e clique para verificar."}
+                    </span>
+                  </div>
+
+                  {/* Resolução Comentada que surge ao responder */}
+                  {questionSubmitted && (
+                    <div className="mt-3 p-3.5 rounded-lg bg-neutral-100 border border-neutral-200 text-xs space-y-1.5 animate-in fade-in duration-200">
+                      <p className="font-bold text-neutral-950">Resolução Passo a Passo:</p>
+                      <p className="text-neutral-700 leading-relaxed">
+                        1. Completando quadrados, temos o centro C(2, -3) e raio R = 5.
+                        <br />
+                        2. O vetor normal da reta tangente coincide com o vetor CP = P(5,1) -
+                        C(2,-3) = (3, 4).
+                        <br />
+                        3. Logo, a equação da reta é da forma 3x + 4y + k = 0. Substituindo P(5, 1):
+                        3(5) + 4(1) + k = 0 ⇒ k = -19.
+                        <br />
+                        Portanto: <strong>3x + 4y - 19 = 0 (Alternativa A)</strong>.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ==================================================================== */}
+        {/* SEÇÃO 6: DESEMPENHO — "ESTUDAR MELHOR" (ESCURA)                      */}
+        {/* ==================================================================== */}
+        <section
+          id="desempenho"
+          className="py-24 sm:py-32 bg-[#09090c] text-white border-b border-neutral-850"
+        >
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl mb-16 space-y-3 text-left">
+              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900 px-3.5 py-1 text-[10px] font-bold uppercase tracking-widest text-neutral-300">
+                <BarChart3 className="h-3 w-3" />
+                <span>INTELIGÊNCIA DE DADOS</span>
+              </div>
+              <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                Você não precisa estudar mais. Precisa estudar melhor.
+              </h2>
+              <p className="text-sm sm:text-base text-neutral-400 font-normal leading-relaxed">
+                Acompanhe gráficos analíticos de evolução real e descubra com exatidão matemática
+                quais matérias exigem reforço antes da prova.
+              </p>
+            </div>
+
+            {/* Mockup do Painel de Desempenho Analítico */}
+            <div className="rounded-2xl border border-neutral-800 bg-neutral-900/80 p-5 sm:p-8 shadow-2xl backdrop-blur-md space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-neutral-800 pb-4">
+                <div>
+                  <h3 className="text-base font-bold text-white">
+                    Diagnóstico Geral por Disciplina
+                  </h3>
+                  <p className="text-xs text-neutral-400">
+                    Baseado nas últimas 420 questões resolvidas e simulados
+                  </p>
+                </div>
+                <span className="text-xs font-mono text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-3 py-1 rounded-full font-bold">
+                  Aproveitamento Global: 81.4%
+                </span>
+              </div>
+
+              {/* Barras Analíticas de Matérias */}
+              <div className="space-y-4">
+                {[
+                  { disciplina: "Matemática", acertos: "88%", bar: "88%", status: "Ponto Forte" },
+                  { disciplina: "Física", acertos: "78%", bar: "78%", status: "Evoluindo" },
+                  { disciplina: "Português", acertos: "92%", bar: "92%", status: "Excelente" },
+                  { disciplina: "Inglês", acertos: "84%", bar: "84%", status: "Consistente" },
+                  {
+                    disciplina: "Química / Redação",
+                    acertos: "70%",
+                    bar: "70%",
+                    status: "Atenção Necessária",
+                  },
+                ].map((item) => (
+                  <div key={item.disciplina} className="space-y-1.5">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-bold text-white">{item.disciplina}</span>
+                      <div className="flex items-center gap-3">
+                        <span className="font-mono text-neutral-300 font-bold">{item.acertos}</span>
+                        <span className="text-[10px] text-neutral-400 font-mono uppercase bg-neutral-950 border border-neutral-800 px-2 py-0.5 rounded">
+                          {item.status}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="h-2 w-full rounded-full bg-neutral-950 overflow-hidden border border-neutral-800/80">
+                      <div
+                        className="h-full bg-white rounded-full transition-all duration-700"
+                        style={{ width: item.bar }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="pt-3 border-t border-neutral-800/85 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-neutral-400">
+                <span>Relatórios detalhados com histórico diário, semanal e mensal de estudo.</span>
+                <span className="font-mono text-neutral-400 text-[10px] uppercase tracking-wider">
+                  * Interface demonstrativa de acompanhamento
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ==================================================================== */}
+        {/* SEÇÃO 7: PLANEJAMENTO E CRONOGRAMA TÁTICO (CLARA)                    */}
+        {/* ==================================================================== */}
+        <section className="py-20 sm:py-28 bg-[#f8f8fa] text-neutral-950 border-b border-neutral-200">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl mb-14 space-y-2 text-left">
+              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-300 bg-white px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-neutral-700">
+                <Calendar className="h-3 w-3" />
+                <span>PLANEJAMENTO SEMANAL</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-950">
+                Seu estudo deixa de ser improviso e passa a ter estratégia.
+              </h2>
+              <p className="text-sm text-neutral-600 font-normal leading-relaxed">
+                Clique nos dias da semana para visualizar a distribuição inteligente de blocos de
+                estudo.
+              </p>
+            </div>
+
+            {/* Seletor de Dias */}
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-6">
+              {DIAS_CRONOGRAMA.map((item, idx) => (
                 <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
-                  className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                    activeTab === tab.id
-                      ? "bg-foreground text-background shadow-xs"
-                      : "bg-secondary/60 text-muted-foreground hover:text-foreground"
+                  key={item.dia}
+                  onClick={() => setSelectedDayIndex(idx)}
+                  className={`p-3 rounded-xl border text-center transition-all cursor-pointer ${
+                    selectedDayIndex === idx
+                      ? "bg-neutral-950 text-white border-neutral-950 shadow-md"
+                      : "bg-white text-neutral-700 border-neutral-200 hover:border-neutral-400"
                   }`}
                 >
-                  {tab.label}
+                  <p className="text-[10px] font-mono uppercase tracking-wider font-semibold opacity-70">
+                    {item.dia}
+                  </p>
+                  <p className="text-xs font-bold mt-1 truncate">{item.materia.split(" ")[0]}</p>
                 </button>
               ))}
             </div>
 
-            {/* Mockup Interativo da Tela Selecionada */}
-            <div className="rounded-2xl border border-border/80 bg-white p-3 sm:p-5 shadow-lg shadow-foreground/5 max-w-5xl mx-auto">
-              {activeTab === "dashboard" && (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between border-b border-border/50 pb-3">
-                    <div className="flex items-center gap-2">
-                      <LayoutDashboard className="h-4 w-4 text-foreground" />
-                      <span className="text-xs font-bold uppercase tracking-wider text-foreground">
-                        Visão Geral do Aluno
-                      </span>
-                    </div>
-                    <span className="text-[11px] text-muted-foreground font-mono">
-                      Status: Em dia com o edital
-                    </span>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="border border-border/60 rounded-lg p-3.5 bg-secondary/15">
-                      <p className="text-[11px] text-muted-foreground">Horas Estudadas na Semana</p>
-                      <p className="text-xl font-bold text-foreground mt-1">24h 40min</p>
-                    </div>
-                    <div className="border border-border/60 rounded-lg p-3.5 bg-secondary/15">
-                      <p className="text-[11px] text-muted-foreground">Exercícios Concluídos</p>
-                      <p className="text-xl font-bold text-foreground mt-1">320 itens</p>
-                    </div>
-                    <div className="border border-border/60 rounded-lg p-3.5 bg-secondary/15">
-                      <p className="text-[11px] text-muted-foreground">Índice Médio de Acerto</p>
-                      <p className="text-xl font-bold text-foreground mt-1">82.4%</p>
-                    </div>
-                  </div>
-                  <div className="border border-border/60 rounded-lg p-4 bg-white">
-                    <p className="text-xs font-bold text-foreground mb-2">Cronograma de Hoje</p>
-                    <div className="space-y-2 text-xs">
-                      <div className="flex items-center justify-between p-2 rounded bg-secondary/30">
-                        <span>Matemática: Geometria Espacial • Esfera e Cone</span>
-                        <span className="text-emerald-600 font-semibold">Concluído</span>
-                      </div>
-                      <div className="flex items-center justify-between p-2 rounded bg-secondary/30">
-                        <span>Física: Eletrostática • Campo e Potencial Elétrico</span>
-                        <span className="text-foreground font-semibold">Em andamento (50%)</span>
-                      </div>
-                    </div>
-                  </div>
+            {/* Detalhe do Dia Selecionado */}
+            <div className="rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8 shadow-sm space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-neutral-100 pb-4">
+                <div>
+                  <span className="text-[10px] font-mono uppercase font-bold text-neutral-500">
+                    {DIAS_CRONOGRAMA[selectedDayIndex].dia} • PLANO DIÁRIO
+                  </span>
+                  <h3 className="text-xl font-bold text-neutral-950 mt-0.5">
+                    {DIAS_CRONOGRAMA[selectedDayIndex].materia}
+                  </h3>
                 </div>
-              )}
+                <span className="rounded-full bg-neutral-100 text-neutral-900 border border-neutral-200 px-3 py-1 text-xs font-bold font-mono">
+                  Tempo Estimado: {DIAS_CRONOGRAMA[selectedDayIndex].carga}
+                </span>
+              </div>
 
-              {activeTab === "curso" && (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between border-b border-border/50 pb-3">
-                    <div className="flex items-center gap-2">
-                      <Video className="h-4 w-4 text-foreground" />
-                      <span className="text-xs font-bold uppercase tracking-wider text-foreground">
-                        Ambiente de Aula & Materiais
-                      </span>
-                    </div>
-                    <Badge variant="outline" className="text-[10px]">
-                      Física Geral
-                    </Badge>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div className="sm:col-span-2 rounded-lg bg-neutral-950 aspect-video flex flex-col items-center justify-center text-white relative">
-                      <div className="h-12 w-12 rounded-full bg-white/20 flex items-center justify-center">
-                        <Play className="h-5 w-5 fill-current text-white" />
-                      </div>
-                      <span className="text-xs mt-3 font-medium text-neutral-300">
-                        Videoaula 03: Leis de Newton e Aplicações em Planos Inclinados
-                      </span>
-                    </div>
-                    <div className="border border-border/60 rounded-lg p-3 space-y-2 bg-secondary/10">
-                      <p className="text-xs font-bold text-foreground">Conteúdo do Módulo</p>
-                      <div className="space-y-1 text-[11px] text-muted-foreground">
-                        <p className="text-foreground font-semibold">
-                          ✓ 01. Conceitos de Força e Inércia
-                        </p>
-                        <p className="text-foreground font-semibold">✓ 02. Segunda Lei e Atrito</p>
-                        <p className="font-semibold text-foreground">
-                          ► 03. Planos Inclinados (atual)
-                        </p>
-                        <p>○ 04. Dinâmica do Movimento Circular</p>
-                        <p>○ 05. Lista de Questões AFA / EsPCEx</p>
-                      </div>
-                    </div>
-                  </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1">
+                  <p className="font-bold text-neutral-900">Tópico do Edital</p>
+                  <p className="text-neutral-600 leading-relaxed">
+                    {DIAS_CRONOGRAMA[selectedDayIndex].topico}
+                  </p>
                 </div>
-              )}
+                <div className="p-4 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1">
+                  <p className="font-bold text-neutral-900">Atividade Programada</p>
+                  <p className="text-neutral-600 leading-relaxed">
+                    {DIAS_CRONOGRAMA[selectedDayIndex].tipo}
+                  </p>
+                </div>
+              </div>
 
-              {activeTab === "questoes" && (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between border-b border-border/50 pb-3">
-                    <div className="flex items-center gap-2">
-                      <Database className="h-4 w-4 text-foreground" />
-                      <span className="text-xs font-bold uppercase tracking-wider text-foreground">
-                        Banco de Questões Militar
-                      </span>
-                    </div>
-                    <span className="text-[11px] text-muted-foreground font-mono">
-                      Filtros: AFA • Matemática • 2024
-                    </span>
-                  </div>
-                  <div className="border border-border/60 rounded-lg p-4 space-y-3 bg-white">
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="font-bold text-foreground">Questão #4208 • AFA 2024</span>
-                      <Badge variant="outline" className="text-[10px]">
-                        Dificuldade: Difícil
-                      </Badge>
-                    </div>
-                    <p className="text-xs text-foreground leading-relaxed">
-                      Considere no plano cartesiano a circunferência de equação x² + y² - 4x + 6y -
-                      12 = 0. A reta r tangencia essa circunferência no ponto P(5, 1). A equação
-                      geral da reta r é dada por:
-                    </p>
-                    <div className="space-y-1.5 text-xs text-muted-foreground pl-2">
-                      <p className="p-1.5 rounded hover:bg-secondary/30">A) 3x + 4y - 19 = 0</p>
-                      <p className="p-1.5 rounded bg-emerald-50 text-emerald-800 font-semibold">
-                        B) 3x + 4y - 19 = 0 (Gabarito Correto com Resolução Comentada)
-                      </p>
-                      <p className="p-1.5 rounded hover:bg-secondary/30">C) 4x - 3y - 17 = 0</p>
-                      <p className="p-1.5 rounded hover:bg-secondary/30">D) 2x + 5y - 15 = 0</p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === "simulado" && (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between border-b border-border/50 pb-3">
-                    <div className="flex items-center gap-2">
-                      <Award className="h-4 w-4 text-foreground" />
-                      <span className="text-xs font-bold uppercase tracking-wider text-foreground">
-                        Simulado Cronometrado
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs font-mono font-bold text-foreground">
-                      <Clock className="h-3.5 w-3.5" />
-                      <span>Tempo restante: 02:44:18</span>
-                    </div>
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
-                    <div className="sm:col-span-3 border border-border/60 rounded-lg p-4 space-y-3 bg-white">
-                      <p className="text-xs font-bold text-foreground">
-                        Item 34 de 100 • Prova EsPCEx 1º Dia
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Na oração "Aos jovens cumpria combater o desânimo", o termo destacado exerce
-                        função sintática de:
-                      </p>
-                      <div className="space-y-1 text-xs text-muted-foreground">
-                        <p className="p-1.5 rounded bg-secondary/30">A) Objeto direto</p>
-                        <p className="p-1.5 rounded bg-secondary/30">B) Sujeito oracional</p>
-                        <p className="p-1.5 rounded bg-secondary/30">C) Objeto indireto</p>
-                      </div>
-                    </div>
-                    <div className="border border-border/60 rounded-lg p-3 bg-secondary/15 space-y-2">
-                      <p className="text-[11px] font-bold text-foreground">Cartão Resposta</p>
-                      <div className="grid grid-cols-5 gap-1 text-[10px] text-center font-mono">
-                        {Array.from({ length: 25 }).map((_, i) => (
-                          <div
-                            key={i}
-                            className={`p-1 rounded ${
-                              i < 12
-                                ? "bg-foreground text-background"
-                                : "bg-white border border-border/60 text-muted-foreground"
-                            }`}
-                          >
-                            {i + 1}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === "desempenho" && (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between border-b border-border/50 pb-3">
-                    <div className="flex items-center gap-2">
-                      <BarChart3 className="h-4 w-4 text-foreground" />
-                      <span className="text-xs font-bold uppercase tracking-wider text-foreground">
-                        Diagnóstico por Disciplina
-                      </span>
-                    </div>
-                    <span className="text-[11px] text-muted-foreground">
-                      Atualizado após o último simulado
-                    </span>
-                  </div>
-                  <div className="space-y-3">
-                    {[
-                      { materia: "Matemática", acerto: "88%", status: "Ponto Forte" },
-                      { materia: "Física", acerto: "74%", status: "Evoluindo" },
-                      { materia: "Química", acerto: "62%", status: "Atenção Necessária" },
-                      { materia: "Língua Portuguesa", acerto: "91%", status: "Excelente" },
-                      { materia: "Inglês", acerto: "85%", status: "Ponto Forte" },
-                    ].map((item) => (
-                      <div
-                        key={item.materia}
-                        className="flex items-center justify-between p-3 rounded-lg border border-border/60 bg-white text-xs"
-                      >
-                        <span className="font-bold text-foreground">{item.materia}</span>
-                        <div className="flex items-center gap-3">
-                          <span className="font-mono font-bold text-foreground">{item.acerto}</span>
-                          <span className="text-[10px] font-semibold text-muted-foreground bg-secondary px-2 py-0.5 rounded">
-                            {item.status}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+              <p className="text-xs text-neutral-500 font-medium">
+                <strong>Meta de aprendizado:</strong> {DIAS_CRONOGRAMA[selectedDayIndex].meta}
+              </p>
             </div>
           </div>
         </section>
 
         {/* ==================================================================== */}
-        {/* SEÇÃO DE DIFERENCIAIS                                                */}
+        {/* SEÇÃO 8: MENTORIA — "NÃO ESTUDE SOZINHO" (ESCURA)                    */}
         {/* ==================================================================== */}
-        <section className="py-20 sm:py-28 bg-secondary/15 border-b border-border/40">
+        <section
+          id="mentoria"
+          className="py-24 sm:py-32 bg-neutral-950 text-white border-b border-neutral-850"
+        >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="max-w-2xl mb-14">
-              <span className="text-xs font-bold tracking-wider text-foreground uppercase">
-                Vantagens Competitivas
-              </span>
-              <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl mt-1.5">
-                Menos improviso. Mais estratégia.
+            <div className="max-w-3xl mb-16 space-y-3 text-left">
+              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900 px-3.5 py-1 text-[10px] font-bold uppercase tracking-widest text-neutral-300">
+                <Compass className="h-3 w-3" />
+                <span>ORIENTAÇÃO TÁTICA</span>
+              </div>
+              <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                Não estude sozinho.
               </h2>
-              <p className="text-sm text-muted-foreground mt-2.5">
-                Por que a preparação na Minerva gera resultados consistentes para os concursos mais
-                difíceis do país.
+              <p className="text-sm sm:text-base text-neutral-400 font-normal leading-relaxed">
+                Acompanhamento e suporte de quem conhece de ponta a ponta as peculiaridades das
+                bancas e os caminhos de aprovação.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {DIFERENCIAIS.map((dif) => {
-                const IconComponent = dif.icone;
-                return (
-                  <div
-                    key={dif.titulo}
-                    className="p-6 rounded-xl border border-border/70 bg-white hover:border-foreground/50 transition-colors space-y-3"
-                  >
-                    <div className="h-10 w-10 rounded-lg bg-foreground text-background flex items-center justify-center">
-                      <IconComponent className="h-5 w-5" />
-                    </div>
-                    <h3 className="text-base font-bold text-foreground">{dif.titulo}</h3>
-                    <p className="text-xs font-medium text-foreground/90">{dif.descricao}</p>
-                    <p className="text-xs text-muted-foreground leading-relaxed">{dif.detalhe}</p>
-                  </div>
-                );
-              })}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="p-7 rounded-2xl border border-neutral-800 bg-neutral-900/70 space-y-3 hover:border-neutral-700 transition-colors">
+                <div className="h-10 w-10 rounded-lg bg-white text-neutral-950 flex items-center justify-center">
+                  <Target className="h-5 w-5" />
+                </div>
+                <h3 className="text-lg font-bold text-white">Metas & Diagnósticos</h3>
+                <p className="text-xs text-neutral-400 leading-relaxed">
+                  Definição de metas de estudo semanais personalizadas com base na carreira militar
+                  escolhida e na sua rotina disponível.
+                </p>
+              </div>
+
+              <div className="p-7 rounded-2xl border border-neutral-800 bg-neutral-900/70 space-y-3 hover:border-neutral-700 transition-colors">
+                <div className="h-10 w-10 rounded-lg bg-white text-neutral-950 flex items-center justify-center">
+                  <BrainCircuit className="h-5 w-5" />
+                </div>
+                <h3 className="text-lg font-bold text-white">Acompanhamento de Rendimento</h3>
+                <p className="text-xs text-neutral-400 leading-relaxed">
+                  Orientação periódica sobre quando acelerar o conteúdo teórico e quando priorizar
+                  resolução maciça de provas antigas.
+                </p>
+              </div>
+
+              <div className="p-7 rounded-2xl border border-neutral-800 bg-neutral-900/70 space-y-3 hover:border-neutral-700 transition-colors">
+                <div className="h-10 w-10 rounded-lg bg-white text-neutral-950 flex items-center justify-center">
+                  <Users className="h-5 w-5" />
+                </div>
+                <h3 className="text-lg font-bold text-white">Comunidade & Ambiente Focado</h3>
+                <p className="text-xs text-neutral-400 leading-relaxed">
+                  Espaço exclusivo para troca de dúvidas de exercícios difíceis com outros
+                  estudantes com a mesma meta de aprovação.
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
         {/* ==================================================================== */}
-        {/* SEÇÃO DE PLANOS COMERCIAIS                                           */}
+        {/* SEÇÃO 9: COMO FUNCIONA (CLARA COM TIMELINE CONECTADA)                */}
         {/* ==================================================================== */}
-        <section id="planos" className="py-20 sm:py-28 border-b border-border/40">
+        <section className="py-20 sm:py-28 bg-white text-neutral-950 border-b border-neutral-200">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center max-w-2xl mx-auto mb-16 space-y-2.5">
-              <span className="text-xs font-bold tracking-wider text-foreground uppercase">
-                Planos & Investimento
-              </span>
-              <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
-                Escolha a melhor forma de estudar.
+            <div className="max-w-3xl mb-16 space-y-2 text-left">
+              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-300 bg-neutral-100 px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-neutral-700">
+                <span>PASSO A PASSO</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-950">
+                Como funciona a sua preparação
               </h2>
-              <p className="text-sm text-muted-foreground">
-                Planos flexíveis com acesso imediato a todas as ferramentas essenciais. Cancele
-                quando quiser.
+              <p className="text-sm text-neutral-600 font-normal leading-relaxed">
+                Quatro passos bem definidos para sair da inércia e alcançar o topo da classificação.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {PLANOS.map((plano) => (
-                <div
-                  key={plano.nome}
-                  className={`relative rounded-2xl border p-7 sm:p-8 bg-white flex flex-col justify-between transition-all ${
-                    plano.destaque
-                      ? "border-foreground shadow-lg ring-1 ring-foreground/20"
-                      : "border-border/80 hover:border-foreground/40"
-                  }`}
-                >
-                  {plano.badge && (
-                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-foreground px-3.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-background">
-                      {plano.badge}
-                    </div>
-                  )}
-
-                  <div className="space-y-4">
-                    <div>
-                      <h3 className="text-lg font-bold text-foreground uppercase tracking-wide">
-                        {plano.nome}
-                      </h3>
-                      <p className="text-xs text-muted-foreground mt-1 min-h-[32px]">
-                        {plano.descricao}
-                      </p>
-                    </div>
-
-                    <div className="flex items-baseline gap-1 pt-2 border-t border-border/40">
-                      <span className="text-3xl font-extrabold text-foreground tracking-tight">
-                        {plano.preco}
-                      </span>
-                      <span className="text-xs text-muted-foreground font-medium">
-                        {plano.periodo}
-                      </span>
-                    </div>
-
-                    <ul className="space-y-2.5 pt-4 text-xs text-foreground/90 border-t border-border/40">
-                      {plano.recursos.map((rec, i) => (
-                        <li key={i} className="flex items-start gap-2">
-                          <Check className="h-4 w-4 text-foreground shrink-0 mt-0.5" />
-                          <span>{rec}</span>
-                        </li>
-                      ))}
-                    </ul>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+              {[
+                {
+                  step: "01",
+                  titulo: "Escolha seu objetivo",
+                  desc: "Selecione o concurso militar que deseja alcançar e tenha acesso imediato à grade do respectivo edital.",
+                },
+                {
+                  step: "02",
+                  titulo: "Monte sua estratégia",
+                  desc: "Organize sua rotina com o módulo de cronogramas para distribuir as horas de estudo por matéria.",
+                },
+                {
+                  step: "03",
+                  titulo: "Execute seu plano",
+                  desc: "Combine videoaulas didáticas, apostilas teóricas e resolução de milhares de questões comentadas.",
+                },
+                {
+                  step: "04",
+                  titulo: "Acompanhe sua evolução",
+                  desc: "Realize simulados cronometrados e use as métricas analíticas para blindar seus pontos fracos.",
+                },
+              ].map((etapa, i) => (
+                <div key={etapa.step} className="space-y-3 relative">
+                  <div className="flex items-center gap-3">
+                    <span className="text-3xl font-black font-mono text-neutral-950">
+                      {etapa.step}
+                    </span>
+                    <div className="h-px flex-1 bg-neutral-200" />
                   </div>
-
-                  <div className="pt-8">
-                    <Button
-                      asChild
-                      className={`w-full h-11 text-xs font-semibold rounded-lg ${
-                        plano.destaque
-                          ? "bg-foreground text-background hover:bg-foreground/90"
-                          : "bg-secondary text-foreground hover:bg-secondary/80"
-                      }`}
-                    >
-                      <Link to="/register">{plano.cta}</Link>
-                    </Button>
-                  </div>
+                  <h3 className="text-base font-bold text-neutral-950">{etapa.titulo}</h3>
+                  <p className="text-xs text-neutral-600 leading-relaxed">{etapa.desc}</p>
                 </div>
               ))}
             </div>
+          </div>
+        </section>
 
-            <p className="text-center text-xs text-muted-foreground mt-8">
-              * Valores configuráveis pela administração. Sem taxa de matrícula ou fidelidade
-              contratual.
+        {/* ==================================================================== */}
+        {/* SEÇÃO 10: FRASE DE IMPACTO (ESCURA - MINIMALISTA)                     */}
+        {/* ==================================================================== */}
+        <section className="py-24 sm:py-36 bg-neutral-950 text-white border-b border-neutral-850 flex items-center justify-center">
+          <div className="mx-auto max-w-4xl px-4 text-center space-y-4">
+            <p className="text-xs font-mono uppercase tracking-widest text-neutral-400">
+              MINERVA EDUCAÇÃO • ALTO DESEMPENHO
+            </p>
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
+              "Grandes aprovações não acontecem por acaso."
+            </h2>
+            <p className="text-xl sm:text-2xl text-neutral-400 font-light tracking-wide">
+              Elas são construídas todos os dias.
             </p>
           </div>
         </section>
 
         {/* ==================================================================== */}
-        {/* FAQ SECTION                                                          */}
+        {/* SEÇÃO 11: PLANOS (CLARA)                                             */}
         {/* ==================================================================== */}
-        <section id="faq" className="py-20 sm:py-28 bg-secondary/15 border-b border-border/40">
+        <section
+          id="planos"
+          className="py-20 sm:py-28 bg-[#fbfbfb] text-neutral-950 border-b border-neutral-200"
+        >
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center max-w-2xl mx-auto mb-16 space-y-2">
+              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-300 bg-white px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-neutral-700">
+                <span>INVESTIMENTO TRANSPARENTE</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-950">
+                Escolha a melhor forma de estudar.
+              </h2>
+              <p className="text-sm text-neutral-600">
+                Planos modulares para cada fase de sua preparação. Cancele quando quiser sem multas.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {/* Plano 1: Essencial */}
+              <div className="rounded-2xl border border-neutral-200 bg-white p-7 sm:p-8 flex flex-col justify-between hover:border-neutral-400 transition-all shadow-xs">
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-bold text-neutral-950 uppercase tracking-wide">
+                      ESSENCIAL
+                    </h3>
+                    <p className="text-xs text-neutral-500 mt-1">
+                      A base de questões e simulados para consolidar sua preparação.
+                    </p>
+                  </div>
+
+                  <div className="flex items-baseline gap-1 pt-2 border-t border-neutral-100">
+                    <span className="text-3xl font-extrabold text-neutral-950 font-mono">
+                      R$ 59
+                    </span>
+                    <span className="text-xs text-neutral-500">/mês (placeholder)</span>
+                  </div>
+
+                  <ul className="space-y-2.5 pt-4 text-xs text-neutral-700 border-t border-neutral-100">
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Acesso integral ao Banco de Questões</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Filtros por concurso, ano e dificuldade</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Gabaritos com resoluções comentadas</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Simulados inéditos com cronômetro</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="pt-8">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full h-11 text-xs font-bold border-neutral-300 hover:bg-neutral-100 text-neutral-950 rounded-lg cursor-pointer"
+                  >
+                    <Link to="/register">Começar com Essencial</Link>
+                  </Button>
+                </div>
+              </div>
+
+              {/* Plano 2: Completo (Mais Escolhido) */}
+              <div className="relative rounded-2xl border-2 border-neutral-950 bg-white p-7 sm:p-8 flex flex-col justify-between shadow-xl ring-1 ring-neutral-950/10">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-neutral-950 px-3.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+                  Mais escolhido
+                </div>
+
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-bold text-neutral-950 uppercase tracking-wide">
+                      COMPLETO
+                    </h3>
+                    <p className="text-xs text-neutral-500 mt-1">
+                      O ecossistema completo de cursos, videoaulas, questões e planejamento.
+                    </p>
+                  </div>
+
+                  <div className="flex items-baseline gap-1 pt-2 border-t border-neutral-100">
+                    <span className="text-3xl font-extrabold text-neutral-950 font-mono">
+                      R$ 97
+                    </span>
+                    <span className="text-xs text-neutral-500">/mês (placeholder)</span>
+                  </div>
+
+                  <ul className="space-y-2.5 pt-4 text-xs text-neutral-900 border-t border-neutral-100 font-medium">
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Tudo incluso no plano Essencial</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Cursos completos em videoaulas HD</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Apostilas e materiais teóricos em PDF</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Módulo de Planejamento e Cronogramas</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Painel analítico avançado de desempenho</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="pt-8">
+                  <Button
+                    asChild
+                    className="w-full h-11 text-xs font-bold bg-neutral-950 text-white hover:bg-neutral-800 rounded-lg shadow-md cursor-pointer"
+                  >
+                    <Link to="/register">Começar com Completo</Link>
+                  </Button>
+                </div>
+              </div>
+
+              {/* Plano 3: Premium */}
+              <div className="rounded-2xl border border-neutral-200 bg-white p-7 sm:p-8 flex flex-col justify-between hover:border-neutral-400 transition-all shadow-xs">
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="text-lg font-bold text-neutral-950 uppercase tracking-wide">
+                      PREMIUM
+                    </h3>
+                    <p className="text-xs text-neutral-500 mt-1">
+                      Acompanhamento tático individual de mentoria e aceleração máxima.
+                    </p>
+                  </div>
+
+                  <div className="flex items-baseline gap-1 pt-2 border-t border-neutral-100">
+                    <span className="text-3xl font-extrabold text-neutral-950 font-mono">
+                      R$ 189
+                    </span>
+                    <span className="text-xs text-neutral-500">/mês (placeholder)</span>
+                  </div>
+
+                  <ul className="space-y-2.5 pt-4 text-xs text-neutral-700 border-t border-neutral-100">
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Tudo incluso no plano Completo</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Sessões periódicas de mentoria individual</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Diagnóstico tático contínuo de metas</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <span>Correção prioritária de redações</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="pt-8">
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="w-full h-11 text-xs font-bold border-neutral-300 hover:bg-neutral-100 text-neutral-950 rounded-lg cursor-pointer"
+                  >
+                    <Link to="/register">Começar com Premium</Link>
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            <p className="text-center text-xs text-neutral-500 mt-8">
+              * Valores meramente demonstrativos para personalização administrativa. Garantia
+              incondicional de 7 dias.
+            </p>
+          </div>
+        </section>
+
+        {/* ==================================================================== */}
+        {/* SEÇÃO 12: FAQ INTERATIVO (ESCURA)                                    */}
+        {/* ==================================================================== */}
+        <section
+          id="faq"
+          className="py-24 sm:py-32 bg-neutral-950 text-white border-b border-neutral-850"
+        >
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-14 space-y-2">
-              <span className="text-xs font-bold tracking-wider text-foreground uppercase">
+              <span className="text-xs font-bold tracking-wider text-neutral-400 uppercase">
                 Tire suas dúvidas
               </span>
-              <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
                 Perguntas Frequentes
               </h2>
-              <p className="text-sm text-muted-foreground">
-                Respostas diretas para as perguntas mais comuns sobre o funcionamento da Minerva
-                Educação.
+              <p className="text-sm text-neutral-400">
+                Respostas diretas sobre como a Minerva Educação apoia sua preparação.
               </p>
             </div>
 
@@ -1076,12 +1330,12 @@ function LandingPage() {
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="rounded-xl border border-border/70 bg-white px-5 py-1"
+                  className="rounded-xl border border-neutral-800 bg-neutral-900/60 px-5 py-1 text-left"
                 >
-                  <AccordionTrigger className="text-left text-sm font-bold text-foreground hover:no-underline py-4">
+                  <AccordionTrigger className="text-left text-sm font-bold text-white hover:no-underline py-4">
                     {faq.pergunta}
                   </AccordionTrigger>
-                  <AccordionContent className="text-xs leading-relaxed text-muted-foreground pt-1 pb-4">
+                  <AccordionContent className="text-xs leading-relaxed text-neutral-400 pt-1 pb-4">
                     {faq.resposta}
                   </AccordionContent>
                 </AccordionItem>
@@ -1091,21 +1345,26 @@ function LandingPage() {
         </section>
 
         {/* ==================================================================== */}
-        {/* CTA FINAL DE CONVERSÃO                                               */}
+        {/* SEÇÃO 13: CTA FINAL CINEMATOGRÁFICO (ESCURA)                         */}
         {/* ==================================================================== */}
-        <section className="py-24 sm:py-32 bg-white">
-          <div className="mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8 space-y-6">
-            <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-5xl">
-              Seu objetivo merece uma preparação à altura.
+        <section className="py-24 sm:py-36 bg-neutral-950 text-white relative overflow-hidden">
+          {/* Iluminação de Fundo */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[radial-gradient(circle_at_bottom,rgba(255,255,255,0.06),transparent_70%)] blur-2xl" />
+          </div>
+
+          <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8 space-y-6 z-10">
+            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+              Seu próximo nível começa agora.
             </h2>
-            <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto font-normal">
-              Una método, dados e disciplina em uma plataforma pensada para a sua aprovação. Crie
-              sua conta e comece agora.
+            <p className="text-sm sm:text-base text-neutral-400 max-w-xl mx-auto font-normal leading-relaxed">
+              Transforme sua preparação em estratégia, consistência e evolução. Crie sua conta e
+              ingresse na Minerva Educação.
             </p>
             <div className="pt-2 flex justify-center">
               <Button
                 size="lg"
-                className="font-semibold bg-foreground text-background hover:bg-foreground/90 h-12 px-9 text-sm shadow-sm"
+                className="h-12 px-9 text-sm font-semibold bg-white text-neutral-950 hover:bg-neutral-200 rounded-lg shadow-xl shadow-white/5 transition-all cursor-pointer"
                 asChild
               >
                 <Link to="/register">
