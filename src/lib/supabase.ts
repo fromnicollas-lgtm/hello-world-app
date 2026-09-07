@@ -1,8 +1,8 @@
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "../types/database.types";
 
-const envSupabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const envSupabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const envSupabaseUrl = import.meta.env['VITE_SUPABASE_URL'];
+const envSupabaseAnonKey = import.meta.env['VITE_SUPABASE_ANON_KEY'];
 
 // Check if legitimate Supabase credentials have been provided
 export const isSupabaseConfigured = Boolean(

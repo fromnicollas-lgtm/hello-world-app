@@ -1035,14 +1035,14 @@ function LandingPage() {
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-neutral-100 pb-3.5">
                 <div>
                   <span className="text-[10px] font-mono uppercase font-bold text-neutral-500">
-                    {DIAS_CRONOGRAMA[selectedDayIndex].dia} • PLANO DIÁRIO
+                    {DIAS_CRONOGRAMA[selectedDayIndex]!.dia} • PLANO DIÁRIO
                   </span>
                   <h3 className="text-lg sm:text-xl font-bold text-neutral-950 mt-0.5">
-                    {DIAS_CRONOGRAMA[selectedDayIndex].materia}
+                    {DIAS_CRONOGRAMA[selectedDayIndex]!.materia}
                   </h3>
                 </div>
                 <span className="self-start sm:self-auto rounded-full bg-neutral-100 text-neutral-900 border border-neutral-200 px-3 py-1 text-xs font-bold font-mono">
-                  Tempo Estimado: {DIAS_CRONOGRAMA[selectedDayIndex].carga}
+                  Tempo Estimado: {DIAS_CRONOGRAMA[selectedDayIndex]!.carga}
                 </span>
               </div>
 
@@ -1050,19 +1050,19 @@ function LandingPage() {
                 <div className="p-3.5 sm:p-4 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1">
                   <p className="font-bold text-neutral-900">Tópico do Edital</p>
                   <p className="text-neutral-600 leading-relaxed">
-                    {DIAS_CRONOGRAMA[selectedDayIndex].topico}
+                    {DIAS_CRONOGRAMA[selectedDayIndex]!.topico}
                   </p>
                 </div>
                 <div className="p-3.5 sm:p-4 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1">
                   <p className="font-bold text-neutral-900">Atividade Programada</p>
                   <p className="text-neutral-600 leading-relaxed">
-                    {DIAS_CRONOGRAMA[selectedDayIndex].tipo}
+                    {DIAS_CRONOGRAMA[selectedDayIndex]!.tipo}
                   </p>
                 </div>
               </div>
 
               <p className="text-xs text-neutral-500 font-medium">
-                <strong>Meta de aprendizado:</strong> {DIAS_CRONOGRAMA[selectedDayIndex].meta}
+                <strong>Meta de aprendizado:</strong> {DIAS_CRONOGRAMA[selectedDayIndex]!.meta}
               </p>
             </div>
           </div>
