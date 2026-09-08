@@ -949,6 +949,7 @@ export type Database = {
           id: string
           phone: string | null
           status: string
+          target_contest_id: string | null
           updated_at: string
           user_id: string
         }
@@ -961,6 +962,7 @@ export type Database = {
           id?: string
           phone?: string | null
           status?: string
+          target_contest_id?: string | null
           updated_at?: string
           user_id: string
         }
@@ -973,10 +975,19 @@ export type Database = {
           id?: string
           phone?: string | null
           status?: string
+          target_contest_id?: string | null
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_target_contest_id_fkey"
+            columns: ["target_contest_id"]
+            isOneToOne: false
+            referencedRelation: "concursos"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       question_attempts: {
         Row: {
