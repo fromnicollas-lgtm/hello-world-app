@@ -11,11 +11,23 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AccessDeniedRouteImport } from './routes/access-denied'
+import { Route as AppRouteRouteImport } from './routes/app/route'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AppIndexRouteImport } from './routes/app/index'
+import { Route as AppAjudaRouteImport } from './routes/app/ajuda'
+import { Route as AppComunidadeRouteImport } from './routes/app/comunidade'
+import { Route as AppConfiguracoesRouteImport } from './routes/app/configuracoes'
+import { Route as AppCursosRouteImport } from './routes/app/cursos'
+import { Route as AppDesempenhoRouteImport } from './routes/app/desempenho'
+import { Route as AppLivesRouteImport } from './routes/app/lives'
+import { Route as AppMentoriasRouteImport } from './routes/app/mentorias'
+import { Route as AppPerfilRouteImport } from './routes/app/perfil'
+import { Route as AppPlanejamentoRouteImport } from './routes/app/planejamento'
+import { Route as AppQuestoesRouteImport } from './routes/app/questoes'
+import { Route as AppSimuladosRouteImport } from './routes/app/simulados'
 import { Route as ClipperIndexRouteImport } from './routes/clipper/index'
 import { Route as EditorIndexRouteImport } from './routes/editor/index'
 import { Route as InfluencerIndexRouteImport } from './routes/influencer/index'
@@ -31,6 +43,11 @@ const IndexRoute = IndexRouteImport.update({
 const AccessDeniedRoute = AccessDeniedRouteImport.update({
   id: '/access-denied',
   path: '/access-denied',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRouteRoute = AppRouteRouteImport.update({
+  id: '/app',
+  path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
@@ -54,9 +71,64 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppIndexRoute = AppIndexRouteImport.update({
-  id: '/app/',
-  path: '/app/',
-  getParentRoute: () => rootRouteImport,
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppAjudaRoute = AppAjudaRouteImport.update({
+  id: '/ajuda',
+  path: '/ajuda',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppComunidadeRoute = AppComunidadeRouteImport.update({
+  id: '/comunidade',
+  path: '/comunidade',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppConfiguracoesRoute = AppConfiguracoesRouteImport.update({
+  id: '/configuracoes',
+  path: '/configuracoes',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppCursosRoute = AppCursosRouteImport.update({
+  id: '/cursos',
+  path: '/cursos',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppDesempenhoRoute = AppDesempenhoRouteImport.update({
+  id: '/desempenho',
+  path: '/desempenho',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppLivesRoute = AppLivesRouteImport.update({
+  id: '/lives',
+  path: '/lives',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppMentoriasRoute = AppMentoriasRouteImport.update({
+  id: '/mentorias',
+  path: '/mentorias',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppPerfilRoute = AppPerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppPlanejamentoRoute = AppPlanejamentoRouteImport.update({
+  id: '/planejamento',
+  path: '/planejamento',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppQuestoesRoute = AppQuestoesRouteImport.update({
+  id: '/questoes',
+  path: '/questoes',
+  getParentRoute: () => AppRouteRoute,
+} as any)
+const AppSimuladosRoute = AppSimuladosRouteImport.update({
+  id: '/simulados',
+  path: '/simulados',
+  getParentRoute: () => AppRouteRoute,
 } as any)
 const ClipperIndexRoute = ClipperIndexRouteImport.update({
   id: '/clipper/',
@@ -91,10 +163,22 @@ const TeacherIndexRoute = TeacherIndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/app': typeof AppRouteRouteWithChildren
   '/access-denied': typeof AccessDeniedRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/app/ajuda': typeof AppAjudaRoute
+  '/app/comunidade': typeof AppComunidadeRoute
+  '/app/configuracoes': typeof AppConfiguracoesRoute
+  '/app/cursos': typeof AppCursosRoute
+  '/app/desempenho': typeof AppDesempenhoRoute
+  '/app/lives': typeof AppLivesRoute
+  '/app/mentorias': typeof AppMentoriasRoute
+  '/app/perfil': typeof AppPerfilRoute
+  '/app/planejamento': typeof AppPlanejamentoRoute
+  '/app/questoes': typeof AppQuestoesRoute
+  '/app/simulados': typeof AppSimuladosRoute
   '/admin/': typeof AdminIndexRoute
   '/app/': typeof AppIndexRoute
   '/clipper/': typeof ClipperIndexRoute
@@ -110,6 +194,17 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/app/ajuda': typeof AppAjudaRoute
+  '/app/comunidade': typeof AppComunidadeRoute
+  '/app/configuracoes': typeof AppConfiguracoesRoute
+  '/app/cursos': typeof AppCursosRoute
+  '/app/desempenho': typeof AppDesempenhoRoute
+  '/app/lives': typeof AppLivesRoute
+  '/app/mentorias': typeof AppMentoriasRoute
+  '/app/perfil': typeof AppPerfilRoute
+  '/app/planejamento': typeof AppPlanejamentoRoute
+  '/app/questoes': typeof AppQuestoesRoute
+  '/app/simulados': typeof AppSimuladosRoute
   '/admin': typeof AdminIndexRoute
   '/app': typeof AppIndexRoute
   '/clipper': typeof ClipperIndexRoute
@@ -122,10 +217,22 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/app': typeof AppRouteRouteWithChildren
   '/access-denied': typeof AccessDeniedRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/app/ajuda': typeof AppAjudaRoute
+  '/app/comunidade': typeof AppComunidadeRoute
+  '/app/configuracoes': typeof AppConfiguracoesRoute
+  '/app/cursos': typeof AppCursosRoute
+  '/app/desempenho': typeof AppDesempenhoRoute
+  '/app/lives': typeof AppLivesRoute
+  '/app/mentorias': typeof AppMentoriasRoute
+  '/app/perfil': typeof AppPerfilRoute
+  '/app/planejamento': typeof AppPlanejamentoRoute
+  '/app/questoes': typeof AppQuestoesRoute
+  '/app/simulados': typeof AppSimuladosRoute
   '/admin/': typeof AdminIndexRoute
   '/app/': typeof AppIndexRoute
   '/clipper/': typeof ClipperIndexRoute
@@ -139,10 +246,22 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/app'
     | '/access-denied'
     | '/forgot-password'
     | '/login'
     | '/register'
+    | '/app/ajuda'
+    | '/app/comunidade'
+    | '/app/configuracoes'
+    | '/app/cursos'
+    | '/app/desempenho'
+    | '/app/lives'
+    | '/app/mentorias'
+    | '/app/perfil'
+    | '/app/planejamento'
+    | '/app/questoes'
+    | '/app/simulados'
     | '/admin/'
     | '/app/'
     | '/clipper/'
@@ -158,6 +277,17 @@ export interface FileRouteTypes {
     | '/forgot-password'
     | '/login'
     | '/register'
+    | '/app/ajuda'
+    | '/app/comunidade'
+    | '/app/configuracoes'
+    | '/app/cursos'
+    | '/app/desempenho'
+    | '/app/lives'
+    | '/app/mentorias'
+    | '/app/perfil'
+    | '/app/planejamento'
+    | '/app/questoes'
+    | '/app/simulados'
     | '/admin'
     | '/app'
     | '/clipper'
@@ -169,10 +299,22 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/app'
     | '/access-denied'
     | '/forgot-password'
     | '/login'
     | '/register'
+    | '/app/ajuda'
+    | '/app/comunidade'
+    | '/app/configuracoes'
+    | '/app/cursos'
+    | '/app/desempenho'
+    | '/app/lives'
+    | '/app/mentorias'
+    | '/app/perfil'
+    | '/app/planejamento'
+    | '/app/questoes'
+    | '/app/simulados'
     | '/admin/'
     | '/app/'
     | '/clipper/'
@@ -185,12 +327,12 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AppRouteRoute: typeof AppRouteRouteWithChildren
   AccessDeniedRoute: typeof AccessDeniedRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   AdminIndexRoute: typeof AdminIndexRoute
-  AppIndexRoute: typeof AppIndexRoute
   ClipperIndexRoute: typeof ClipperIndexRoute
   EditorIndexRoute: typeof EditorIndexRoute
   InfluencerIndexRoute: typeof InfluencerIndexRoute
@@ -213,6 +355,13 @@ declare module '@tanstack/react-router' {
       path: '/access-denied'
       fullPath: '/access-denied'
       preLoaderRoute: typeof AccessDeniedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/forgot-password': {
@@ -245,10 +394,87 @@ declare module '@tanstack/react-router' {
     }
     '/app/': {
       id: '/app/'
-      path: '/app'
+      path: '/'
       fullPath: '/app/'
       preLoaderRoute: typeof AppIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/app/ajuda': {
+      id: '/app/ajuda'
+      path: '/ajuda'
+      fullPath: '/app/ajuda'
+      preLoaderRoute: typeof AppAjudaRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/app/comunidade': {
+      id: '/app/comunidade'
+      path: '/comunidade'
+      fullPath: '/app/comunidade'
+      preLoaderRoute: typeof AppComunidadeRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/app/configuracoes': {
+      id: '/app/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/app/configuracoes'
+      preLoaderRoute: typeof AppConfiguracoesRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/app/cursos': {
+      id: '/app/cursos'
+      path: '/cursos'
+      fullPath: '/app/cursos'
+      preLoaderRoute: typeof AppCursosRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/app/desempenho': {
+      id: '/app/desempenho'
+      path: '/desempenho'
+      fullPath: '/app/desempenho'
+      preLoaderRoute: typeof AppDesempenhoRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/app/lives': {
+      id: '/app/lives'
+      path: '/lives'
+      fullPath: '/app/lives'
+      preLoaderRoute: typeof AppLivesRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/app/mentorias': {
+      id: '/app/mentorias'
+      path: '/mentorias'
+      fullPath: '/app/mentorias'
+      preLoaderRoute: typeof AppMentoriasRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/app/perfil': {
+      id: '/app/perfil'
+      path: '/perfil'
+      fullPath: '/app/perfil'
+      preLoaderRoute: typeof AppPerfilRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/app/planejamento': {
+      id: '/app/planejamento'
+      path: '/planejamento'
+      fullPath: '/app/planejamento'
+      preLoaderRoute: typeof AppPlanejamentoRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/app/questoes': {
+      id: '/app/questoes'
+      path: '/questoes'
+      fullPath: '/app/questoes'
+      preLoaderRoute: typeof AppQuestoesRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
+    '/app/simulados': {
+      id: '/app/simulados'
+      path: '/simulados'
+      fullPath: '/app/simulados'
+      preLoaderRoute: typeof AppSimuladosRouteImport
+      parentRoute: typeof AppRouteRoute
     }
     '/clipper/': {
       id: '/clipper/'
@@ -295,14 +521,48 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AppRouteRouteChildren {
+  AppAjudaRoute: typeof AppAjudaRoute
+  AppComunidadeRoute: typeof AppComunidadeRoute
+  AppConfiguracoesRoute: typeof AppConfiguracoesRoute
+  AppCursosRoute: typeof AppCursosRoute
+  AppDesempenhoRoute: typeof AppDesempenhoRoute
+  AppLivesRoute: typeof AppLivesRoute
+  AppMentoriasRoute: typeof AppMentoriasRoute
+  AppPerfilRoute: typeof AppPerfilRoute
+  AppPlanejamentoRoute: typeof AppPlanejamentoRoute
+  AppQuestoesRoute: typeof AppQuestoesRoute
+  AppSimuladosRoute: typeof AppSimuladosRoute
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteRouteChildren: AppRouteRouteChildren = {
+  AppAjudaRoute: AppAjudaRoute,
+  AppComunidadeRoute: AppComunidadeRoute,
+  AppConfiguracoesRoute: AppConfiguracoesRoute,
+  AppCursosRoute: AppCursosRoute,
+  AppDesempenhoRoute: AppDesempenhoRoute,
+  AppLivesRoute: AppLivesRoute,
+  AppMentoriasRoute: AppMentoriasRoute,
+  AppPerfilRoute: AppPerfilRoute,
+  AppPlanejamentoRoute: AppPlanejamentoRoute,
+  AppQuestoesRoute: AppQuestoesRoute,
+  AppSimuladosRoute: AppSimuladosRoute,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(
+  AppRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AppRouteRoute: AppRouteRouteWithChildren,
   AccessDeniedRoute: AccessDeniedRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   AdminIndexRoute: AdminIndexRoute,
-  AppIndexRoute: AppIndexRoute,
   ClipperIndexRoute: ClipperIndexRoute,
   EditorIndexRoute: EditorIndexRoute,
   InfluencerIndexRoute: InfluencerIndexRoute,

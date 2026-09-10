@@ -1,176 +1,109 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Navbar } from "../../components/layout/Navbar";
-import { Footer } from "../../components/layout/Footer";
-import { RoleGuard } from "../../components/auth/RoleGuard";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../../hooks/useAuth";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "../../components/ui/card";
-import { Badge } from "../../components/ui/badge";
-import { BookOpen, Calendar, CheckSquare, GraduationCap, Trophy, PlayCircle } from "lucide-react";
+import { profileQuery } from "../../lib/dashboard.queries";
+import { DashboardStats } from "../../components/dashboard/DashboardStats";
+import { ContinueStudying } from "../../components/dashboard/ContinueStudying";
+import { GoalsWidget } from "../../components/dashboard/GoalsWidget";
+import { PerformanceWidget } from "../../components/dashboard/PerformanceWidget";
+import { UpcomingActivities } from "../../components/dashboard/UpcomingActivities";
+import { RecentActivity } from "../../components/dashboard/RecentActivity";
+import { QuickActions } from "../../components/dashboard/QuickActions";
+import { ObjectiveCard } from "../../components/dashboard/ObjectiveCard";
+import { Skeleton } from "../../components/ui/skeleton";
+import { Button } from "../../components/ui/button";
 
 export const Route = createFileRoute("/app/")({
-  component: StudentDashboard,
+  head: () => ({
+    meta: [
+      { title: "Início | Portal do Aluno — Minerva Educação" },
+      {
+        name: "description",
+        content: "Acompanhe sua preparação, metas e desempenho no portal da Minerva Educação.",
+      },
+      { property: "og:title", content: "Início | Portal do Aluno — Minerva Educação" },
+      {
+        property: "og:description",
+        content: "Acompanhe sua preparação, metas e desempenho no portal da Minerva Educação.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: StudentHome,
 });
 
-function StudentDashboard() {
+function StudentHome() {
+  const { user } = useAuth();
+  const userId = user?.id ?? "";
+  const profile = useQuery({ ...profileQuery(userId), enabled: Boolean(userId) });
+
+  if (!userId) {
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-10 w-56" />
+        <Skeleton className="h-28 w-full" />
+        <Skeleton className="h-64 w-full" />
+      </div>
+    );
+  }
+
+  const firstName = profile.data?.fullName?.trim().split(" ")[0];
+
   return (
-    <RoleGuard allowedRoles={["student", "admin", "super_admin"]}>
-      <StudentDashboardContent />
-    </RoleGuard>
-  );
-}
-
-function StudentDashboardContent() {
-  const { user, profile, roles } = useAuth();
-
-  return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <Navbar />
-
-      <main className="flex-1 py-10">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
-          {/* Header */}
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-border/60 pb-6">
-            <div>
-              <div className="flex items-center gap-2 mb-1">
-                <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                  Portal do Aluno
-                </span>
-                <Badge variant="outline" className="text-[10px] uppercase font-semibold">
-                  {roles.join(", ")}
-                </Badge>
-              </div>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-                Olá, {profile?.full_name || user?.email?.split("@")[0] || "Aluno"}
-              </h1>
-              <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                Fundação acadêmica e preparação ativa para os concursos militares de alta
-                performance.
-              </p>
-            </div>
-          </div>
-
-          {/* Quick Metrics / Modules Overview */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Card className="border border-border/70 bg-card">
-              <CardContent className="p-5 flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-medium text-muted-foreground">Concursos Disponíveis</p>
-                  <p className="text-2xl font-bold text-foreground mt-1">8</p>
-                  <p className="text-[11px] text-muted-foreground mt-0.5">
-                    AFA, EFOMM, EsPCEx e mais
-                  </p>
-                </div>
-                <div className="h-10 w-10 rounded-lg bg-secondary flex items-center justify-center text-foreground">
-                  <GraduationCap className="h-5 w-5" />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border border-border/70 bg-card">
-              <CardContent className="p-5 flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-medium text-muted-foreground">Banco de Questões</p>
-                  <p className="text-2xl font-bold text-foreground mt-1">Módulo 01</p>
-                  <p className="text-[11px] text-muted-foreground mt-0.5">
-                    Estrutura de dados pronta
-                  </p>
-                </div>
-                <div className="h-10 w-10 rounded-lg bg-secondary flex items-center justify-center text-foreground">
-                  <CheckSquare className="h-5 w-5" />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border border-border/70 bg-card">
-              <CardContent className="p-5 flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-medium text-muted-foreground">Cronograma & Metas</p>
-                  <p className="text-2xl font-bold text-foreground mt-1">Planejado</p>
-                  <p className="text-[11px] text-muted-foreground mt-0.5">
-                    Tabelas e RLS integrados
-                  </p>
-                </div>
-                <div className="h-10 w-10 rounded-lg bg-secondary flex items-center justify-center text-foreground">
-                  <Calendar className="h-5 w-5" />
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="border border-border/70 bg-card">
-              <CardContent className="p-5 flex items-center justify-between">
-                <div>
-                  <p className="text-xs font-medium text-muted-foreground">Gamificação</p>
-                  <p className="text-2xl font-bold text-foreground mt-1">Nível 1</p>
-                  <p className="text-[11px] text-muted-foreground mt-0.5">Pontos e conquistas</p>
-                </div>
-                <div className="h-10 w-10 rounded-lg bg-secondary flex items-center justify-center text-foreground">
-                  <Trophy className="h-5 w-5" />
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Academic Modules Preparation */}
-          <Card className="border border-border/70 bg-card">
-            <CardHeader>
-              <div className="flex items-center gap-2">
-                <BookOpen className="h-5 w-5 text-foreground" />
-                <CardTitle className="text-base font-bold text-foreground">
-                  Estrutura Acadêmica Conectada
-                </CardTitle>
-              </div>
-              <CardDescription className="text-xs text-muted-foreground">
-                Os módulos acadêmicos serão ativados progressivamente conforme o cronograma de 24
-                prompts.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                <div className="rounded-lg border border-border/60 p-4 space-y-2 bg-secondary/20">
-                  <div className="flex items-center gap-2 font-semibold text-foreground">
-                    <PlayCircle className="h-4 w-4" />
-                    <span>Cursos & Videoaulas</span>
-                  </div>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Tabelas de cursos, módulos, videoaulas e progresso de cada lição estruturadas no
-                    PostgreSQL.
-                  </p>
-                </div>
-
-                <div className="rounded-lg border border-border/60 p-4 space-y-2 bg-secondary/20">
-                  <div className="flex items-center gap-2 font-semibold text-foreground">
-                    <CheckSquare className="h-4 w-4" />
-                    <span>Simulados & Tentativas</span>
-                  </div>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Estrutura de exames, cronometragem, pontuação e estatísticas com proteção
-                    estrita por usuário.
-                  </p>
-                </div>
-
-                <div className="rounded-lg border border-border/60 p-4 space-y-2 bg-secondary/20">
-                  <div className="flex items-center gap-2 font-semibold text-foreground">
-                    <Calendar className="h-4 w-4" />
-                    <span>Sessões & Metas de Estudo</span>
-                  </div>
-                  <p className="text-muted-foreground leading-relaxed">
-                    Registro de sessões, metas diárias de minutos e planos de estudo periódicos
-                    preparados.
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+    <div className="space-y-6">
+      {/* Header */}
+      <header className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          {profile.isLoading ? (
+            <Skeleton className="h-8 w-52" />
+          ) : (
+            <h1 className="font-heading text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+              {firstName ? `Olá, ${firstName} 👋` : "Olá! 👋"}
+            </h1>
+          )}
+          <p className="mt-1 text-sm text-muted-foreground">Vamos continuar sua preparação?</p>
         </div>
-      </main>
+        <div className="w-full lg:w-auto lg:min-w-[20rem]">
+          <ObjectiveCard userId={userId} />
+        </div>
+      </header>
 
-      <Footer />
+      {/* Mobile: continuar estudando primeiro */}
+      <div className="lg:hidden">
+        <ContinueStudying userId={userId} />
+      </div>
+
+      {/* Resumo */}
+      <DashboardStats userId={userId} />
+
+      {/* Ações rápidas */}
+      <QuickActions />
+
+      {/* Desktop: continuar estudando + metas */}
+      <div className="grid gap-4 lg:grid-cols-3">
+        <div className="hidden lg:col-span-2 lg:block">
+          <ContinueStudying userId={userId} />
+        </div>
+        <div className="lg:col-span-1">
+          <UpcomingActivities userId={userId} />
+        </div>
+        <div className="lg:col-span-2 lg:col-start-1 lg:row-start-2">
+          <PerformanceWidget userId={userId} />
+        </div>
+        <div className="lg:col-span-1 lg:row-start-2">
+          <GoalsWidget userId={userId} />
+        </div>
+      </div>
+
+      <RecentActivity userId={userId} />
+
+      <p className="text-center text-xs text-muted-foreground">
+        Precisa de ajuda para começar?{" "}
+        <Button asChild variant="link" className="h-auto p-0 text-xs">
+          <Link to="/app/ajuda">Fale com a Minerva</Link>
+        </Button>
+      </p>
     </div>
   );
 }

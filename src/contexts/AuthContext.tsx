@@ -61,7 +61,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     let mounted = true;
 
-    async function initAuth() {
+    async function initAuth(): Promise<(() => void) | undefined> {
       try {
         if (isSupabaseConfigured) {
           const {
@@ -123,6 +123,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setIsLoading(false);
         }
       }
+      return undefined;
     }
 
     const cleanupPromise = initAuth();
@@ -150,7 +151,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const mockProfile: UserProfile = {
         id: "demo-profile-id",
         user_id: mockUser.id,
-        full_name: email.split("@")[0],
+        full_name: email.split("@")[0] ?? email,
         email: email,
         status: "active",
         created_at: new Date().toISOString(),
@@ -252,7 +253,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             full_name: fullName,
             email: email,
             status: "active",
-          });
+          } as never);
         } catch {
           // Ignored if trigger handles it
         }
@@ -297,7 +298,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: typeof window !== "undefined" ? `${window.location.origin}/login` : undefined,
+        ...(typeof window !== "undefined"
+          ? { redirectTo: `${window.location.origin}/login` }
+          : {}),
       });
       return { error: error ? new Error(error.message) : null };
     } catch (err: unknown) {
