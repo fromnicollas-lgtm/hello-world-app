@@ -69,7 +69,7 @@ export const WidgetError: React.FC<{ message?: string; onRetry?: () => void }> =
 
 export const WidgetEmpty: React.FC<{
   title: string;
-  description?: string;
+  description?: string | undefined;
   action?: React.ReactNode;
 }> = ({ title, description, action }) => (
   <div className="rounded-xl border border-dashed border-border bg-secondary/30 px-4 py-8 text-center">

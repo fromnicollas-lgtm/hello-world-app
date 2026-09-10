@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import {
-  Bell,
   ChevronsLeft,
   ChevronsRight,
   CircleHelp,
@@ -12,6 +11,7 @@ import {
   UserRound,
 } from "lucide-react";
 import { navGroups, allNavItems, type NavItem } from "./navigation";
+import { NotificationsBell } from "../dashboard/NotificationsBell";
 import { Breadcrumbs, type Crumb } from "./PageShell";
 import { useAuth } from "../../hooks/useAuth";
 import { cn } from "../../lib/utils";
@@ -191,6 +191,7 @@ const UserMenu: React.FC = () => {
 
 export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { pathname } = useLocation();
+  const { user } = useAuth();
   const active = useActiveItem(pathname);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
@@ -305,9 +306,7 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
               >
                 <Search className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" size="icon" aria-label="Notificações">
-                <Bell className="h-4 w-4" />
-              </Button>
+              <NotificationsBell userId={user?.id} />
               <UserMenu />
             </div>
           </header>

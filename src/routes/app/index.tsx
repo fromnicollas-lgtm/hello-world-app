@@ -1,9 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { BookOpen, CalendarRange, LineChart, PlayCircle, Target, Trophy } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../../hooks/useAuth";
-import { PageHeader, Section, StatCard, ProgressBar } from "../../components/app/PageShell";
-import { EmptyState } from "../../components/app/states";
-import { Badge } from "../../components/ui/badge";
+import { profileQuery } from "../../lib/dashboard.queries";
+import { DashboardStats } from "../../components/dashboard/DashboardStats";
+import { ContinueStudying } from "../../components/dashboard/ContinueStudying";
+import { GoalsWidget } from "../../components/dashboard/GoalsWidget";
+import { PerformanceWidget } from "../../components/dashboard/PerformanceWidget";
+import { UpcomingActivities } from "../../components/dashboard/UpcomingActivities";
+import { RecentActivity } from "../../components/dashboard/RecentActivity";
+import { QuickActions } from "../../components/dashboard/QuickActions";
+import { ObjectiveCard } from "../../components/dashboard/ObjectiveCard";
+import { Skeleton } from "../../components/ui/skeleton";
 import { Button } from "../../components/ui/button";
 
 export const Route = createFileRoute("/app/")({
@@ -19,68 +26,84 @@ export const Route = createFileRoute("/app/")({
         property: "og:description",
         content: "Acompanhe sua preparação, metas e desempenho no portal da Minerva Educação.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: StudentHome,
 });
 
 function StudentHome() {
-  const { user, profile, roles } = useAuth();
-  const firstName = (profile?.full_name || user?.email?.split("@")[0] || "Aluno").split(" ")[0];
+  const { user } = useAuth();
+  const userId = user?.id ?? "";
+  const profile = useQuery({ ...profileQuery(userId), enabled: Boolean(userId) });
+
+  if (!userId) {
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-10 w-56" />
+        <Skeleton className="h-28 w-full" />
+        <Skeleton className="h-64 w-full" />
+      </div>
+    );
+  }
+
+  const firstName = profile.data?.fullName?.trim().split(" ")[0];
 
   return (
-    <>
-      <PageHeader
-        title={`Olá, ${firstName}`}
-        description="Este é o seu ponto de partida diário. Os módulos serão ativados progressivamente."
-        actions={
-          <Badge variant="outline" className="text-[10px] font-semibold uppercase">
-            {roles.length ? roles.join(", ") : "student"}
-          </Badge>
-        }
-      />
-
-      <Section
-        title="Resumo da preparação"
-        description="Estrutura pronta — os indicadores reais chegam com os próximos módulos."
-      >
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <StatCard label="Cursos em andamento" value="—" hint="Aguardando módulo" icon={BookOpen} />
-          <StatCard label="Questões resolvidas" value="—" hint="Aguardando módulo" icon={Target} />
-          <StatCard label="Meta semanal" value="—" hint="Aguardando módulo" icon={CalendarRange} />
-          <StatCard label="Desempenho" value="—" hint="Aguardando módulo" icon={LineChart} />
+    <div className="space-y-6">
+      {/* Header */}
+      <header className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          {profile.isLoading ? (
+            <Skeleton className="h-8 w-52" />
+          ) : (
+            <h1 className="font-heading text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+              {firstName ? `Olá, ${firstName} 👋` : "Olá! 👋"}
+            </h1>
+          )}
+          <p className="mt-1 text-sm text-muted-foreground">Vamos continuar sua preparação?</p>
         </div>
-      </Section>
+        <div className="w-full lg:w-auto lg:min-w-[20rem]">
+          <ObjectiveCard userId={userId} />
+        </div>
+      </header>
 
-      <Section title="Continuar estudando">
-        <EmptyState
-          icon={PlayCircle}
-          title="Você ainda não iniciou nenhum curso."
-          description="Quando o módulo de cursos for liberado, sua última aula aparecerá aqui para retomar em um toque."
-        />
-      </Section>
-
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <Section title="Próximas metas">
-          <div className="space-y-4 rounded-xl border border-border bg-card p-5">
-            <p className="text-xs text-muted-foreground">
-              Área reservada para as metas do seu cronograma de estudos.
-            </p>
-            <ProgressBar value={0} label="Progresso semanal" />
-            <Button asChild size="sm" variant="outline">
-              <Link to="/app/planejamento">Abrir planejamento</Link>
-            </Button>
-          </div>
-        </Section>
-
-        <Section title="Atividades recentes">
-          <EmptyState
-            icon={Trophy}
-            title="Nenhuma atividade registrada."
-            description="Aulas assistidas, simulados e conquistas aparecerão nesta lista."
-          />
-        </Section>
+      {/* Mobile: continuar estudando primeiro */}
+      <div className="lg:hidden">
+        <ContinueStudying userId={userId} />
       </div>
-    </>
+
+      {/* Resumo */}
+      <DashboardStats userId={userId} />
+
+      {/* Ações rápidas */}
+      <QuickActions />
+
+      {/* Desktop: continuar estudando + metas */}
+      <div className="grid gap-4 lg:grid-cols-3">
+        <div className="hidden lg:col-span-2 lg:block">
+          <ContinueStudying userId={userId} />
+        </div>
+        <div className="lg:col-span-1">
+          <UpcomingActivities userId={userId} />
+        </div>
+        <div className="lg:col-span-2 lg:col-start-1 lg:row-start-2">
+          <PerformanceWidget userId={userId} />
+        </div>
+        <div className="lg:col-span-1 lg:row-start-2">
+          <GoalsWidget userId={userId} />
+        </div>
+      </div>
+
+      <RecentActivity userId={userId} />
+
+      <p className="text-center text-xs text-muted-foreground">
+        Precisa de ajuda para começar?{" "}
+        <Button asChild variant="link" className="h-auto p-0 text-xs">
+          <Link to="/app/ajuda">Fale com a Minerva</Link>
+        </Button>
+      </p>
+    </div>
   );
 }
