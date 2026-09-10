@@ -305,9 +305,7 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
               >
                 <Search className="h-4 w-4" />
               </Button>
-              <Button variant="ghost" size="icon" aria-label="Notificações">
-                <Bell className="h-4 w-4" />
-              </Button>
+              <NotificationsBell userId={user?.id} />
               <UserMenu />
             </div>
           </header>
