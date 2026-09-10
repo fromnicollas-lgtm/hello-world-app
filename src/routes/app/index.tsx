@@ -64,7 +64,7 @@ function StudentHome() {
           )}
           <p className="mt-1 text-sm text-muted-foreground">Vamos continuar sua preparação?</p>
         </div>
-        <div className="lg:w-80">
+        <div className="w-full lg:w-auto lg:min-w-[20rem]">
           <ObjectiveCard userId={userId} />
         </div>
       </header>

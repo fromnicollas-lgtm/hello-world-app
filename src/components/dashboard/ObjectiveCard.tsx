@@ -46,7 +46,7 @@ export const ObjectiveCard: React.FC<{ userId: string }> = ({ userId }) => {
         {profile.isLoading ? (
           <Skeleton className="mt-1 h-4 w-24" />
         ) : (
-          <p className="truncate text-sm font-semibold text-foreground">
+          <p className="text-sm font-semibold leading-tight text-foreground">
             {profile.data?.targetContestName ?? "Defina seu objetivo"}
           </p>
         )}
