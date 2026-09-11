@@ -156,7 +156,7 @@ export const ProgressBar: React.FC<{ value: number; label?: string; className?: 
       {label ? (
         <div className="flex items-center justify-between text-[11px] text-muted-foreground">
           <span className="truncate">{label}</span>
-          <span className="font-mono">{safe}%</span>
+          <span className="font-mono font-semibold text-primary-soft tabular-nums">{safe}%</span>
         </div>
       ) : null}
       <div
@@ -165,10 +165,10 @@ export const ProgressBar: React.FC<{ value: number; label?: string; className?: 
         aria-valuemin={0}
         aria-valuemax={100}
         aria-label={label ?? "Progresso"}
-        className="h-1.5 w-full overflow-hidden rounded-full bg-secondary"
+        className="relative h-2 w-full overflow-hidden rounded-full border border-border/60 bg-secondary/60"
       >
         <div
-          className="h-full rounded-full bg-foreground transition-[width] duration-500"
+          className="minerva-progress h-full rounded-full transition-[width] duration-700 ease-out"
           style={{ width: `${safe}%` }}
         />
       </div>
