@@ -251,11 +251,11 @@ function LandingPage() {
           {/* Fundo Tecnológico Abstrato (Iluminação Ambiental + Grid de Linhas Finas) */}
           <div className="absolute inset-0 pointer-events-none">
             {/* Iluminação suave no centro-topo */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] sm:w-[900px] h-[350px] sm:h-[500px] bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_70%)] blur-2xl" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] sm:w-[900px] h-[350px] sm:h-[500px] bg-[radial-gradient(circle_at_top,oklch(0.627_0.245_303_/_0.28),transparent_70%)] blur-2xl" />
             {/* Grid geométrico discreto de 40px */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff04_1px,transparent_1px),linear-gradient(to_bottom,#ffffff04_1px,transparent_1px)] bg-[size:40px_40px]" />
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,oklch(0.627_0.245_303_/_0.06)_1px,transparent_1px),linear-gradient(to_bottom,oklch(0.627_0.245_303_/_0.06)_1px,transparent_1px)] bg-[size:40px_40px]" />
             {/* Vinheta lateral sutil */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_50%,#070709_100%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_50%,oklch(0.115_0.008_288)_100%)]" />
           </div>
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 w-full z-10">
@@ -532,7 +532,7 @@ function LandingPage() {
         {/* ==================================================================== */}
         {/* TRANSIÇÃO ELEGANTE PARA SEÇÃO CLARA                                  */}
         {/* ==================================================================== */}
-        <div className="h-8 sm:h-12 bg-gradient-to-b from-neutral-950 to-[#fbfbfb]" />
+        <div className="h-8 sm:h-12 bg-gradient-to-b from-background to-card/40" />
 
         {/* ==================================================================== */}
         {/* SEÇÃO 2: PREPARE-SE PARA OS PRINCIPAIS CONCURSOS (CLARA)             */}
@@ -1273,7 +1273,7 @@ function LandingPage() {
               </div>
 
               {/* Plano 2: Completo (Mais Escolhido) */}
-              <div className="relative rounded-2xl border-2 border-border bg-card p-6 sm:p-7 flex flex-col justify-between shadow-xl ring-1 ring-neutral-950/10">
+              <div className="relative rounded-2xl border-2 border-border bg-card p-6 sm:p-7 flex flex-col justify-between shadow-xl ring-1 ring-primary/20">
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-background px-3.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-foreground">
                   Mais escolhido
                 </div>
@@ -1430,7 +1430,7 @@ function LandingPage() {
         <section className="py-20 sm:py-32 bg-background text-foreground relative overflow-hidden">
           {/* Iluminação de Fundo */}
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] sm:w-[700px] h-[250px] sm:h-[350px] bg-[radial-gradient(circle_at_bottom,rgba(255,255,255,0.07),transparent_70%)] blur-2xl" />
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] sm:w-[700px] h-[250px] sm:h-[350px] bg-[radial-gradient(circle_at_bottom,oklch(0.627_0.245_303_/_0.25),transparent_70%)] blur-2xl" />
           </div>
 
           <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8 space-y-6 z-10">

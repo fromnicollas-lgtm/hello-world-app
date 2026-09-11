@@ -127,7 +127,7 @@ export const Navbar: React.FC = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="flex items-center gap-2.5 border border-border bg-card/80 px-3 py-1.5 rounded-lg hover:border-primary/50 transition-colors cursor-pointer">
-                    <Avatar className="h-7 w-7 rounded-full ring-1 ring-neutral-700">
+                    <Avatar className="h-7 w-7 rounded-full ring-1 ring-primary/40">
                       <AvatarImage
                         src={profile?.avatar_url || ""}
                         alt={profile?.full_name || "Usuário"}
