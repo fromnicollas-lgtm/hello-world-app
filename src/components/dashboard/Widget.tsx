@@ -21,15 +21,22 @@ export const Widget: React.FC<WidgetProps> = ({
 }) => (
   <section
     className={cn(
-      "rounded-2xl border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md",
+      "surface-card card-lift relative overflow-hidden rounded-2xl p-5",
       className,
     )}
   >
+    <span
+      aria-hidden
+      className="aura -top-16 -right-12 h-32 w-32 opacity-20 animate-pulse-glow"
+    />
     {(title || action) && (
-      <header className="mb-4 flex items-start justify-between gap-3">
+      <header className="relative mb-4 flex items-start justify-between gap-3">
         <div>
           {title ? (
-            <h2 className="text-sm font-semibold tracking-tight text-foreground">{title}</h2>
+            <h2 className="font-heading flex items-center gap-2 text-sm font-semibold tracking-tight text-foreground">
+              <span aria-hidden className="bg-gradient-primary h-3.5 w-1 rounded-full" />
+              {title}
+            </h2>
           ) : null}
           {description ? (
             <p className="mt-0.5 text-xs text-muted-foreground">{description}</p>
@@ -38,7 +45,7 @@ export const Widget: React.FC<WidgetProps> = ({
         {action}
       </header>
     )}
-    {children}
+    <div className="relative">{children}</div>
   </section>
 );
 

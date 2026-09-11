@@ -124,14 +124,19 @@ interface StatCardProps {
 }
 
 export const StatCard: React.FC<StatCardProps> = ({ label, value, hint, icon: Icon }) => (
-  <div className="flex items-start justify-between gap-3 rounded-xl border border-border bg-card p-5 transition-colors hover:border-foreground/20">
-    <div className="min-w-0">
-      <p className="truncate text-xs font-medium text-muted-foreground">{label}</p>
-      <p className="font-heading mt-1 text-2xl font-bold tracking-tight text-foreground">{value}</p>
+  <div className="surface-card card-lift relative flex items-start justify-between gap-3 overflow-hidden rounded-xl p-5">
+    <span aria-hidden className="aura -top-12 -left-8 h-24 w-24 opacity-20" />
+    <div className="relative min-w-0">
+      <p className="truncate text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
+        {label}
+      </p>
+      <p className="font-heading mt-1 text-2xl font-bold tracking-tight text-foreground tabular-nums">
+        {value}
+      </p>
       {hint ? <p className="mt-0.5 text-[11px] text-muted-foreground">{hint}</p> : null}
     </div>
     {Icon ? (
-      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-secondary text-foreground">
+      <div className="relative grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-primary/25 bg-primary/12 text-primary-soft">
         <Icon className="h-5 w-5" />
       </div>
     ) : null}
@@ -151,7 +156,7 @@ export const ProgressBar: React.FC<{ value: number; label?: string; className?: 
       {label ? (
         <div className="flex items-center justify-between text-[11px] text-muted-foreground">
           <span className="truncate">{label}</span>
-          <span className="font-mono">{safe}%</span>
+          <span className="font-mono font-semibold text-primary-soft tabular-nums">{safe}%</span>
         </div>
       ) : null}
       <div
@@ -160,10 +165,10 @@ export const ProgressBar: React.FC<{ value: number; label?: string; className?: 
         aria-valuemin={0}
         aria-valuemax={100}
         aria-label={label ?? "Progresso"}
-        className="h-1.5 w-full overflow-hidden rounded-full bg-secondary"
+        className="relative h-2 w-full overflow-hidden rounded-full border border-border/60 bg-secondary/60"
       >
         <div
-          className="h-full rounded-full bg-foreground transition-[width] duration-500"
+          className="minerva-progress h-full rounded-full transition-[width] duration-700 ease-out"
           style={{ width: `${safe}%` }}
         />
       </div>
