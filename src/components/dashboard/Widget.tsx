@@ -45,7 +45,7 @@ export const Widget: React.FC<WidgetProps> = ({
         {action}
       </header>
     )}
-    {children}
+    <div className="relative">{children}</div>
   </section>
 );
 
