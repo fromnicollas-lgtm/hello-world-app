@@ -235,7 +235,7 @@ function LandingPage() {
   const [selectedDayIndex, setSelectedDayIndex] = useState<number>(0);
 
   return (
-    <div className="flex min-h-screen flex-col bg-neutral-950 text-white selection:bg-white selection:text-neutral-950 font-sans antialiased overflow-x-clip">
+    <div className="flex min-h-screen flex-col bg-background text-foreground  font-sans antialiased overflow-x-clip">
       <Navbar />
 
       <main className="flex-1">
@@ -246,7 +246,7 @@ function LandingPage() {
           ref={heroRef}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className="relative min-h-[92vh] flex items-center pt-24 pb-16 sm:pt-32 sm:pb-24 lg:pt-36 lg:pb-28 overflow-hidden bg-neutral-950 border-b border-neutral-850"
+          className="relative min-h-[92vh] flex items-center pt-24 pb-16 sm:pt-32 sm:pb-24 lg:pt-36 lg:pb-28 overflow-hidden bg-background border-b border-border"
         >
           {/* Fundo Tecnológico Abstrato (Iluminação Ambiental + Grid de Linhas Finas) */}
           <div className="absolute inset-0 pointer-events-none">
@@ -263,18 +263,18 @@ function LandingPage() {
               {/* Coluna de Texto Principal */}
               <div className="lg:col-span-6 space-y-6 text-left">
                 {/* Badge de Destaque Tecnológico */}
-                <div className="inline-flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900/90 px-3.5 py-1 text-[11px] font-semibold tracking-wider uppercase text-neutral-300 backdrop-blur-sm">
-                  <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
+                <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/90 px-3.5 py-1 text-[11px] font-semibold tracking-wider uppercase text-muted-foreground backdrop-blur-sm">
+                  <span className="h-1.5 w-1.5 rounded-full bg-card animate-pulse" />
                   <span>PREPARAÇÃO DE ALTO DESEMPENHO</span>
                 </div>
 
                 {/* Headline Principal */}
-                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.12]">
+                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground leading-[1.12]">
                   Sua aprovação começa com uma estratégia melhor.
                 </h1>
 
                 {/* Subheadline */}
-                <p className="text-sm sm:text-base lg:text-lg text-neutral-400 font-normal leading-relaxed max-w-xl">
+                <p className="text-sm sm:text-base lg:text-lg text-muted-foreground font-normal leading-relaxed max-w-xl">
                   Cursos, questões, simulados, planejamento e acompanhamento para transformar sua
                   rotina em uma preparação tática de alta performance.
                 </p>
@@ -284,7 +284,7 @@ function LandingPage() {
                   <Button
                     size="lg"
                     asChild
-                    className="h-12 px-7 bg-white text-neutral-950 hover:bg-neutral-200 font-semibold text-sm rounded-xl shadow-lg shadow-white/5 transition-all cursor-pointer min-h-[48px]"
+                    className="h-12 px-7 bg-gradient-primary text-primary-foreground hover:opacity-90 minerva-glow-strong font-semibold text-sm rounded-xl shadow-lg shadow-primary/5 transition-all cursor-pointer min-h-[48px]"
                   >
                     <Link to="/register">
                       <span>Começar agora</span>
@@ -295,15 +295,15 @@ function LandingPage() {
                     size="lg"
                     variant="outline"
                     asChild
-                    className="h-12 px-7 border-neutral-800 bg-neutral-900/60 text-white hover:bg-neutral-800 hover:text-white font-medium text-sm rounded-xl transition-all cursor-pointer min-h-[48px]"
+                    className="h-12 px-7 border-border bg-card/60 text-foreground hover:bg-secondary hover:text-foreground font-medium text-sm rounded-xl transition-all cursor-pointer min-h-[48px]"
                   >
                     <a href="#concursos">Conhecer a plataforma</a>
                   </Button>
                 </div>
 
                 {/* Texto de Confiança */}
-                <div className="pt-4 border-t border-neutral-900/80 flex items-center gap-2.5 text-xs text-neutral-400 font-medium">
-                  <CheckCircle2 className="h-4 w-4 text-white shrink-0" />
+                <div className="pt-4 border-t border-border flex items-center gap-2.5 text-xs text-muted-foreground font-medium">
+                  <CheckCircle2 className="h-4 w-4 text-foreground shrink-0" />
                   <span>
                     Preparação para AFA, EFOMM, EsPCEx, Escola Naval, ESA, EEAR, EPCAR e Colégio
                     Naval.
@@ -324,32 +324,32 @@ function LandingPage() {
                   }}
                 >
                   {/* Moldura da Interface Principal */}
-                  <div className="rounded-2xl border border-neutral-800 bg-neutral-900/90 p-4 sm:p-5 shadow-2xl shadow-black/80 backdrop-blur-xl">
+                  <div className="rounded-2xl border border-border bg-card/90 p-4 sm:p-5 shadow-2xl shadow-black/80 backdrop-blur-xl">
                     {/* Barra Superior do Sistema */}
-                    <div className="flex items-center justify-between border-b border-neutral-800/80 pb-3 px-2">
+                    <div className="flex items-center justify-between border-b border-border pb-3 px-2">
                       <div className="flex items-center gap-2">
-                        <div className="h-2.5 w-2.5 rounded-full bg-neutral-700" />
-                        <div className="h-2.5 w-2.5 rounded-full bg-neutral-700" />
-                        <div className="h-2.5 w-2.5 rounded-full bg-neutral-700" />
-                        <span className="ml-2 text-[11px] font-mono text-neutral-400">
+                        <div className="h-2.5 w-2.5 rounded-full bg-secondary" />
+                        <div className="h-2.5 w-2.5 rounded-full bg-secondary" />
+                        <div className="h-2.5 w-2.5 rounded-full bg-secondary" />
+                        <span className="ml-2 text-[11px] font-mono text-muted-foreground">
                           minerva.app/aluno/dashboard
                         </span>
                       </div>
-                      <div className="flex items-center gap-2 text-[11px] font-medium text-neutral-300">
+                      <div className="flex items-center gap-2 text-[11px] font-medium text-muted-foreground">
                         <span className="h-2 w-2 rounded-full bg-emerald-400" />
                         <span>EsPCEx & AFA • 2026</span>
                       </div>
                     </div>
 
                     {/* Miolo do Mockup */}
-                    <div className="p-3 sm:p-4 space-y-3.5 text-white">
+                    <div className="p-3 sm:p-4 space-y-3.5 text-foreground">
                       {/* Banner de Boas-vindas com Streak de Estudos */}
-                      <div className="flex items-center justify-between gap-3 p-3.5 rounded-xl border border-neutral-800 bg-neutral-950/60">
+                      <div className="flex items-center justify-between gap-3 p-3.5 rounded-xl border border-border bg-background/60">
                         <div className="space-y-0.5">
-                          <p className="text-[11px] font-mono text-neutral-400 uppercase">
+                          <p className="text-[11px] font-mono text-muted-foreground uppercase">
                             Sequência Ativa
                           </p>
-                          <p className="text-sm font-bold text-white flex items-center gap-1.5">
+                          <p className="text-sm font-bold text-foreground flex items-center gap-1.5">
                             <Flame className="h-4 w-4 text-amber-400 fill-amber-400" />
                             14 dias consecutivos de estudo
                           </p>
@@ -358,14 +358,14 @@ function LandingPage() {
                         <div className="flex items-center gap-1.5">
                           {["S", "T", "Q", "Q", "S", "S", "D"].map((dia, idx) => (
                             <div key={idx} className="flex flex-col items-center gap-1">
-                              <span className="text-[9px] font-mono text-neutral-400">{dia}</span>
+                              <span className="text-[9px] font-mono text-muted-foreground">{dia}</span>
                               <div
                                 className={`h-5 w-5 rounded-md flex items-center justify-center text-[10px] font-bold ${
                                   idx < 5
-                                    ? "bg-white text-neutral-950"
+                                    ? "bg-gradient-primary text-primary-foreground"
                                     : idx === 5
-                                      ? "bg-neutral-800 text-white border border-neutral-700"
-                                      : "bg-neutral-900 text-neutral-500"
+                                      ? "bg-secondary text-foreground border border-border"
+                                      : "bg-card text-muted-foreground"
                                 }`}
                               >
                                 {idx < 5 ? "✓" : ""}
@@ -378,36 +378,36 @@ function LandingPage() {
                       {/* Cards de Métricas e Banco de Questões */}
                       <div className="grid grid-cols-2 gap-3">
                         {/* Bloco 1: Meta de Estudo Diária */}
-                        <div className="p-3.5 rounded-xl border border-neutral-800 bg-neutral-950/40 space-y-2">
+                        <div className="p-3.5 rounded-xl border border-border bg-background/40 space-y-2">
                           <div className="flex items-center justify-between text-[11px]">
-                            <span className="text-neutral-400 font-medium">Meta Diária</span>
-                            <span className="font-mono text-white font-bold">85 / 120 min</span>
+                            <span className="text-muted-foreground font-medium">Meta Diária</span>
+                            <span className="font-mono text-foreground font-bold">85 / 120 min</span>
                           </div>
-                          <div className="h-2 w-full rounded-full bg-neutral-800 overflow-hidden">
+                          <div className="h-2 w-full rounded-full bg-secondary overflow-hidden">
                             <div
-                              className="h-full bg-white rounded-full transition-all duration-1000"
+                              className="h-full minerva-progress rounded-full transition-all duration-1000"
                               style={{ width: "71%" }}
                             />
                           </div>
-                          <p className="text-[10px] text-neutral-400">
+                          <p className="text-[10px] text-muted-foreground">
                             Faltam 35 min para cumprir o ciclo de Física.
                           </p>
                         </div>
 
                         {/* Bloco 2: Banco de Questões */}
-                        <div className="p-3.5 rounded-xl border border-neutral-800 bg-neutral-950/40 space-y-2">
+                        <div className="p-3.5 rounded-xl border border-border bg-background/40 space-y-2">
                           <div className="flex items-center justify-between text-[11px]">
-                            <span className="text-neutral-400 font-medium">Questões na Semana</span>
+                            <span className="text-muted-foreground font-medium">Questões na Semana</span>
                             <span className="font-mono text-emerald-400 font-bold">
                               86.2% acertos
                             </span>
                           </div>
                           <div className="flex items-baseline gap-2">
-                            <span className="text-xl font-bold font-mono text-white">248</span>
-                            <span className="text-[11px] text-neutral-400">itens resolvidos</span>
+                            <span className="text-xl font-bold font-mono text-foreground">248</span>
+                            <span className="text-[11px] text-muted-foreground">itens resolvidos</span>
                           </div>
-                          <div className="flex items-center gap-2 text-[10px] text-neutral-300">
-                            <span className="rounded bg-neutral-800 px-1.5 py-0.5 text-neutral-300 font-mono">
+                          <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                            <span className="rounded bg-secondary px-1.5 py-0.5 text-muted-foreground font-mono">
                               AFA 2024
                             </span>
                             <span>Geometria Analítica</span>
@@ -416,32 +416,32 @@ function LandingPage() {
                       </div>
 
                       {/* Módulo em Andamento */}
-                      <div className="p-3.5 rounded-xl border border-neutral-800 bg-neutral-950/40 flex items-center justify-between">
+                      <div className="p-3.5 rounded-xl border border-border bg-background/40 flex items-center justify-between">
                         <div className="space-y-0.5">
                           <div className="flex items-center gap-2">
-                            <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-neutral-800 text-neutral-300">
+                            <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-secondary text-muted-foreground">
                               Aula 04
                             </span>
-                            <span className="text-xs font-bold text-white">
+                            <span className="text-xs font-bold text-foreground">
                               Dinâmica dos Corpos e Força de Atrito
                             </span>
                           </div>
-                          <p className="text-[11px] text-neutral-400">
+                          <p className="text-[11px] text-muted-foreground">
                             Física I • Módulo 03 • Prof. Minerva
                           </p>
                         </div>
-                        <div className="h-8 w-8 rounded-lg bg-white text-neutral-950 flex items-center justify-center shrink-0">
+                        <div className="h-8 w-8 rounded-lg bg-gradient-primary text-primary-foreground flex items-center justify-center shrink-0">
                           <Play className="h-3.5 w-3.5 fill-current ml-0.5" />
                         </div>
                       </div>
 
                       {/* Notificação Demonstrativa */}
-                      <div className="pt-1 flex items-center justify-between text-[10px] text-neutral-400 border-t border-neutral-800">
+                      <div className="pt-1 flex items-center justify-between text-[10px] text-muted-foreground border-t border-border">
                         <span className="flex items-center gap-1.5">
                           <Check className="h-3 w-3 text-emerald-400" />
                           Simulado Geral #03 Agendado para Sábado às 08h00
                         </span>
-                        <span className="font-mono text-neutral-500 uppercase">
+                        <span className="font-mono text-muted-foreground uppercase">
                           Painel do Aluno
                         </span>
                       </div>
@@ -451,32 +451,32 @@ function LandingPage() {
 
                 {/* VERSÃO MOBILE DEDICADA (Clara, nativa, proporcional para telas verticais 360px-430px) */}
                 <div className="block sm:hidden w-full">
-                  <div className="rounded-2xl border border-neutral-800 bg-neutral-900/95 p-4 shadow-xl space-y-3">
+                  <div className="rounded-2xl border border-border bg-card/95 p-4 shadow-xl space-y-3">
                     {/* Header Mobile do App */}
-                    <div className="flex items-center justify-between border-b border-neutral-800 pb-2.5">
+                    <div className="flex items-center justify-between border-b border-border pb-2.5">
                       <div className="flex items-center gap-2">
                         <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-                        <span className="text-xs font-bold text-white">EsPCEx & AFA 2026</span>
+                        <span className="text-xs font-bold text-foreground">EsPCEx & AFA 2026</span>
                       </div>
-                      <span className="text-[10px] font-mono bg-neutral-800 text-neutral-300 px-2 py-0.5 rounded">
+                      <span className="text-[10px] font-mono bg-secondary text-muted-foreground px-2 py-0.5 rounded">
                         MINERVA OS
                       </span>
                     </div>
 
                     {/* Streak Compacto */}
-                    <div className="p-3 rounded-xl border border-neutral-800 bg-neutral-950/70 flex items-center justify-between">
+                    <div className="p-3 rounded-xl border border-border bg-background/70 flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <Flame className="h-5 w-5 text-amber-400 fill-amber-400 shrink-0" />
                         <div>
-                          <p className="text-xs font-bold text-white">14 dias seguidos</p>
-                          <p className="text-[10px] text-neutral-400">Sequência ativa</p>
+                          <p className="text-xs font-bold text-foreground">14 dias seguidos</p>
+                          <p className="text-[10px] text-muted-foreground">Sequência ativa</p>
                         </div>
                       </div>
                       <div className="flex items-center gap-1">
                         {["S", "T", "Q", "Q", "S"].map((d, i) => (
                           <span
                             key={i}
-                            className="h-5 w-5 rounded bg-white text-neutral-950 text-[10px] font-bold flex items-center justify-center"
+                            className="h-5 w-5 rounded bg-gradient-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center"
                           >
                             ✓
                           </span>
@@ -485,22 +485,22 @@ function LandingPage() {
                     </div>
 
                     {/* Meta Diária */}
-                    <div className="p-3 rounded-xl border border-neutral-800 bg-neutral-950/50 space-y-1.5">
+                    <div className="p-3 rounded-xl border border-border bg-background/50 space-y-1.5">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="text-neutral-400">Meta de hoje: Física</span>
-                        <span className="font-mono text-white font-bold">85 / 120 min</span>
+                        <span className="text-muted-foreground">Meta de hoje: Física</span>
+                        <span className="font-mono text-foreground font-bold">85 / 120 min</span>
                       </div>
-                      <div className="h-2 w-full rounded-full bg-neutral-800 overflow-hidden">
-                        <div className="h-full bg-white rounded-full w-[71%]" />
+                      <div className="h-2 w-full rounded-full bg-secondary overflow-hidden">
+                        <div className="h-full minerva-progress rounded-full w-[71%]" />
                       </div>
                     </div>
 
                     {/* Resumo de Questões */}
-                    <div className="p-3 rounded-xl border border-neutral-800 bg-neutral-950/50 flex items-center justify-between">
+                    <div className="p-3 rounded-xl border border-border bg-background/50 flex items-center justify-between">
                       <div>
-                        <p className="text-[10px] text-neutral-400">Semana de exercícios</p>
-                        <p className="text-base font-bold font-mono text-white">
-                          248 <span className="text-xs font-normal text-neutral-400">questões</span>
+                        <p className="text-[10px] text-muted-foreground">Semana de exercícios</p>
+                        <p className="text-base font-bold font-mono text-foreground">
+                          248 <span className="text-xs font-normal text-muted-foreground">questões</span>
                         </p>
                       </div>
                       <span className="text-xs font-mono font-bold text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-2.5 py-1 rounded-md">
@@ -509,16 +509,16 @@ function LandingPage() {
                     </div>
 
                     {/* Aula Atual com Botão Play */}
-                    <div className="p-3 rounded-xl border border-neutral-800 bg-neutral-950/60 flex items-center justify-between">
+                    <div className="p-3 rounded-xl border border-border bg-background/60 flex items-center justify-between">
                       <div className="space-y-0.5 pr-2">
-                        <span className="text-[9px] font-mono uppercase text-neutral-400">
+                        <span className="text-[9px] font-mono uppercase text-muted-foreground">
                           Aula 04 • Dinâmica
                         </span>
-                        <p className="text-xs font-bold text-white truncate max-w-[200px]">
+                        <p className="text-xs font-bold text-foreground truncate max-w-[200px]">
                           Força de Atrito & Planos
                         </p>
                       </div>
-                      <div className="h-8 w-8 rounded-lg bg-white text-neutral-950 flex items-center justify-center shrink-0">
+                      <div className="h-8 w-8 rounded-lg bg-gradient-primary text-primary-foreground flex items-center justify-center shrink-0">
                         <Play className="h-3.5 w-3.5 fill-current ml-0.5" />
                       </div>
                     </div>
@@ -539,17 +539,17 @@ function LandingPage() {
         {/* ==================================================================== */}
         <section
           id="concursos"
-          className="py-16 sm:py-24 bg-[#fbfbfb] text-neutral-950 border-b border-neutral-200"
+          className="py-16 sm:py-24 bg-card/40 text-foreground border-b border-border"
         >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mb-12 sm:mb-14 space-y-2 text-left">
-              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-300 bg-white px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-neutral-700">
+              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                 <span>CONCURSOS EM FOCO</span>
               </div>
-              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950">
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground">
                 Prepare-se para os desafios que realmente importam.
               </h2>
-              <p className="text-xs sm:text-base text-neutral-600 font-normal leading-relaxed">
+              <p className="text-xs sm:text-base text-muted-foreground font-normal leading-relaxed">
                 Trilhas especializadas desenhadas especificamente para os editais militares mais
                 concorridos do Brasil.
               </p>
@@ -560,32 +560,32 @@ function LandingPage() {
               {CONCURSOS.map((contest) => (
                 <div
                   key={contest.id}
-                  className="group relative rounded-xl border border-neutral-200 bg-white p-4 sm:p-6 shadow-xs hover:shadow-lg hover:-translate-y-1 hover:border-neutral-900 transition-all duration-200 flex flex-col justify-between"
+                  className="group relative rounded-xl border border-border bg-card p-4 sm:p-6 shadow-xs hover:shadow-lg hover:-translate-y-1 hover:border-primary/50 transition-all duration-200 flex flex-col justify-between"
                 >
                   <div className="space-y-2 sm:space-y-3">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-                      <span className="text-xl sm:text-2xl font-black tracking-tight text-neutral-950 font-mono">
+                      <span className="text-xl sm:text-2xl font-black tracking-tight text-foreground font-mono">
                         {contest.name}
                       </span>
-                      <span className="self-start sm:self-auto text-[9px] sm:text-[10px] font-semibold text-neutral-600 uppercase bg-neutral-100 px-2 py-0.5 rounded">
+                      <span className="self-start sm:self-auto text-[9px] sm:text-[10px] font-semibold text-muted-foreground uppercase bg-secondary px-2 py-0.5 rounded">
                         {contest.badge}
                       </span>
                     </div>
 
-                    <h3 className="text-xs sm:text-sm font-bold text-neutral-900 leading-snug">
+                    <h3 className="text-xs sm:text-sm font-bold text-foreground leading-snug">
                       {contest.title}
                     </h3>
 
-                    <p className="hidden sm:block text-xs text-neutral-500 leading-relaxed font-normal">
+                    <p className="hidden sm:block text-xs text-muted-foreground leading-relaxed font-normal">
                       {contest.description}
                     </p>
                   </div>
 
-                  <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-neutral-100 flex items-center justify-between text-xs font-semibold text-neutral-950">
-                    <span className="text-[10px] sm:text-[11px] text-neutral-600 truncate mr-1">
+                  <div className="pt-3 sm:pt-4 mt-3 sm:mt-4 border-t border-border flex items-center justify-between text-xs font-semibold text-foreground">
+                    <span className="text-[10px] sm:text-[11px] text-muted-foreground truncate mr-1">
                       {contest.vagas}
                     </span>
-                    <span className="flex items-center gap-0.5 shrink-0 group-hover:translate-x-0.5 transition-transform text-neutral-950">
+                    <span className="flex items-center gap-0.5 shrink-0 group-hover:translate-x-0.5 transition-transform text-foreground">
                       <span className="hidden sm:inline">Explorar</span>
                       <ChevronRight className="h-3.5 w-3.5" />
                     </span>
@@ -601,18 +601,18 @@ function LandingPage() {
         {/* ==================================================================== */}
         <section
           id="plataforma"
-          className="py-20 sm:py-28 bg-neutral-950 text-white border-b border-neutral-850"
+          className="py-20 sm:py-28 bg-background text-foreground border-b border-border"
         >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mb-12 sm:mb-16 space-y-3 text-left">
-              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900 px-3.5 py-1 text-[10px] font-bold uppercase tracking-widest text-neutral-300">
+              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3.5 py-1 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                 <Layers className="h-3.5 w-3.5" />
                 <span>ECOSSISTEMA INTEGRADO</span>
               </div>
-              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white">
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground">
                 Uma plataforma. Toda a sua preparação.
               </h2>
-              <p className="text-xs sm:text-base text-neutral-400 font-normal leading-relaxed">
+              <p className="text-xs sm:text-base text-muted-foreground font-normal leading-relaxed">
                 Chega de assinar diferentes sites para teoria, questões e simulados. A Minerva
                 unifica todas as ferramentas que você precisa em uma interface única e veloz.
               </p>
@@ -621,124 +621,124 @@ function LandingPage() {
             {/* Bento Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
               {/* Card 1 (Span 2 colunas): Cursos Estruturados */}
-              <div className="md:col-span-2 rounded-2xl border border-neutral-800 bg-neutral-900/70 p-5 sm:p-7 space-y-4 hover:border-neutral-700 transition-colors">
-                <div className="h-10 w-10 rounded-xl bg-white text-neutral-950 flex items-center justify-center">
+              <div className="md:col-span-2 rounded-2xl border border-border bg-card/70 p-5 sm:p-7 space-y-4 hover:border-primary/50 transition-colors">
+                <div className="h-10 w-10 rounded-xl bg-gradient-primary text-primary-foreground flex items-center justify-center">
                   <BookOpen className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-white">
+                  <h3 className="text-lg sm:text-xl font-bold text-foreground">
                     Cursos por Trilha Acadêmica
                   </h3>
-                  <p className="text-xs sm:text-sm text-neutral-400 mt-1 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-muted-foreground mt-1 leading-relaxed">
                     Conteúdo organizado em uma jornada lógica: módulos sequenciais, videoaulas
                     gravadas em alta resolução e apostilas em PDF com a teoria exata do edital.
                   </p>
                 </div>
-                <div className="pt-2 grid grid-cols-2 gap-2 text-xs font-mono text-neutral-300">
-                  <div className="p-2.5 rounded-lg bg-neutral-950 border border-neutral-800">
-                    <p className="text-[10px] text-neutral-400 uppercase">Organização</p>
-                    <p className="font-bold text-white mt-0.5">Por Tópico do Edital</p>
+                <div className="pt-2 grid grid-cols-2 gap-2 text-xs font-mono text-muted-foreground">
+                  <div className="p-2.5 rounded-lg bg-background border border-border">
+                    <p className="text-[10px] text-muted-foreground uppercase">Organização</p>
+                    <p className="font-bold text-foreground mt-0.5">Por Tópico do Edital</p>
                   </div>
-                  <div className="p-2.5 rounded-lg bg-neutral-950 border border-neutral-800">
-                    <p className="text-[10px] text-neutral-400 uppercase">Material</p>
-                    <p className="font-bold text-white mt-0.5">Apostilas em PDF</p>
+                  <div className="p-2.5 rounded-lg bg-background border border-border">
+                    <p className="text-[10px] text-muted-foreground uppercase">Material</p>
+                    <p className="font-bold text-foreground mt-0.5">Apostilas em PDF</p>
                   </div>
                 </div>
               </div>
 
               {/* Card 2: Banco de Questões */}
-              <div className="rounded-2xl border border-neutral-800 bg-neutral-900/70 p-5 sm:p-7 space-y-4 hover:border-neutral-700 transition-colors flex flex-col justify-between">
+              <div className="rounded-2xl border border-border bg-card/70 p-5 sm:p-7 space-y-4 hover:border-primary/50 transition-colors flex flex-col justify-between">
                 <div className="space-y-3">
-                  <div className="h-10 w-10 rounded-xl bg-white text-neutral-950 flex items-center justify-center">
+                  <div className="h-10 w-10 rounded-xl bg-gradient-primary text-primary-foreground flex items-center justify-center">
                     <Database className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="text-base sm:text-lg font-bold text-white">Banco de Questões</h3>
-                    <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
+                    <h3 className="text-base sm:text-lg font-bold text-foreground">Banco de Questões</h3>
+                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
                       Filtros por concurso, matéria, assunto e banca com resoluções comentadas.
                     </p>
                   </div>
                 </div>
-                <span className="text-[11px] font-mono text-neutral-400">
+                <span className="text-[11px] font-mono text-muted-foreground">
                   Milhares de itens catalogados
                 </span>
               </div>
 
               {/* Card 3: Simulados Cronometrados */}
-              <div className="rounded-2xl border border-neutral-800 bg-neutral-900/70 p-5 sm:p-7 space-y-4 hover:border-neutral-700 transition-colors flex flex-col justify-between">
+              <div className="rounded-2xl border border-border bg-card/70 p-5 sm:p-7 space-y-4 hover:border-primary/50 transition-colors flex flex-col justify-between">
                 <div className="space-y-3">
-                  <div className="h-10 w-10 rounded-xl bg-white text-neutral-950 flex items-center justify-center">
+                  <div className="h-10 w-10 rounded-xl bg-gradient-primary text-primary-foreground flex items-center justify-center">
                     <Award className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="text-base sm:text-lg font-bold text-white">Simulados Inéditos</h3>
-                    <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
+                    <h3 className="text-base sm:text-lg font-bold text-foreground">Simulados Inéditos</h3>
+                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
                       Provas com tempo real, distribuição de peso oficial e ranking de desempenho.
                     </p>
                   </div>
                 </div>
-                <span className="text-[11px] font-mono text-neutral-400">
+                <span className="text-[11px] font-mono text-muted-foreground">
                   Condições reais de prova
                 </span>
               </div>
 
               {/* Card 4 (Span 2 colunas): Planejamento e Metas */}
-              <div className="md:col-span-2 rounded-2xl border border-neutral-800 bg-neutral-900/70 p-5 sm:p-7 space-y-4 hover:border-neutral-700 transition-colors">
-                <div className="h-10 w-10 rounded-xl bg-white text-neutral-950 flex items-center justify-center">
+              <div className="md:col-span-2 rounded-2xl border border-border bg-card/70 p-5 sm:p-7 space-y-4 hover:border-primary/50 transition-colors">
+                <div className="h-10 w-10 rounded-xl bg-gradient-primary text-primary-foreground flex items-center justify-center">
                   <Calendar className="h-5 w-5" />
                 </div>
                 <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-white">
+                  <h3 className="text-lg sm:text-xl font-bold text-foreground">
                     Planejamento & Metas Inteligentes
                   </h3>
-                  <p className="text-xs sm:text-sm text-neutral-400 mt-1 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-muted-foreground mt-1 leading-relaxed">
                     Defina suas horas disponíveis e receba um cronograma balanceado para cobrir
                     todas as matérias com revisões periódicas programadas.
                   </p>
                 </div>
-                <div className="flex flex-wrap items-center gap-3 text-xs text-neutral-300">
+                <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1.5">
-                    <Check className="h-3.5 w-3.5 text-white" /> Ciclos semanais
+                    <Check className="h-3.5 w-3.5 text-foreground" /> Ciclos semanais
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <Check className="h-3.5 w-3.5 text-white" /> Metas de minutos
+                    <Check className="h-3.5 w-3.5 text-foreground" /> Metas de minutos
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <Check className="h-3.5 w-3.5 text-white" /> Revisão espaçada
+                    <Check className="h-3.5 w-3.5 text-foreground" /> Revisão espaçada
                   </span>
                 </div>
               </div>
 
               {/* Card 5: Desempenho Analítico */}
-              <div className="rounded-2xl border border-neutral-800 bg-neutral-900/70 p-5 sm:p-7 space-y-4 hover:border-neutral-700 transition-colors flex flex-col justify-between">
+              <div className="rounded-2xl border border-border bg-card/70 p-5 sm:p-7 space-y-4 hover:border-primary/50 transition-colors flex flex-col justify-between">
                 <div className="space-y-3">
-                  <div className="h-10 w-10 rounded-xl bg-white text-neutral-950 flex items-center justify-center">
+                  <div className="h-10 w-10 rounded-xl bg-gradient-primary text-primary-foreground flex items-center justify-center">
                     <BarChart3 className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="text-base sm:text-lg font-bold text-white">Métricas Precisas</h3>
-                    <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
+                    <h3 className="text-base sm:text-lg font-bold text-foreground">Métricas Precisas</h3>
+                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
                       Entenda exatamente onde precisa evoluir por disciplina e assunto.
                     </p>
                   </div>
                 </div>
-                <span className="text-[11px] font-mono text-neutral-400">Diagnóstico contínuo</span>
+                <span className="text-[11px] font-mono text-muted-foreground">Diagnóstico contínuo</span>
               </div>
 
               {/* Card 6: Revisões Espaçadas */}
-              <div className="rounded-2xl border border-neutral-800 bg-neutral-900/70 p-5 sm:p-7 space-y-4 hover:border-neutral-700 transition-colors flex flex-col justify-between">
+              <div className="rounded-2xl border border-border bg-card/70 p-5 sm:p-7 space-y-4 hover:border-primary/50 transition-colors flex flex-col justify-between">
                 <div className="space-y-3">
-                  <div className="h-10 w-10 rounded-xl bg-white text-neutral-950 flex items-center justify-center">
+                  <div className="h-10 w-10 rounded-xl bg-gradient-primary text-primary-foreground flex items-center justify-center">
                     <Repeat className="h-5 w-5" />
                   </div>
                   <div>
-                    <h3 className="text-base sm:text-lg font-bold text-white">Revisões Ativas</h3>
-                    <p className="text-xs text-neutral-400 mt-1 leading-relaxed">
+                    <h3 className="text-base sm:text-lg font-bold text-foreground">Revisões Ativas</h3>
+                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
                       Não deixe o conteúdo desaparecer da memória após ser estudado.
                     </p>
                   </div>
                 </div>
-                <span className="text-[11px] font-mono text-neutral-400">
+                <span className="text-[11px] font-mono text-muted-foreground">
                   Retenção de longo prazo
                 </span>
               </div>
@@ -751,35 +751,35 @@ function LandingPage() {
         {/* ==================================================================== */}
         <section
           id="questoes-demo"
-          className="py-16 sm:py-24 bg-white text-neutral-950 border-b border-neutral-200"
+          className="py-16 sm:py-24 bg-gradient-primary text-primary-foreground border-b border-border"
         >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
               {/* Coluna Esquerda: Texto de Chamada */}
               <div className="lg:col-span-5 space-y-4 text-left">
-                <div className="inline-flex items-center gap-2 rounded-full border border-neutral-300 bg-neutral-100 px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-neutral-800">
+                <div className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                   <Zap className="h-3 w-3" />
                   <span>EXPERIMENTE NA PRÁTICA</span>
                 </div>
-                <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950 leading-tight">
+                <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground leading-tight">
                   Pratique. Analise. Evolua.
                 </h2>
-                <p className="text-xs sm:text-sm text-neutral-600 font-normal leading-relaxed">
+                <p className="text-xs sm:text-sm text-muted-foreground font-normal leading-relaxed">
                   Experimente como funciona o Banco de Questões da Minerva. Selecione uma
                   alternativa ao lado para testar a validação imediata e ver a resolução comentada
                   passo a passo.
                 </p>
-                <div className="space-y-2 pt-2 text-xs text-neutral-700">
+                <div className="space-y-2 pt-2 text-xs text-muted-foreground">
                   <p className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                    <Check className="h-4 w-4 text-foreground shrink-0" />
                     <span>Filtros instantâneos por carreira (AFA, EsPCEx, EFOMM, ESA)</span>
                   </p>
                   <p className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                    <Check className="h-4 w-4 text-foreground shrink-0" />
                     <span>Resoluções didáticas passo a passo</span>
                   </p>
                   <p className="flex items-center gap-2">
-                    <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                    <Check className="h-4 w-4 text-foreground shrink-0" />
                     <span>Histórico de erros e acertos salvo automaticamente</span>
                   </p>
                 </div>
@@ -787,15 +787,15 @@ function LandingPage() {
 
               {/* Coluna Direita: Simulador Interativo da Questão */}
               <div className="lg:col-span-7">
-                <div className="rounded-2xl border border-neutral-300 bg-neutral-50/70 p-4 sm:p-7 shadow-sm space-y-4 sm:space-y-5">
+                <div className="rounded-2xl border border-border bg-secondary/70 p-4 sm:p-7 shadow-sm space-y-4 sm:space-y-5">
                   {/* Cabeçalho da Questão */}
-                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-200 pb-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-3">
                     <div className="flex items-center gap-2">
-                      <span className="rounded bg-neutral-950 text-white px-2 py-0.5 text-[10px] font-bold font-mono">
+                      <span className="rounded bg-background text-foreground px-2 py-0.5 text-[10px] font-bold font-mono">
                         AFA • 2024
                       </span>
-                      <span className="text-xs font-bold text-neutral-800">Matemática</span>
-                      <span className="text-[11px] text-neutral-500">• Geometria Analítica</span>
+                      <span className="text-xs font-bold text-muted-foreground">Matemática</span>
+                      <span className="text-[11px] text-muted-foreground">• Geometria Analítica</span>
                     </div>
                     <span className="text-[10px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded">
                       Dificuldade: Alta
@@ -803,13 +803,13 @@ function LandingPage() {
                   </div>
 
                   {/* Enunciado */}
-                  <div className="space-y-2 text-xs sm:text-sm text-neutral-900 leading-relaxed font-medium">
+                  <div className="space-y-2 text-xs sm:text-sm text-foreground leading-relaxed font-medium">
                     <p>
                       Considere no plano cartesiano a circunferência de equação{" "}
                       <strong>x² + y² - 4x + 6y - 12 = 0</strong>. A reta <em>r</em> tangencia essa
                       circunferência exatamente no ponto <strong>P(5, 1)</strong>.
                     </p>
-                    <p className="text-neutral-700">
+                    <p className="text-muted-foreground">
                       A equação geral da reta <em>r</em> é expressa por:
                     </p>
                   </div>
@@ -824,7 +824,7 @@ function LandingPage() {
                     ].map((alt) => {
                       const isSelected = selectedOption === alt.letra;
                       let optionClasses =
-                        "border-neutral-200 bg-white hover:border-neutral-400 text-neutral-900";
+                        "border-border bg-card hover:border-primary/50 text-foreground";
 
                       if (questionSubmitted) {
                         if (alt.correta) {
@@ -835,7 +835,7 @@ function LandingPage() {
                         }
                       } else if (isSelected) {
                         optionClasses =
-                          "border-neutral-950 bg-neutral-100 font-bold text-neutral-950";
+                          "border-border bg-secondary font-bold text-foreground";
                       }
 
                       return (
@@ -848,7 +848,7 @@ function LandingPage() {
                           className={`w-full text-left p-3 rounded-xl border transition-all flex items-center justify-between cursor-pointer ${optionClasses} min-h-[44px]`}
                         >
                           <div className="flex items-center gap-3">
-                            <span className="h-6 w-6 rounded-md bg-neutral-100 text-neutral-900 flex items-center justify-center font-bold text-xs shrink-0">
+                            <span className="h-6 w-6 rounded-md bg-secondary text-foreground flex items-center justify-center font-bold text-xs shrink-0">
                               {alt.letra}
                             </span>
                             <span className="break-all sm:break-normal">{alt.texto}</span>
@@ -870,11 +870,11 @@ function LandingPage() {
                       size="sm"
                       onClick={() => setQuestionSubmitted(true)}
                       disabled={!selectedOption}
-                      className="bg-neutral-950 text-white hover:bg-neutral-800 text-xs font-bold px-5 h-10 rounded-xl cursor-pointer"
+                      className="bg-gradient-primary text-primary-foreground hover:opacity-90 text-xs font-bold px-5 h-10 rounded-xl cursor-pointer"
                     >
                       Verificar Resposta
                     </Button>
-                    <span className="text-[11px] text-neutral-500 font-mono text-center sm:text-right">
+                    <span className="text-[11px] text-muted-foreground font-mono text-center sm:text-right">
                       {questionSubmitted
                         ? selectedOption === "A"
                           ? "✓ Parabéns! Resposta exata."
@@ -885,9 +885,9 @@ function LandingPage() {
 
                   {/* Resolução Comentada que surge ao responder */}
                   {questionSubmitted && (
-                    <div className="mt-3 p-3.5 rounded-xl bg-neutral-100 border border-neutral-200 text-xs space-y-1.5 animate-in fade-in duration-200">
-                      <p className="font-bold text-neutral-950">Resolução Passo a Passo:</p>
-                      <p className="text-neutral-700 leading-relaxed">
+                    <div className="mt-3 p-3.5 rounded-xl bg-secondary border border-border text-xs space-y-1.5 animate-in fade-in duration-200">
+                      <p className="font-bold text-foreground">Resolução Passo a Passo:</p>
+                      <p className="text-muted-foreground leading-relaxed">
                         1. Completando quadrados, temos o centro C(2, -3) e raio R = 5.
                         <br />
                         2. O vetor normal da reta tangente coincide com o vetor CP = P(5,1) - C(2,-3)
@@ -911,31 +911,31 @@ function LandingPage() {
         {/* ==================================================================== */}
         <section
           id="desempenho"
-          className="py-20 sm:py-28 bg-[#09090c] text-white border-b border-neutral-850"
+          className="py-20 sm:py-28 bg-background text-foreground border-b border-border"
         >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mb-12 sm:mb-16 space-y-3 text-left">
-              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900 px-3.5 py-1 text-[10px] font-bold uppercase tracking-widest text-neutral-300">
+              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3.5 py-1 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                 <BarChart3 className="h-3.5 w-3.5" />
                 <span>INTELIGÊNCIA DE DADOS</span>
               </div>
-              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground leading-tight">
                 Você não precisa estudar mais. Precisa estudar melhor.
               </h2>
-              <p className="text-xs sm:text-base text-neutral-400 font-normal leading-relaxed">
+              <p className="text-xs sm:text-base text-muted-foreground font-normal leading-relaxed">
                 Acompanhe gráficos analíticos de evolução real e descubra com exatidão matemática
                 quais matérias exigem reforço antes da prova.
               </p>
             </div>
 
             {/* Mockup do Painel de Desempenho Analítico */}
-            <div className="rounded-2xl border border-neutral-800 bg-neutral-900/80 p-4 sm:p-7 shadow-2xl backdrop-blur-md space-y-5">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-neutral-800 pb-4">
+            <div className="rounded-2xl border border-border bg-card/80 p-4 sm:p-7 shadow-2xl backdrop-blur-md space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-border pb-4">
                 <div>
-                  <h3 className="text-sm sm:text-base font-bold text-white">
+                  <h3 className="text-sm sm:text-base font-bold text-foreground">
                     Diagnóstico Geral por Disciplina
                   </h3>
-                  <p className="text-[11px] text-neutral-400">
+                  <p className="text-[11px] text-muted-foreground">
                     Baseado nas últimas 420 questões resolvidas e simulados
                   </p>
                 </div>
@@ -960,17 +960,17 @@ function LandingPage() {
                 ].map((item) => (
                   <div key={item.disciplina} className="space-y-1.5">
                     <div className="flex items-center justify-between text-xs">
-                      <span className="font-bold text-white">{item.disciplina}</span>
+                      <span className="font-bold text-foreground">{item.disciplina}</span>
                       <div className="flex items-center gap-2 sm:gap-3">
-                        <span className="font-mono text-neutral-300 font-bold">{item.acertos}</span>
-                        <span className="text-[9px] sm:text-[10px] text-neutral-400 font-mono uppercase bg-neutral-950 border border-neutral-800 px-2 py-0.5 rounded">
+                        <span className="font-mono text-muted-foreground font-bold">{item.acertos}</span>
+                        <span className="text-[9px] sm:text-[10px] text-muted-foreground font-mono uppercase bg-background border border-border px-2 py-0.5 rounded">
                           {item.status}
                         </span>
                       </div>
                     </div>
-                    <div className="h-2 w-full rounded-full bg-neutral-950 overflow-hidden border border-neutral-800/80">
+                    <div className="h-2 w-full rounded-full bg-background overflow-hidden border border-border">
                       <div
-                        className="h-full bg-white rounded-full transition-all duration-700"
+                        className="h-full minerva-progress rounded-full transition-all duration-700"
                         style={{ width: item.bar }}
                       />
                     </div>
@@ -978,9 +978,9 @@ function LandingPage() {
                 ))}
               </div>
 
-              <div className="pt-3 border-t border-neutral-800/85 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-neutral-400">
+              <div className="pt-3 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
                 <span>Relatórios com histórico diário, semanal e mensal de estudo.</span>
-                <span className="font-mono text-neutral-500 text-[10px] uppercase tracking-wider">
+                <span className="font-mono text-muted-foreground text-[10px] uppercase tracking-wider">
                   * Interface demonstrativa de acompanhamento
                 </span>
               </div>
@@ -993,18 +993,18 @@ function LandingPage() {
         {/* ==================================================================== */}
         <section
           id="cronograma"
-          className="py-16 sm:py-24 bg-[#f8f8fa] text-neutral-950 border-b border-neutral-200"
+          className="py-16 sm:py-24 bg-card/30 text-foreground border-b border-border"
         >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mb-12 sm:mb-14 space-y-2 text-left">
-              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-300 bg-white px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-neutral-700">
+              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                 <Calendar className="h-3 w-3" />
                 <span>PLANEJAMENTO SEMANAL</span>
               </div>
-              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950">
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground">
                 Seu estudo deixa de ser improviso e passa a ter estratégia.
               </h2>
-              <p className="text-xs sm:text-sm text-neutral-600 font-normal leading-relaxed">
+              <p className="text-xs sm:text-sm text-muted-foreground font-normal leading-relaxed">
                 Clique nos dias da semana para visualizar a distribuição inteligente de blocos de
                 estudo.
               </p>
@@ -1018,8 +1018,8 @@ function LandingPage() {
                   onClick={() => setSelectedDayIndex(idx)}
                   className={`p-2.5 sm:p-3 rounded-xl border text-center transition-all cursor-pointer min-h-[44px] ${
                     selectedDayIndex === idx
-                      ? "bg-neutral-950 text-white border-neutral-950 shadow-md"
-                      : "bg-white text-neutral-700 border-neutral-200 hover:border-neutral-400"
+                      ? "bg-gradient-primary text-primary-foreground border-primary shadow-md"
+                      : "bg-card text-muted-foreground border-border hover:border-primary/50"
                   }`}
                 >
                   <p className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider font-semibold opacity-70">
@@ -1031,37 +1031,37 @@ function LandingPage() {
             </div>
 
             {/* Detalhe do Dia Selecionado */}
-            <div className="rounded-2xl border border-neutral-200 bg-white p-5 sm:p-7 shadow-xs space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-neutral-100 pb-3.5">
+            <div className="rounded-2xl border border-border bg-card p-5 sm:p-7 shadow-xs space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-border pb-3.5">
                 <div>
-                  <span className="text-[10px] font-mono uppercase font-bold text-neutral-500">
+                  <span className="text-[10px] font-mono uppercase font-bold text-muted-foreground">
                     {DIAS_CRONOGRAMA[selectedDayIndex]!.dia} • PLANO DIÁRIO
                   </span>
-                  <h3 className="text-lg sm:text-xl font-bold text-neutral-950 mt-0.5">
+                  <h3 className="text-lg sm:text-xl font-bold text-foreground mt-0.5">
                     {DIAS_CRONOGRAMA[selectedDayIndex]!.materia}
                   </h3>
                 </div>
-                <span className="self-start sm:self-auto rounded-full bg-neutral-100 text-neutral-900 border border-neutral-200 px-3 py-1 text-xs font-bold font-mono">
+                <span className="self-start sm:self-auto rounded-full bg-secondary text-foreground border border-border px-3 py-1 text-xs font-bold font-mono">
                   Tempo Estimado: {DIAS_CRONOGRAMA[selectedDayIndex]!.carga}
                 </span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs">
-                <div className="p-3.5 sm:p-4 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1">
-                  <p className="font-bold text-neutral-900">Tópico do Edital</p>
-                  <p className="text-neutral-600 leading-relaxed">
+                <div className="p-3.5 sm:p-4 rounded-xl bg-secondary border border-border space-y-1">
+                  <p className="font-bold text-foreground">Tópico do Edital</p>
+                  <p className="text-muted-foreground leading-relaxed">
                     {DIAS_CRONOGRAMA[selectedDayIndex]!.topico}
                   </p>
                 </div>
-                <div className="p-3.5 sm:p-4 rounded-xl bg-neutral-50 border border-neutral-200/80 space-y-1">
-                  <p className="font-bold text-neutral-900">Atividade Programada</p>
-                  <p className="text-neutral-600 leading-relaxed">
+                <div className="p-3.5 sm:p-4 rounded-xl bg-secondary border border-border space-y-1">
+                  <p className="font-bold text-foreground">Atividade Programada</p>
+                  <p className="text-muted-foreground leading-relaxed">
                     {DIAS_CRONOGRAMA[selectedDayIndex]!.tipo}
                   </p>
                 </div>
               </div>
 
-              <p className="text-xs text-neutral-500 font-medium">
+              <p className="text-xs text-muted-foreground font-medium">
                 <strong>Meta de aprendizado:</strong> {DIAS_CRONOGRAMA[selectedDayIndex]!.meta}
               </p>
             </div>
@@ -1073,56 +1073,56 @@ function LandingPage() {
         {/* ==================================================================== */}
         <section
           id="mentoria"
-          className="py-20 sm:py-28 bg-neutral-950 text-white border-b border-neutral-850"
+          className="py-20 sm:py-28 bg-background text-foreground border-b border-border"
         >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mb-12 sm:mb-16 space-y-3 text-left">
-              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900 px-3.5 py-1 text-[10px] font-bold uppercase tracking-widest text-neutral-300">
+              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3.5 py-1 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                 <Compass className="h-3.5 w-3.5" />
                 <span>ORIENTAÇÃO TÁTICA</span>
               </div>
-              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
+              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground leading-tight">
                 Não estude sozinho.
               </h2>
-              <p className="text-xs sm:text-base text-neutral-400 font-normal leading-relaxed">
+              <p className="text-xs sm:text-base text-muted-foreground font-normal leading-relaxed">
                 Acompanhamento e suporte de quem conhece de ponta a ponta as peculiaridades das
                 bancas e os caminhos de aprovação.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
-              <div className="p-6 sm:p-7 rounded-2xl border border-neutral-800 bg-neutral-900/70 space-y-3 hover:border-neutral-700 transition-colors">
-                <div className="h-10 w-10 rounded-xl bg-white text-neutral-950 flex items-center justify-center">
+              <div className="p-6 sm:p-7 rounded-2xl border border-border bg-card/70 space-y-3 hover:border-primary/50 transition-colors">
+                <div className="h-10 w-10 rounded-xl bg-gradient-primary text-primary-foreground flex items-center justify-center">
                   <Target className="h-5 w-5" />
                 </div>
-                <h3 className="text-base sm:text-lg font-bold text-white">Metas & Diagnósticos</h3>
-                <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
+                <h3 className="text-base sm:text-lg font-bold text-foreground">Metas & Diagnósticos</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                   Definição de metas de estudo semanais personalizadas com base na carreira militar
                   escolhida e na sua rotina disponível.
                 </p>
               </div>
 
-              <div className="p-6 sm:p-7 rounded-2xl border border-neutral-800 bg-neutral-900/70 space-y-3 hover:border-neutral-700 transition-colors">
-                <div className="h-10 w-10 rounded-xl bg-white text-neutral-950 flex items-center justify-center">
+              <div className="p-6 sm:p-7 rounded-2xl border border-border bg-card/70 space-y-3 hover:border-primary/50 transition-colors">
+                <div className="h-10 w-10 rounded-xl bg-gradient-primary text-primary-foreground flex items-center justify-center">
                   <BrainCircuit className="h-5 w-5" />
                 </div>
-                <h3 className="text-base sm:text-lg font-bold text-white">
+                <h3 className="text-base sm:text-lg font-bold text-foreground">
                   Acompanhamento de Rendimento
                 </h3>
-                <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                   Orientação periódica sobre quando acelerar o conteúdo teórico e quando priorizar
                   resolução maciça de provas antigas.
                 </p>
               </div>
 
-              <div className="p-6 sm:p-7 rounded-2xl border border-neutral-800 bg-neutral-900/70 space-y-3 hover:border-neutral-700 transition-colors">
-                <div className="h-10 w-10 rounded-xl bg-white text-neutral-950 flex items-center justify-center">
+              <div className="p-6 sm:p-7 rounded-2xl border border-border bg-card/70 space-y-3 hover:border-primary/50 transition-colors">
+                <div className="h-10 w-10 rounded-xl bg-gradient-primary text-primary-foreground flex items-center justify-center">
                   <Users className="h-5 w-5" />
                 </div>
-                <h3 className="text-base sm:text-lg font-bold text-white">
+                <h3 className="text-base sm:text-lg font-bold text-foreground">
                   Comunidade & Ambiente Focado
                 </h3>
-                <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                   Espaço exclusivo para troca de dúvidas de exercícios difíceis com outros
                   estudantes com a mesma meta de aprovação.
                 </p>
@@ -1134,16 +1134,16 @@ function LandingPage() {
         {/* ==================================================================== */}
         {/* SEÇÃO 8: COMO FUNCIONA (CLARA COM 4 PASSOS)                          */}
         {/* ==================================================================== */}
-        <section className="py-16 sm:py-24 bg-white text-neutral-950 border-b border-neutral-200">
+        <section className="py-16 sm:py-24 bg-gradient-primary text-primary-foreground border-b border-border">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="max-w-3xl mb-12 sm:mb-16 space-y-2 text-left">
-              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-300 bg-neutral-100 px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-neutral-700">
+              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                 <span>PASSO A PASSO</span>
               </div>
-              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950">
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground">
                 Como funciona a sua preparação
               </h2>
-              <p className="text-xs sm:text-sm text-neutral-600 font-normal leading-relaxed">
+              <p className="text-xs sm:text-sm text-muted-foreground font-normal leading-relaxed">
                 Quatro passos bem definidos para sair da inércia e alcançar o topo da classificação.
               </p>
             </div>
@@ -1173,13 +1173,13 @@ function LandingPage() {
               ].map((etapa) => (
                 <div key={etapa.step} className="space-y-2.5">
                   <div className="flex items-center gap-3">
-                    <span className="text-2xl sm:text-3xl font-black font-mono text-neutral-950">
+                    <span className="text-2xl sm:text-3xl font-black font-mono text-foreground">
                       {etapa.step}
                     </span>
-                    <div className="h-px flex-1 bg-neutral-200" />
+                    <div className="h-px flex-1 bg-secondary" />
                   </div>
-                  <h3 className="text-sm sm:text-base font-bold text-neutral-950">{etapa.titulo}</h3>
-                  <p className="text-xs text-neutral-600 leading-relaxed">{etapa.desc}</p>
+                  <h3 className="text-sm sm:text-base font-bold text-foreground">{etapa.titulo}</h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{etapa.desc}</p>
                 </div>
               ))}
             </div>
@@ -1189,15 +1189,15 @@ function LandingPage() {
         {/* ==================================================================== */}
         {/* SEÇÃO 9: FRASE DE IMPACTO (ESCURA - MINIMALISTA)                     */}
         {/* ==================================================================== */}
-        <section className="py-20 sm:py-28 bg-neutral-950 text-white border-b border-neutral-850 flex items-center justify-center">
+        <section className="py-20 sm:py-28 bg-background text-foreground border-b border-border flex items-center justify-center">
           <div className="mx-auto max-w-4xl px-4 text-center space-y-4">
-            <p className="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-neutral-400">
+            <p className="text-[10px] sm:text-xs font-mono uppercase tracking-widest text-muted-foreground">
               MINERVA EDUCAÇÃO • ALTO DESEMPENHO
             </p>
-            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground leading-tight">
               &quot;Grandes aprovações não acontecem por acaso.&quot;
             </h2>
-            <p className="text-base sm:text-xl text-neutral-400 font-light tracking-wide">
+            <p className="text-base sm:text-xl text-muted-foreground font-light tracking-wide">
               Elas são construídas todos os dias.
             </p>
           </div>
@@ -1208,54 +1208,54 @@ function LandingPage() {
         {/* ==================================================================== */}
         <section
           id="planos"
-          className="py-16 sm:py-24 bg-[#fbfbfb] text-neutral-950 border-b border-neutral-200"
+          className="py-16 sm:py-24 bg-card/40 text-foreground border-b border-border"
         >
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16 space-y-2">
-              <div className="inline-flex items-center gap-2 rounded-full border border-neutral-300 bg-white px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-neutral-700">
+              <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-0.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                 <span>INVESTIMENTO TRANSPARENTE</span>
               </div>
-              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-neutral-950">
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground">
                 Escolha a melhor forma de estudar.
               </h2>
-              <p className="text-xs sm:text-sm text-neutral-600">
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 Planos modulares para cada fase de sua preparação. Cancele quando quiser sem multas.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto">
               {/* Plano 1: Essencial */}
-              <div className="rounded-2xl border border-neutral-200 bg-white p-6 sm:p-7 flex flex-col justify-between hover:border-neutral-400 transition-all shadow-xs">
+              <div className="rounded-2xl border border-border bg-card p-6 sm:p-7 flex flex-col justify-between hover:border-primary/50 transition-all shadow-xs">
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-base sm:text-lg font-bold text-neutral-950 uppercase tracking-wide">
+                    <h3 className="text-base sm:text-lg font-bold text-foreground uppercase tracking-wide">
                       ESSENCIAL
                     </h3>
-                    <p className="text-xs text-neutral-500 mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                       A base de questões e simulados para consolidar sua preparação.
                     </p>
                   </div>
 
-                  <div className="flex items-baseline gap-1 pt-2 border-t border-neutral-100">
-                    <span className="text-3xl font-extrabold text-neutral-950 font-mono">R$ 59</span>
-                    <span className="text-xs text-neutral-500">/mês (placeholder)</span>
+                  <div className="flex items-baseline gap-1 pt-2 border-t border-border">
+                    <span className="text-3xl font-extrabold text-foreground font-mono">R$ 59</span>
+                    <span className="text-xs text-muted-foreground">/mês (placeholder)</span>
                   </div>
 
-                  <ul className="space-y-2.5 pt-4 text-xs text-neutral-700 border-t border-neutral-100">
+                  <ul className="space-y-2.5 pt-4 text-xs text-muted-foreground border-t border-border">
                     <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <Check className="h-4 w-4 text-foreground shrink-0" />
                       <span>Acesso integral ao Banco de Questões</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <Check className="h-4 w-4 text-foreground shrink-0" />
                       <span>Filtros por concurso, ano e dificuldade</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <Check className="h-4 w-4 text-foreground shrink-0" />
                       <span>Gabaritos com resoluções comentadas</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <Check className="h-4 w-4 text-foreground shrink-0" />
                       <span>Simulados inéditos com cronômetro</span>
                     </li>
                   </ul>
@@ -1265,7 +1265,7 @@ function LandingPage() {
                   <Button
                     asChild
                     variant="outline"
-                    className="w-full h-11 text-xs font-bold border-neutral-300 hover:bg-neutral-100 text-neutral-950 rounded-xl cursor-pointer"
+                    className="w-full h-11 text-xs font-bold border-border hover:bg-secondary text-foreground rounded-xl cursor-pointer"
                   >
                     <Link to="/register">Começar com Essencial</Link>
                   </Button>
@@ -1273,45 +1273,45 @@ function LandingPage() {
               </div>
 
               {/* Plano 2: Completo (Mais Escolhido) */}
-              <div className="relative rounded-2xl border-2 border-neutral-950 bg-white p-6 sm:p-7 flex flex-col justify-between shadow-xl ring-1 ring-neutral-950/10">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-neutral-950 px-3.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white">
+              <div className="relative rounded-2xl border-2 border-border bg-card p-6 sm:p-7 flex flex-col justify-between shadow-xl ring-1 ring-neutral-950/10">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-background px-3.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-foreground">
                   Mais escolhido
                 </div>
 
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-base sm:text-lg font-bold text-neutral-950 uppercase tracking-wide">
+                    <h3 className="text-base sm:text-lg font-bold text-foreground uppercase tracking-wide">
                       COMPLETO
                     </h3>
-                    <p className="text-xs text-neutral-500 mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                       O ecossistema completo de cursos, videoaulas, questões e planejamento.
                     </p>
                   </div>
 
-                  <div className="flex items-baseline gap-1 pt-2 border-t border-neutral-100">
-                    <span className="text-3xl font-extrabold text-neutral-950 font-mono">R$ 97</span>
-                    <span className="text-xs text-neutral-500">/mês (placeholder)</span>
+                  <div className="flex items-baseline gap-1 pt-2 border-t border-border">
+                    <span className="text-3xl font-extrabold text-foreground font-mono">R$ 97</span>
+                    <span className="text-xs text-muted-foreground">/mês (placeholder)</span>
                   </div>
 
-                  <ul className="space-y-2.5 pt-4 text-xs text-neutral-900 border-t border-neutral-100 font-medium">
+                  <ul className="space-y-2.5 pt-4 text-xs text-foreground border-t border-border font-medium">
                     <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <Check className="h-4 w-4 text-foreground shrink-0" />
                       <span>Tudo incluso no plano Essencial</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <Check className="h-4 w-4 text-foreground shrink-0" />
                       <span>Cursos completos em videoaulas HD</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <Check className="h-4 w-4 text-foreground shrink-0" />
                       <span>Apostilas e materiais teóricos em PDF</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <Check className="h-4 w-4 text-foreground shrink-0" />
                       <span>Módulo de Planejamento e Cronogramas</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <Check className="h-4 w-4 text-foreground shrink-0" />
                       <span>Painel analítico avançado de desempenho</span>
                     </li>
                   </ul>
@@ -1320,7 +1320,7 @@ function LandingPage() {
                 <div className="pt-6 sm:pt-8">
                   <Button
                     asChild
-                    className="w-full h-11 text-xs font-bold bg-neutral-950 text-white hover:bg-neutral-800 rounded-xl shadow-md cursor-pointer"
+                    className="w-full h-11 text-xs font-bold bg-gradient-primary text-primary-foreground hover:opacity-90 rounded-xl shadow-md cursor-pointer"
                   >
                     <Link to="/register">Começar com Completo</Link>
                   </Button>
@@ -1328,39 +1328,39 @@ function LandingPage() {
               </div>
 
               {/* Plano 3: Premium */}
-              <div className="rounded-2xl border border-neutral-200 bg-white p-6 sm:p-7 flex flex-col justify-between hover:border-neutral-400 transition-all shadow-xs">
+              <div className="rounded-2xl border border-border bg-card p-6 sm:p-7 flex flex-col justify-between hover:border-primary/50 transition-all shadow-xs">
                 <div className="space-y-4">
                   <div>
-                    <h3 className="text-base sm:text-lg font-bold text-neutral-950 uppercase tracking-wide">
+                    <h3 className="text-base sm:text-lg font-bold text-foreground uppercase tracking-wide">
                       PREMIUM
                     </h3>
-                    <p className="text-xs text-neutral-500 mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                       Acompanhamento tático individual de mentoria e aceleração máxima.
                     </p>
                   </div>
 
-                  <div className="flex items-baseline gap-1 pt-2 border-t border-neutral-100">
-                    <span className="text-3xl font-extrabold text-neutral-950 font-mono">
+                  <div className="flex items-baseline gap-1 pt-2 border-t border-border">
+                    <span className="text-3xl font-extrabold text-foreground font-mono">
                       R$ 189
                     </span>
-                    <span className="text-xs text-neutral-500">/mês (placeholder)</span>
+                    <span className="text-xs text-muted-foreground">/mês (placeholder)</span>
                   </div>
 
-                  <ul className="space-y-2.5 pt-4 text-xs text-neutral-700 border-t border-neutral-100">
+                  <ul className="space-y-2.5 pt-4 text-xs text-muted-foreground border-t border-border">
                     <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <Check className="h-4 w-4 text-foreground shrink-0" />
                       <span>Tudo incluso no plano Completo</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <Check className="h-4 w-4 text-foreground shrink-0" />
                       <span>Sessões periódicas de mentoria</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <Check className="h-4 w-4 text-foreground shrink-0" />
                       <span>Diagnóstico tático contínuo de metas</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check className="h-4 w-4 text-neutral-950 shrink-0" />
+                      <Check className="h-4 w-4 text-foreground shrink-0" />
                       <span>Correção prioritária de redações</span>
                     </li>
                   </ul>
@@ -1370,7 +1370,7 @@ function LandingPage() {
                   <Button
                     asChild
                     variant="outline"
-                    className="w-full h-11 text-xs font-bold border-neutral-300 hover:bg-neutral-100 text-neutral-950 rounded-xl cursor-pointer"
+                    className="w-full h-11 text-xs font-bold border-border hover:bg-secondary text-foreground rounded-xl cursor-pointer"
                   >
                     <Link to="/register">Começar com Premium</Link>
                   </Button>
@@ -1378,7 +1378,7 @@ function LandingPage() {
               </div>
             </div>
 
-            <p className="text-center text-xs text-neutral-500 mt-8">
+            <p className="text-center text-xs text-muted-foreground mt-8">
               * Valores meramente demonstrativos para personalização administrativa. Garantia
               incondicional de 7 dias.
             </p>
@@ -1390,17 +1390,17 @@ function LandingPage() {
         {/* ==================================================================== */}
         <section
           id="faq"
-          className="py-20 sm:py-28 bg-neutral-950 text-white border-b border-neutral-850"
+          className="py-20 sm:py-28 bg-background text-foreground border-b border-border"
         >
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-14 space-y-2">
-              <span className="text-xs font-bold tracking-wider text-neutral-400 uppercase">
+              <span className="text-xs font-bold tracking-wider text-muted-foreground uppercase">
                 Tire suas dúvidas
               </span>
-              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+              <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground">
                 Perguntas Frequentes
               </h2>
-              <p className="text-xs sm:text-sm text-neutral-400">
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 Respostas diretas sobre como a Minerva Educação apoia sua preparação.
               </p>
             </div>
@@ -1410,12 +1410,12 @@ function LandingPage() {
                 <AccordionItem
                   key={index}
                   value={`item-${index}`}
-                  className="rounded-xl border border-neutral-800 bg-neutral-900/60 px-4 sm:px-5 py-0.5 text-left"
+                  className="rounded-xl border border-border bg-card/60 px-4 sm:px-5 py-0.5 text-left"
                 >
-                  <AccordionTrigger className="text-left text-xs sm:text-sm font-bold text-white hover:no-underline py-4">
+                  <AccordionTrigger className="text-left text-xs sm:text-sm font-bold text-foreground hover:no-underline py-4">
                     {faq.pergunta}
                   </AccordionTrigger>
-                  <AccordionContent className="text-xs leading-relaxed text-neutral-400 pt-1 pb-4">
+                  <AccordionContent className="text-xs leading-relaxed text-muted-foreground pt-1 pb-4">
                     {faq.resposta}
                   </AccordionContent>
                 </AccordionItem>
@@ -1427,24 +1427,24 @@ function LandingPage() {
         {/* ==================================================================== */}
         {/* SEÇÃO 12: CTA FINAL CINEMATOGRÁFICO (ESCURA)                         */}
         {/* ==================================================================== */}
-        <section className="py-20 sm:py-32 bg-neutral-950 text-white relative overflow-hidden">
+        <section className="py-20 sm:py-32 bg-background text-foreground relative overflow-hidden">
           {/* Iluminação de Fundo */}
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] sm:w-[700px] h-[250px] sm:h-[350px] bg-[radial-gradient(circle_at_bottom,rgba(255,255,255,0.07),transparent_70%)] blur-2xl" />
           </div>
 
           <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6 lg:px-8 space-y-6 z-10">
-            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground leading-tight">
               Seu próximo nível começa agora.
             </h2>
-            <p className="text-xs sm:text-base text-neutral-400 max-w-xl mx-auto font-normal leading-relaxed">
+            <p className="text-xs sm:text-base text-muted-foreground max-w-xl mx-auto font-normal leading-relaxed">
               Transforme sua preparação em estratégia, consistência e evolução. Crie sua conta e
               ingresse na Minerva Educação.
             </p>
             <div className="pt-2 flex justify-center">
               <Button
                 size="lg"
-                className="h-12 px-8 sm:px-10 text-sm font-semibold bg-white text-neutral-950 hover:bg-neutral-200 rounded-xl shadow-xl shadow-white/5 transition-all cursor-pointer min-h-[48px]"
+                className="h-12 px-8 sm:px-10 text-sm font-semibold bg-gradient-primary text-primary-foreground hover:opacity-90 minerva-glow-strong rounded-xl shadow-xl shadow-primary/5 transition-all cursor-pointer min-h-[48px]"
                 asChild
               >
                 <Link to="/register">
