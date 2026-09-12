@@ -35,7 +35,7 @@ export const ObjectiveCard: React.FC<{ userId: string }> = ({ userId }) => {
   });
 
   return (
-    <div className="flex items-center gap-3 rounded-2xl border border-border bg-card px-4 py-3">
+    <div className="surface-card card-lift flex items-center gap-3 rounded-2xl px-4 py-3">
       <span className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/10 text-primary">
         <Target className="h-4 w-4" />
       </span>
