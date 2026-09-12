@@ -77,11 +77,17 @@ function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-white">
+    <div className="flex min-h-screen bg-background text-foreground">
       {/* ==================================================================== */}
       {/* LADO ESQUERDO: PAINEL INSTITUCIONAL VISUAL (Desktop)                  */}
       {/* ==================================================================== */}
-      <div className="hidden lg:flex lg:w-1/2 bg-neutral-950 text-white flex-col justify-between p-12 lg:p-16 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 text-foreground flex-col justify-between p-12 lg:p-16 relative overflow-hidden border-r border-border">
+        {/* Iluminação decorativa animada */}
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          <div className="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-primary/25 blur-3xl animate-aurora" />
+          <div className="absolute bottom-0 right-0 h-[28rem] w-[28rem] rounded-full bg-primary-glow/20 blur-3xl animate-aurora-slow" />
+          <div className="absolute inset-0 minerva-grid-bg opacity-60" />
+        </div>
         {/* Logo Topo */}
         <div className="relative z-10">
           <Link to="/" className="inline-block">
@@ -95,38 +101,38 @@ function LoginPage() {
 
         {/* Citação e Proposta de Valor */}
         <div className="relative z-10 max-w-lg space-y-6">
-          <div className="inline-flex items-center gap-2 rounded-full border border-neutral-800 bg-neutral-900/80 px-3.5 py-1 text-[11px] font-semibold tracking-wider uppercase text-neutral-300">
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1 text-[11px] font-semibold tracking-wider uppercase text-lavender">
             <span>PREPARAÇÃO DE ALTO DESEMPENHO</span>
           </div>
 
-          <h1 className="text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight text-white">
+          <h1 className="text-3xl lg:text-4xl font-extrabold tracking-tight leading-tight text-foreground">
             "Estude com estratégia. Evolua com dados."
           </h1>
 
-          <p className="text-sm text-neutral-400 leading-relaxed font-normal">
+          <p className="text-sm text-muted-foreground leading-relaxed font-normal">
             A plataforma construída para transformar sua dedicação aos concursos militares em
             aprovação concreta, com simulados calibrados, banco de questões classificado e
             diagnóstico contínuo.
           </p>
 
-          <div className="space-y-3 pt-2 text-xs text-neutral-300">
+          <div className="space-y-3 pt-2 text-xs text-lavender">
             <div className="flex items-center gap-2.5">
-              <CheckCircle2 className="h-4 w-4 text-white shrink-0" />
+              <CheckCircle2 className="h-4 w-4 text-primary-soft shrink-0" />
               <span>AFA • EFOMM • EsPCEx • Escola Naval • ESA • EEAR</span>
             </div>
             <div className="flex items-center gap-2.5">
-              <CheckCircle2 className="h-4 w-4 text-white shrink-0" />
+              <CheckCircle2 className="h-4 w-4 text-primary-soft shrink-0" />
               <span>Banco de questões com gabarito e resolução comentada</span>
             </div>
             <div className="flex items-center gap-2.5">
-              <CheckCircle2 className="h-4 w-4 text-white shrink-0" />
+              <CheckCircle2 className="h-4 w-4 text-primary-soft shrink-0" />
               <span>Segurança e isolamento estrito de dados por usuário</span>
             </div>
           </div>
         </div>
 
         {/* Rodapé institucional */}
-        <div className="relative z-10 text-[11px] text-neutral-500">
+        <div className="relative z-10 text-[11px] text-muted-foreground">
           &copy; {new Date().getFullYear()} Minerva Educação. Todos os direitos reservados.
         </div>
       </div>
@@ -134,7 +140,11 @@ function LoginPage() {
       {/* ==================================================================== */}
       {/* LADO DIREITO: FORMULÁRIO DE LOGIN (Desktop e Mobile)                 */}
       {/* ==================================================================== */}
-      <div className="w-full lg:w-1/2 flex flex-col justify-center px-4 sm:px-8 lg:px-16 py-12">
+      <div className="w-full lg:w-1/2 flex flex-col justify-center px-4 sm:px-8 lg:px-16 py-12 relative">
+        {/* Glow decorativo sutil */}
+        <div className="absolute inset-0 pointer-events-none lg:hidden" aria-hidden="true">
+          <div className="absolute -top-20 right-0 h-72 w-72 rounded-full bg-primary/20 blur-3xl animate-aurora" />
+        </div>
         <div className="w-full max-w-md mx-auto space-y-7">
           {/* Voltar ao início */}
           <Link
@@ -180,7 +190,7 @@ function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isSubmitting}
                 required
-                className="h-11 text-sm bg-white border-border/80 focus:border-foreground"
+                className="h-11 text-sm bg-secondary/60 border-border focus:border-primary"
               />
             </div>
 
@@ -205,7 +215,7 @@ function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={isSubmitting}
                   required
-                  className="h-11 text-sm pr-10 bg-white border-border/80 focus:border-foreground"
+                  className="h-11 text-sm pr-10 bg-secondary/60 border-border focus:border-primary"
                 />
                 <button
                   type="button"
@@ -234,7 +244,7 @@ function LoginPage() {
 
             <Button
               type="submit"
-              className="w-full h-11 font-semibold text-xs uppercase tracking-wider bg-foreground text-background hover:bg-foreground/90 transition-all mt-3 rounded-lg shadow-xs"
+              className="w-full h-11 font-semibold text-xs uppercase tracking-wider bg-gradient-primary text-primary-foreground hover:opacity-90 minerva-glow transition-all mt-3 rounded-lg shadow-xs"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
@@ -257,7 +267,7 @@ function LoginPage() {
               <Button
                 variant="outline"
                 size="sm"
-                className="text-[11px] h-8 font-semibold bg-white hover:bg-secondary/40"
+                className="text-[11px] h-8 font-semibold hover:border-primary/50 hover:text-primary-soft"
                 onClick={() => handleQuickDemo("student")}
                 disabled={isSubmitting}
               >
@@ -267,7 +277,7 @@ function LoginPage() {
               <Button
                 variant="outline"
                 size="sm"
-                className="text-[11px] h-8 font-semibold bg-white hover:bg-secondary/40"
+                className="text-[11px] h-8 font-semibold hover:border-primary/50 hover:text-primary-soft"
                 onClick={() => handleQuickDemo("teacher")}
                 disabled={isSubmitting}
               >
@@ -276,7 +286,7 @@ function LoginPage() {
               <Button
                 variant="outline"
                 size="sm"
-                className="text-[11px] h-8 font-semibold bg-white hover:bg-secondary/40"
+                className="text-[11px] h-8 font-semibold hover:border-primary/50 hover:text-primary-soft"
                 onClick={() => handleQuickDemo("admin")}
                 disabled={isSubmitting}
               >
