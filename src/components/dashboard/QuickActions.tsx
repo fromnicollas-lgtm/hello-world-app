@@ -15,9 +15,11 @@ export const QuickActions: React.FC = () => (
       <Link
         key={to}
         to={to}
-        className="flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-3 text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:bg-secondary/50"
+        className="surface-card card-lift group flex items-center gap-2.5 rounded-xl px-4 py-3 text-sm font-medium text-foreground"
       >
-        <Icon className="h-4 w-4 text-muted-foreground" />
+        <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-primary/25 bg-primary/12 text-primary-soft transition-colors group-hover:bg-primary/20">
+          <Icon className="h-4 w-4" />
+        </span>
         <span className="truncate">{label}</span>
       </Link>
     ))}

@@ -79,7 +79,7 @@ export const WidgetEmpty: React.FC<{
   description?: string | undefined;
   action?: React.ReactNode;
 }> = ({ title, description, action }) => (
-  <div className="rounded-xl border border-dashed border-border bg-secondary/30 px-4 py-8 text-center">
+  <div className="rounded-xl border border-dashed border-primary/25 bg-primary/[0.04] px-4 py-8 text-center">
     <p className="text-sm font-medium text-foreground">{title}</p>
     {description ? (
       <p className="mx-auto mt-1 max-w-xs text-xs leading-relaxed text-muted-foreground">

@@ -20,24 +20,29 @@ const Stat: React.FC<StatProps> = ({ label, value, hint, icon: Icon, href, loadi
   const content = (
     <div
       className={cn(
-        "h-full rounded-2xl border border-border bg-card p-4 transition-colors",
-        href && "hover:border-primary/40",
+        "surface-card animate-rise relative h-full overflow-hidden rounded-2xl p-4",
+        href && "card-lift",
       )}
     >
-      <div className="flex items-center justify-between">
-        <span className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+      <span aria-hidden className="aura -top-14 -right-10 h-28 w-28 opacity-25" />
+      <div className="relative flex items-center justify-between">
+        <span className="text-[11px] font-semibold tracking-wide text-muted-foreground uppercase">
           {label}
         </span>
-        <Icon className="h-4 w-4 text-muted-foreground" />
+        <span className="grid h-7 w-7 place-items-center rounded-md border border-primary/25 bg-primary/12 text-primary-soft">
+          <Icon className="h-3.5 w-3.5" />
+        </span>
       </div>
       {loading ? (
         <Skeleton className="mt-3 h-7 w-20" />
       ) : (
-        <p className="mt-2 text-2xl font-semibold tracking-tight text-foreground tabular-nums">
+        <p className="font-heading relative mt-2 text-2xl font-bold tracking-tight text-foreground tabular-nums">
           {error ? "--" : value}
         </p>
       )}
-      <p className="mt-1 text-xs text-muted-foreground">{error ? "Dados indisponíveis" : hint}</p>
+      <p className="relative mt-1 text-xs text-muted-foreground">
+        {error ? "Dados indisponíveis" : hint}
+      </p>
     </div>
   );
 

@@ -91,7 +91,7 @@ export const Spinner: React.FC<{ className?: string; label?: string }> = ({
 );
 
 export const CardSkeleton: React.FC<{ className?: string }> = ({ className }) => (
-  <div className={cn("rounded-xl border border-border bg-card p-5", className)}>
+  <div className={cn("surface-card rounded-xl p-5", className)}>
     <Skeleton className="h-3 w-24" />
     <Skeleton className="mt-3 h-7 w-20" />
     <Skeleton className="mt-3 h-3 w-32" />
