@@ -82,6 +82,12 @@ function LoginPage() {
       {/* LADO ESQUERDO: PAINEL INSTITUCIONAL VISUAL (Desktop)                  */}
       {/* ==================================================================== */}
       <div className="hidden lg:flex lg:w-1/2 text-foreground flex-col justify-between p-12 lg:p-16 relative overflow-hidden border-r border-border">
+        {/* Iluminação decorativa animada */}
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          <div className="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-primary/25 blur-3xl animate-aurora" />
+          <div className="absolute bottom-0 right-0 h-[28rem] w-[28rem] rounded-full bg-primary-glow/20 blur-3xl animate-aurora-slow" />
+          <div className="absolute inset-0 minerva-grid-bg opacity-60" />
+        </div>
         {/* Logo Topo */}
         <div className="relative z-10">
           <Link to="/" className="inline-block">
