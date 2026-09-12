@@ -227,7 +227,7 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
         <aside
           className={cn(
             "fixed inset-y-0 left-0 z-40 hidden shrink-0 flex-col border-r border-border bg-sidebar/95 backdrop-blur-xl lg:flex",
-            "before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-64 before:bg-[radial-gradient(80%_60%_at_50%_0%,var(--primary)/18%,transparent_70%)] before:opacity-60",
+            "before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-64 before:bg-[radial-gradient(80%_60%_at_50%_0%,oklch(0.627_0.245_303_/_0.18),transparent_70%)] before:opacity-60",
             collapsed ? "w-[72px]" : "w-64",
           )}
         >
