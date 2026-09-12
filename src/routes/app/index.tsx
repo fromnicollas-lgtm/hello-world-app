@@ -53,18 +53,38 @@ function StudentHome() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <header className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <div>
+      <header className="surface-card animate-rise minerva-grid-bg relative flex flex-col gap-5 overflow-hidden rounded-3xl p-5 sm:p-7 lg:flex-row lg:items-center lg:justify-between">
+        <span
+          aria-hidden
+          className="aura animate-pulse-glow -top-24 -left-16 h-56 w-56 opacity-30"
+        />
+        <span
+          aria-hidden
+          className="aura animate-float-slow -right-20 -bottom-24 h-52 w-52 opacity-20"
+        />
+        <div className="relative min-w-0">
+          <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-[10px] font-bold tracking-widest text-primary-soft uppercase">
+            <span className="bg-gradient-primary h-1.5 w-1.5 rounded-full" />
+            Centro de evolução
+          </span>
           {profile.isLoading ? (
-            <Skeleton className="h-8 w-52" />
+            <Skeleton className="mt-3 h-9 w-52" />
           ) : (
-            <h1 className="font-heading text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-              {firstName ? `Olá, ${firstName} 👋` : "Olá! 👋"}
+            <h1 className="font-display mt-3 text-2xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+              {firstName ? (
+                <>
+                  Olá, <span className="text-gradient">{firstName}</span> 👋
+                </>
+              ) : (
+                "Olá! 👋"
+              )}
             </h1>
           )}
-          <p className="mt-1 text-sm text-muted-foreground">Vamos continuar sua preparação?</p>
+          <p className="mt-1.5 text-sm text-muted-foreground">
+            Vamos continuar sua preparação?
+          </p>
         </div>
-        <div className="w-full lg:w-auto lg:min-w-[20rem]">
+        <div className="relative w-full lg:w-auto lg:min-w-[20rem]">
           <ObjectiveCard userId={userId} />
         </div>
       </header>
