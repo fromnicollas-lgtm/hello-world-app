@@ -251,7 +251,16 @@ function LandingPage() {
           {/* Fundo Tecnológico Abstrato (Iluminação Ambiental + Grid de Linhas Finas) */}
           <div className="absolute inset-0 pointer-events-none">
             {/* Iluminação suave no centro-topo */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] sm:w-[900px] h-[350px] sm:h-[500px] bg-[radial-gradient(circle_at_top,oklch(0.627_0.245_303_/_0.28),transparent_70%)] blur-2xl" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] sm:w-[900px] h-[350px] sm:h-[500px] bg-[radial-gradient(circle_at_top,oklch(0.627_0.245_303_/_0.28),transparent_70%)] blur-2xl animate-pulse-glow" />
+            {/* Auroras animadas — manchas de luz roxa/magenta em deriva lenta */}
+            <div className="absolute -top-32 -left-24 w-[420px] h-[420px] rounded-full bg-primary/20 blur-3xl animate-aurora" />
+            <div className="absolute top-1/3 -right-32 w-[520px] h-[520px] rounded-full bg-[oklch(0.66_0.22_330_/_0.16)] blur-3xl animate-aurora-slow" />
+            <div className="absolute bottom-0 left-1/3 w-[380px] h-[380px] rounded-full bg-primary-glow/15 blur-3xl animate-aurora [animation-delay:-8s]" />
+            {/* Partículas flutuantes */}
+            <div className="absolute top-[22%] left-[12%] h-1.5 w-1.5 rounded-full bg-primary-soft animate-float" />
+            <div className="absolute top-[60%] left-[6%] h-1 w-1 rounded-full bg-lavender animate-float-slow" />
+            <div className="absolute top-[30%] right-[10%] h-2 w-2 rounded-full bg-primary-glow animate-float [animation-delay:-4s]" />
+            <div className="absolute bottom-[18%] right-[22%] h-1 w-1 rounded-full bg-primary-soft animate-float-slow [animation-delay:-6s]" />
             {/* Grid geométrico discreto de 40px */}
             <div className="absolute inset-0 bg-[linear-gradient(to_right,oklch(0.627_0.245_303_/_0.06)_1px,transparent_1px),linear-gradient(to_bottom,oklch(0.627_0.245_303_/_0.06)_1px,transparent_1px)] bg-[size:40px_40px]" />
             {/* Vinheta lateral sutil */}
@@ -264,13 +273,14 @@ function LandingPage() {
               <div className="lg:col-span-6 space-y-6 text-left">
                 {/* Badge de Destaque Tecnológico */}
                 <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/90 px-3.5 py-1 text-[11px] font-semibold tracking-wider uppercase text-muted-foreground backdrop-blur-sm">
-                  <span className="h-1.5 w-1.5 rounded-full bg-card animate-pulse" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
                   <span>PREPARAÇÃO DE ALTO DESEMPENHO</span>
                 </div>
 
                 {/* Headline Principal */}
                 <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground leading-[1.12]">
-                  Sua aprovação começa com uma estratégia melhor.
+                  Sua aprovação começa com uma{" "}
+                  <span className="text-gradient animate-text-shimmer">estratégia melhor</span>.
                 </h1>
 
                 {/* Subheadline */}
