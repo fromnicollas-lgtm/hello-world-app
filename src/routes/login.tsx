@@ -134,7 +134,11 @@ function LoginPage() {
       {/* ==================================================================== */}
       {/* LADO DIREITO: FORMULÁRIO DE LOGIN (Desktop e Mobile)                 */}
       {/* ==================================================================== */}
-      <div className="w-full lg:w-1/2 flex flex-col justify-center px-4 sm:px-8 lg:px-16 py-12">
+      <div className="w-full lg:w-1/2 flex flex-col justify-center px-4 sm:px-8 lg:px-16 py-12 relative">
+        {/* Glow decorativo sutil */}
+        <div className="absolute inset-0 pointer-events-none lg:hidden" aria-hidden="true">
+          <div className="absolute -top-20 right-0 h-72 w-72 rounded-full bg-primary/20 blur-3xl animate-aurora" />
+        </div>
         <div className="w-full max-w-md mx-auto space-y-7">
           {/* Voltar ao início */}
           <Link
