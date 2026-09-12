@@ -90,18 +90,18 @@ const NavLinks: React.FC<{
               onClick={onNavigate}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "group relative flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm transition-colors",
+                "group relative flex items-center gap-3 rounded-lg px-2.5 py-2 text-sm transition-all duration-200",
                 "focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
                 collapsed && "justify-center px-0",
                 active
-                  ? "bg-secondary font-semibold text-foreground"
-                  : "font-medium text-muted-foreground hover:bg-secondary/60 hover:text-foreground",
+                  ? "bg-primary/12 font-semibold text-foreground ring-active shadow-[0_0_20px_-10px_var(--primary-glow)]"
+                  : "font-medium text-muted-foreground hover:bg-primary/8 hover:text-foreground",
               )}
             >
               {active ? (
                 <span
                   aria-hidden
-                  className="absolute top-1.5 bottom-1.5 -left-3 w-0.5 rounded-r-full bg-foreground"
+                  className="bg-gradient-primary absolute top-1.5 bottom-1.5 -left-3 w-[3px] rounded-r-full shadow-[0_0_10px_var(--primary-glow)]"
                 />
               ) : null}
               <item.icon className="h-4 w-4 shrink-0" strokeWidth={active ? 2.4 : 1.8} />
@@ -226,7 +226,8 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
         {/* Sidebar — desktop */}
         <aside
           className={cn(
-            "fixed inset-y-0 left-0 z-40 hidden shrink-0 flex-col border-r border-border bg-sidebar lg:flex",
+            "fixed inset-y-0 left-0 z-40 hidden shrink-0 flex-col border-r border-border bg-sidebar/95 backdrop-blur-xl lg:flex",
+            "before:pointer-events-none before:absolute before:inset-x-0 before:top-0 before:h-64 before:bg-[radial-gradient(80%_60%_at_50%_0%,var(--primary)/18%,transparent_70%)] before:opacity-60",
             collapsed ? "w-[72px]" : "w-64",
           )}
         >
@@ -276,7 +277,7 @@ export const AppShell: React.FC<{ children: React.ReactNode }> = ({ children }) 
 
         <div className={cn("flex min-h-screen flex-col", collapsed ? "lg:pl-[72px]" : "lg:pl-64")}>
           {/* Topbar */}
-          <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-background/85 px-4 backdrop-blur-md sm:px-6">
+          <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-background/70 px-4 backdrop-blur-xl sm:px-6">
             <Button
               variant="ghost"
               size="icon"
